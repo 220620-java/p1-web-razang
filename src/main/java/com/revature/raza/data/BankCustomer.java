@@ -5,6 +5,8 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.revature.raza.models.Customer;
@@ -13,6 +15,7 @@ import com.revature.raza.utility.ConnectionObject;
 public class BankCustomer implements CustomerAccessObject<Customer> {
 
 	private ConnectionObject connObj = ConnectionObject.getConnectionUtil();
+	List<Customer> customers = new ArrayList<>();
 
 	@Override
 	public Customer createCustomer(Customer t) {
@@ -86,7 +89,7 @@ public class BankCustomer implements CustomerAccessObject<Customer> {
 	}
 	
 	@Override
-	public boolean updateEmail(int id, String email) {
+	public boolean updateEmail(int id, String eMail) {
 		// TODO Auto-generated method stub
 		boolean isUpdated = false; 
 		try (Connection conn = connObj.getConnection()){
@@ -98,7 +101,7 @@ public class BankCustomer implements CustomerAccessObject<Customer> {
 					+ "where customer_id=?";
 			
 			PreparedStatement st = conn.prepareStatement(sql); 
-			st.setString(1, email);
+			st.setString(1, eMail);
 			st.setInt(2, id);
 			
 			int rowUpdated = st.executeUpdate(); 
@@ -145,8 +148,40 @@ public class BankCustomer implements CustomerAccessObject<Customer> {
 		return isDeleted;
 	}
 
+	@Override
+	public List<Customer> getAllCustomers() {
+		// TODO Auto-generated method stub
+		try (Connection conn = connObj.getConnection()) {
+			
+			String sql = "Select * from customer"; 
+			Statement st = conn.createStatement(); 
+			ResultSet result = st.executeQuery(sql); 
+			
+			while(result.next()) {
+				int customer_id = result.getInt("customer_id"); 
+				String username = result.getString("usenrame"); 
+				Date birthDate = result.getDate("birthDate"); 
+				String email = result.getString("email"); 
+				String phone = result.getString("phone");
+				String passwd = result.getString("passwd"); 
+				
+				Customer customer = new Customer(customer_id, username, birthDate, email, phone, passwd); 
+				customers.add(customer); 
+			}
+			
+		}catch(SQLException e) {
+			e.getMessage(); 
+			return null; 
+			
+		}
+		
+		return customers;
+	}
+	
 	
 
+	
+ 
 	
 	
 	

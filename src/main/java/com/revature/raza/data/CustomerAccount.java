@@ -93,7 +93,7 @@ public class CustomerAccount implements AccountAccessObject<Account>{
 		try (Connection conn = connObj.getConnection()){
 			
 			String sql = "select * from bankaccount "
-					+ "where bankaccount.customer_id =?"; 
+					+ "where customer_id =?"; 
 			
 			PreparedStatement st = conn.prepareStatement(sql); 
 			

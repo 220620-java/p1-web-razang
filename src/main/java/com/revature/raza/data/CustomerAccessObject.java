@@ -2,6 +2,8 @@ package com.revature.raza.data;
 
 import java.util.List;
 
+import com.revature.raza.models.Customer;
+
 
 public interface CustomerAccessObject<T> {
 	
@@ -36,6 +38,9 @@ public interface CustomerAccessObject<T> {
 	 * @return deleted object if existed else null. 
 	 */
 	public boolean deleteCustomer (T t); 
+	
+	
+	public List<T> getAllCustomers(); 
 	
 
 }

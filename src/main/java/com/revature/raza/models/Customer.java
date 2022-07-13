@@ -1,10 +1,13 @@
 package com.revature.raza.models;
-
 import java.sql.Date;
 
+import com.revature.razangorm.annotations.Id;
+import com.revature.razangorm.annotations.Username;
+
 public class Customer {
-	
+	@Id
 	private int customer_id; 
+	@Username
 	private String username; 
 	private Date birthDate; 
 	private String email; 
