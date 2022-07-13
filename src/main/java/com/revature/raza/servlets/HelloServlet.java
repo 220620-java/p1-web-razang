@@ -11,9 +11,17 @@ import jakarta.servlet.http.HttpServletResponse;
 public class HelloServlet extends HttpServlet{
 
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws
-	ServletException, IOException {
-		Writer writer = resp.getWriter(); 
-		writer.write("Sallam Alykum");
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) 
+	{
+		Writer writer;
+		try {
+			writer = resp.getWriter();
+			writer.write("Sallam Alykum");
+		
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.getMessage();
+		} 
 	}
+		
 }
