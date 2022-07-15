@@ -33,6 +33,11 @@ pwd=????
 ```
 GET REQUEST: http://localhost:8080/razang-web/Greet
 ```
+* There are bash scripts in the src/test/shell folder to test the HTTP requests as well.
+```
+Windows: bash get_requests.sh
+UNIX: ./getrequests.sh
+```
 
 ## Authors
 
