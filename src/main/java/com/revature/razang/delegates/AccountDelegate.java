@@ -1,22 +1,20 @@
 package com.revature.razang.delegates;
 
 import java.io.IOException;
+import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
-// import com.revature.petapp.models.Pet;
-// import com.revature.petapp.services.AdminService;
-// import com.revature.petapp.services.AdminServiceImpl;
-// import com.revature.petapp.services.UserService;
-// import com.revature.petapp.services.UserServiceImpl;
+import com.revature.razang.models.User;
+import com.revature.razang.services.AccountService;
+import com.revature.razang.services.AccountServiceImpl;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 public class AccountDelegate implements FrontControllerDelegate {
-	// private UserService userServ = new UserServiceImpl();
-	// private AdminService adminServ = new AdminServiceImpl();
+	private AccountService bankService = new AccountServiceImpl();
 	private ObjectMapper objMapper = new ObjectMapper();
 
 	@Override
@@ -41,22 +39,17 @@ public class AccountDelegate implements FrontControllerDelegate {
 	}
 
 	public void get(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// String path = (String) req.getAttribute("path");
-		// if (path==null || "".equals(path)) {
-		// 	resp.getWriter().write(objMapper.writeValueAsString(userServ.viewAllPets()));
-		// } else {
-		// 	try {
-		// 		int id = Integer.valueOf(path);
-		// 		Pet pet = userServ.getPet(id);
-		// 		if (pet!=null) {
-		// 			resp.getWriter().write(objMapper.writeValueAsString(pet));
-		// 		} else {
-		// 			resp.sendError(404, "Pet with that ID not found.");
-		// 		}
-		// 	} catch (NumberFormatException e) {
-		// 		resp.sendError(400, e.getMessage());
-		// 	}
-		// }
+		String path = (String) req.getAttribute("path");
+		if (path==null || "".equals(path)) {
+			// resp.sendError(403, "Access to all users is forbidden.");
+			// get available account holders
+			List<User> customers = bankService.viewAccountHolders();
+
+			// // the object mapper writes the pets list as a JSON string to the response body
+			resp.getWriter().write(objMapper.writeValueAsString(customers));
+		} else {
+			resp.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
+		}
 	}
 
 	public void post(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

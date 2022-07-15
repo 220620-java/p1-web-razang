@@ -73,7 +73,7 @@ public class BankApplication {
 					account = deleteAccount(customer); 
 					break; 
 				case "F": 
-						accountHolders();
+						// accountHolders();
 						break; 
 				case "G": 
 						System.out.println("signing out...");
@@ -91,18 +91,18 @@ public class BankApplication {
 	}
 
 
-	private static void accountHolders() {
-		// TODO Auto-generated method stub
-		List<User> accountHolders = bankService.viewAccountHolders(); 
-		System.out.println("We are pround of our account holders: \n");
-		User customer = new User(); 
-		for (int i = 0; i < accountHolders.size(); i++) {
-			customer = accountHolders.get(i); 
-			System.out.println(customer.toString());
-		}
-		System.out.println("End\n");
+	// private static void accountHolders() {
+	// 	// TODO Auto-generated method stub
+	// 	List<User> accountHolders = bankService.viewAccountHolders(); 
+	// 	System.out.println("We are pround of our account holders: \n");
+	// 	User customer = new User(); 
+	// 	for (int i = 0; i < accountHolders.size(); i++) {
+	// 		customer = accountHolders.get(i); 
+	// 		System.out.println(customer.toString());
+	// 	}
+	// 	System.out.println("End\n");
 		
-	}
+	// }
 		
 		
 

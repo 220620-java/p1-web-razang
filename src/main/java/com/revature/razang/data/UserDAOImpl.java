@@ -37,7 +37,7 @@ public class UserDAOImpl implements UserDAO {
 			st.setDate(2,t.getBirthDate());
 			st.setString(3, t.getEmail());
 			st.setString(4, t.getPhone());
-			st.setString(5, t.getPasswd());
+			st.setString(5, t.getPassword());
 			
 			int rowsAdded = st.executeUpdate(); 
 			ResultSet result = st.getGeneratedKeys();
@@ -145,23 +145,23 @@ public class UserDAOImpl implements UserDAO {
 
 	@Override
 	public List<User> getAllUsers() {
-		// TODO Auto-generated method stub
+		List<User> allUsers = new ArrayList<>();
 		try (Connection conn = connObj.getConnection()) {
 			
-			String sql = "Select * from customer"; 
+			String sql = "Select * from mybank.customer"; 
 			Statement st = conn.createStatement(); 
 			ResultSet result = st.executeQuery(sql); 
 			
 			while(result.next()) {
 				int customer_id = result.getInt("customer_id"); 
-				String username = result.getString("usenrame"); 
+				String username = result.getString("username"); 
 				Date birthDate = result.getDate("birthDate"); 
 				String email = result.getString("email"); 
 				String phone = result.getString("phone");
-				String passwd = result.getString("passwd"); 
+				String passwd = result.getString("passwd");
 				
 				User customer = new User(customer_id, username, birthDate, email, phone, passwd); 
-				customers.add(customer); 
+				allUsers.add(customer); 
 			}
 			
 		}catch(SQLException e) {
@@ -170,7 +170,7 @@ public class UserDAOImpl implements UserDAO {
 			
 		}
 		
-		return customers;
+		return allUsers;
 	}
 
 	@Override

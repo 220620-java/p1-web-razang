@@ -1,5 +1,7 @@
 package com.revature.razang.services;
 
+import java.util.List;
+
 import com.revature.razang.data.UserDAO;
 import com.revature.razang.data.UserDAOImpl;
 import com.revature.razang.models.User;
@@ -46,6 +48,11 @@ public class UserServiceImpl implements UserService {
     public User deleteUser(User user) {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    @Override
+    public List<User> getAllusers() {
+        return userDAO.getAllUsers();
     }
     
 }

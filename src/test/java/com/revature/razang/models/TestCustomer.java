@@ -8,20 +8,28 @@ import org.junit.jupiter.api.Test;
 
 import com.revature.razang.models.User;
 
-class TestCustomer {
+public class TestCustomer {
 	
-	User customer = new User(1, "RAZA", new Date(2000-01-01), "raza@gmail.copm", "123456789", "1234"); 
+	User user = new User(1, "RAZA", new Date(2000-01-01), "raza@gmail.copm", "123456789", "1234"); 
 
 	@Test
 	public void testGetName() {
-		assertEquals("RAZA", customer.getUsername()); 
-		assertNotEquals("Shan", customer.getUsername()); 
+		assertEquals("RAZA", user.getUsername()); 
+		assertNotEquals("Shan", user.getUsername()); 
 	}
 	
 	@Test
 	public void testGetId() {
-		assertEquals(1, customer.getUserId()); 
-		assertNotEquals(0, customer.getUserId()); 
+		assertEquals(1, user.getUserId()); 
+		assertNotEquals(0, user.getUserId()); 
+	}
+
+	@Test
+	public void passwordEncrypted () {
+		String password = "1234";
+		User newUser =  new User(2, "ctang", new Date(2000-01-01), "colby@email.com", "123456789", password);
+		assertNotEquals(password, newUser.getPassword());
+		System.out.println("Password=" + user.getPassword() + " Salt=" + user.getSalt());
 	}
 
 }

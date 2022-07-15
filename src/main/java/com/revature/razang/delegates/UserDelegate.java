@@ -12,9 +12,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import com.revature.razang.models.User;
 import com.revature.razang.services.AccountService;
 import com.revature.razang.services.AccountServiceImpl;
+import com.revature.razang.services.UserService;
+import com.revature.razang.services.UserServiceImpl;
 
 public class UserDelegate implements FrontControllerDelegate {
-	private AccountService bankService = new AccountServiceImpl();
+	private UserService userService = new UserServiceImpl();
 	private ObjectMapper objMapper = new ObjectMapper();
 
 	@Override
@@ -43,9 +45,9 @@ public class UserDelegate implements FrontControllerDelegate {
 		if (path==null || "".equals(path)) {
 			// resp.sendError(403, "Access to all users is forbidden.");
 			// get available account holders
-			List<User> customers = bankService.viewAccountHolders();
+			List<User> customers = userService.getAllusers();
 
-			// // the object mapper writes the pets list as a JSON string to the response body
+			// // the object mapper writes the list as a JSON string to the response body
 			resp.getWriter().write(objMapper.writeValueAsString(customers));
 		} else {
 			resp.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);

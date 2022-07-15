@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.sql.Date;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,10 +18,10 @@ import com.revature.razang.data.UserDAOImpl;
 import com.revature.razang.models.User;
 
 @ExtendWith(MockitoExtension.class)
-class TestBankCustomer {
+class UserDataTest {
 
 	@InjectMocks 
-	private UserDAOImpl bankCustomer = new UserDAOImpl(); 
+	private UserDAO userDAO = new UserDAOImpl(); 
 	
 	@Mock
 	private User customer;
@@ -30,19 +31,19 @@ class TestBankCustomer {
 	public void testCreateCustomer() {
 		User customer = new User(9, "Mubasher", new Date(2021-01-01),
 				"mmm@gmail.com", "19021100110", "3322222"); 
-		assertEquals(customer, bankCustomer.createUser(customer)); 
+		assertEquals(customer, userDAO.createUser(customer)); 
 	}
 	
 	@Test
 	public void testFindByUsername() {
 		String username = "Huda"; 
-		User customer = bankCustomer.findByUsername(username); 
+		User customer = userDAO.findByUsername(username); 
 		assertNotNull(customer); 
 	}
 	
 	@Test
 	public void testUpdateEmail() {
-		User user = bankCustomer.updateUser(customer); 
+		User user = userDAO.updateUser(customer); 
 		assertEquals(customer, user);
 		
 	}
@@ -51,7 +52,13 @@ class TestBankCustomer {
 	public void testDeleteCustomer() {
 		int mockId = 7; 
 		Mockito.when(customer.getUserId()).thenReturn(mockId); 
-		User user = bankCustomer.deleteUser(customer); 
+		User user = userDAO.deleteUser(customer); 
 		assertEquals(customer, user);
+	}
+
+	@Test
+	public void getAllUsers () {
+		List<User> allUsers = userDAO.getAllUsers();
+		assertNotNull(allUsers);
 	}
 }

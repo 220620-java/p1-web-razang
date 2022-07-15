@@ -15,7 +15,7 @@ import com.revature.razang.models.User;
 import com.revature.razang.utility.BankUtils;
 
 @ExtendWith(MockitoExtension.class)
-class TestCustomerAccount {
+class AccountDataTest {
 	
 	// Object under test
 	@InjectMocks

@@ -7,23 +7,23 @@ import com.revature.razang.models.Account;
 import com.revature.razang.models.User;
 
 public class AccountServiceImpl implements AccountService {
-	private UserDAOImpl bc = new UserDAOImpl(); 
-	private AccountDAOImpl ca = new AccountDAOImpl(); 
+	private UserDAOImpl userDAO = new UserDAOImpl(); 
+	private AccountDAOImpl accountDAO = new AccountDAOImpl(); 
 	
 	boolean isCustomer = false; 
 
 	@Override
 	public User signUp(User customer) {
 		// TODO Auto-generated method stub
-		return bc.createUser(customer); 
+		return userDAO.createUser(customer); 
 		
 	}
 
 	@Override
 	public User signIn(String username, String passwd) {
 		// TODO Auto-generated method stub
-		User customer = bc.findByUsername(username); 
-		if (customer != null && passwd.equals(customer.getPasswd())) {
+		User customer = userDAO.findByUsername(username); 
+		if (customer != null && passwd.equals(customer.getPassword())) {
 			isCustomer = true; 
 			return customer; 
 		}
@@ -33,7 +33,7 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	public Account createAccount(User customer) {
 		// TODO Auto-generated method stub
-		return  ca.create(customer); 
+		return  accountDAO.create(customer); 
 	}
 
 	@Override
@@ -51,33 +51,33 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	public Account deleteAccount(User customer) {
 		// TODO Auto-generated method stub
-		return ca.delete(customer); 
+		return accountDAO.delete(customer); 
 	}
 
 	@Override
 	public Account depositIntoAccount(User customer, double amount) {
 		// TODO Auto-generated method stub
-		return ca.depositIntoAccount(customer, amount); 
+		return accountDAO.depositIntoAccount(customer, amount); 
 		
 	}
 
 	@Override
 	public Account withdrawFromAccount(User customer, double amount) {
 		// TODO Auto-generated method stub
-		return ca.withdraw(customer, amount); 
+		return accountDAO.withdraw(customer, amount); 
 	}
 
 	@Override
 	public double viewBalance(User customer) {
 		// TODO Auto-generated method stub
 		
-		return ca.balance(customer);
+		return accountDAO.balance(customer);
 	}
 
 	@Override
 	public List<User> viewAccountHolders() {
 		// TODO Auto-generated method stub
-		return ca.displayAccountHolders(); 
+		return accountDAO.displayAccountHolders(); 
 	}
 
 
