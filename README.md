@@ -18,7 +18,7 @@ Project 1 is part of a Revature curriculum to learn basic web application struct
 
 ### Installing
 
-* Compile and deploy the .war in Apache Tomcat
+* Compile using _mvn clean package_ and deploy the .war in Apache Tomcat.
 
 ### Usage
 
