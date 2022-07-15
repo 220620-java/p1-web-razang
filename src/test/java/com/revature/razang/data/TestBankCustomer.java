@@ -50,7 +50,7 @@ class TestBankCustomer {
 	@Test
 	public void testDeleteCustomer() {
 		int mockId = 7; 
-		Mockito.when(customer.getCustomer_id()).thenReturn(mockId); 
+		Mockito.when(customer.getUserId()).thenReturn(mockId); 
 		User user = bankCustomer.deleteUser(customer); 
 		assertEquals(customer, user);
 	}

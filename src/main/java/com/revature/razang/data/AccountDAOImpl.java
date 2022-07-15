@@ -24,7 +24,7 @@ public class AccountDAOImpl implements AccountDAO {
 
 	@Override
 	public Account create(User account) {
-		int customer_id = account.getCustomer_id();
+		int customer_id = account.getUserId();
 		long account_no = BankUtils.generateRandomAccountNumber();
 		
 		try (Connection conn =  connObj.getConnection()) {
@@ -66,9 +66,9 @@ public class AccountDAOImpl implements AccountDAO {
 					+ "where customer_id=? "; 
 			
 			PreparedStatement st = conn.prepareStatement(sql); 
-			st.setInt(1, account.getCustomer_id());
+			st.setInt(1, account.getUserId());
 			
-			userAccount = findById(account.getCustomer_id()); 
+			userAccount = findById(account.getUserId()); 
 			
 			int rowDeleted = st.executeUpdate(); 
 			if (rowDeleted == 1) {
@@ -113,7 +113,7 @@ public class AccountDAOImpl implements AccountDAO {
 
 	@Override
 	public Account depositIntoAccount(User customer, double amount) {
-		userAccount = findById(customer.getCustomer_id()); 
+		userAccount = findById(customer.getUserId()); 
 		double currentBalance = userAccount.getBalance(); 
 		currentBalance += amount; 
 		userAccount.setBalance(currentBalance);
@@ -125,7 +125,7 @@ public class AccountDAOImpl implements AccountDAO {
 					+ "where customer_id = ?"; 
 			PreparedStatement st = conn.prepareStatement(sql); 
 			st.setDouble(1, currentBalance);
-			st.setInt(2, customer.getCustomer_id());
+			st.setInt(2, customer.getUserId());
 			
 			int rowUpdated = st.executeUpdate();
 			
@@ -177,7 +177,7 @@ public class AccountDAOImpl implements AccountDAO {
 
 	@Override
 	public Account withdraw(User customer, double amount) {
-		userAccount = findById(customer.getCustomer_id()); 
+		userAccount = findById(customer.getUserId()); 
 		double currentBalance = userAccount.getBalance(); 
 		if (currentBalance >= amount) {
 			currentBalance = currentBalance - amount; 
@@ -195,7 +195,7 @@ public class AccountDAOImpl implements AccountDAO {
 					+ "where customer_id = ?"; 
 			PreparedStatement st = conn.prepareStatement(sql); 
 			st.setDouble(1, currentBalance);
-			st.setInt(2, customer.getCustomer_id());
+			st.setInt(2, customer.getUserId());
 			
 			int rowUpdated = st.executeUpdate();
 			
@@ -213,7 +213,7 @@ public class AccountDAOImpl implements AccountDAO {
 
 	@Override
 	public double balance(User customer) {
-		userAccount = findById(customer.getCustomer_id()); 
+		userAccount = findById(customer.getUserId()); 
 		if (userAccount != null) {
 			return userAccount.getBalance() ;
 		}

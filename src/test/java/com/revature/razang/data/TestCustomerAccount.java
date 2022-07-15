@@ -39,7 +39,7 @@ class TestCustomerAccount {
 		//setup
 		int mockId = 2; 
 		long mockAccountNumber = 2030401050111L;
-		Mockito.when(customer.getCustomer_id()).thenReturn(mockId); 
+		Mockito.when(customer.getUserId()).thenReturn(mockId); 
 		Mockito.when(BankUtils.generateRandomAccountNumber()).thenReturn(mockAccountNumber);
 		
 		Account myAccount = account.create(customer); 
@@ -50,7 +50,7 @@ class TestCustomerAccount {
 	@Test
 	public void testDelete() {
 		int mockId = 2; 
-		Mockito.when(customer.getCustomer_id()).thenReturn(mockId); 
+		Mockito.when(customer.getUserId()).thenReturn(mockId); 
 		Account myAccount = account.delete(customer);  
 		assertNotNull(myAccount); 
 		
@@ -69,7 +69,7 @@ class TestCustomerAccount {
 		int mockId = 2; 
 		
 		Account testAccount = new Account(2030401050111L, Account.AccountType.CHECKING, 0.00); 
-		Mockito.when(customer.getCustomer_id()).thenReturn(mockId); 
+		Mockito.when(customer.getUserId()).thenReturn(mockId); 
 		Account myAccount = account.depositIntoAccount(customer, 100); 
 		assertNotNull(myAccount); 
 		
@@ -80,7 +80,7 @@ class TestCustomerAccount {
 		int mockId = 2; 
 		double amount = 100.00; 
 		
-		Mockito.when(customer.getCustomer_id()).thenReturn(mockId); 
+		Mockito.when(customer.getUserId()).thenReturn(mockId); 
 		Account myAccount = account.withdraw(customer, amount); 
 		assertNotNull(myAccount); 
 	
@@ -89,7 +89,7 @@ class TestCustomerAccount {
 	@Test
 	public void testBalance() {
 		int mockId = 2; 
-		Mockito.when(customer.getCustomer_id()).thenReturn(mockId); 
+		Mockito.when(customer.getUserId()).thenReturn(mockId); 
 		double balance = account.balance(customer); 
 		
 		assertEquals(100.0, balance);

@@ -43,7 +43,7 @@ public class UserDAOImpl implements UserDAO {
 			ResultSet result = st.getGeneratedKeys();
 			
 			if (result.next() && rowsAdded == 1) {
-				t.setCustomer_id(result.getInt("customer_id"));
+				t.setUserId(result.getInt("customer_id"));
 				conn.commit();
 			}else {
 				conn.rollback();
@@ -102,7 +102,7 @@ public class UserDAOImpl implements UserDAO {
 			
 			PreparedStatement st = conn.prepareStatement(sql); 
 			st.setString(1, user.getEmail());
-			st.setInt(2, user.getCustomer_id());
+			st.setInt(2, user.getUserId());
 			
 			int rowUpdated = st.executeUpdate(); 
 			
@@ -128,7 +128,7 @@ public class UserDAOImpl implements UserDAO {
 					+ " customer_id = ?";
 		
 			PreparedStatement st = conn.prepareStatement(sql); 
-			st.setInt(1, user.getCustomer_id());
+			st.setInt(1, user.getUserId());
 			
 			int rowDeleted = st.executeUpdate(); 
 			if (rowDeleted == 1) {

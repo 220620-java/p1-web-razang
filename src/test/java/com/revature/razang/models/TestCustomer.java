@@ -20,8 +20,8 @@ class TestCustomer {
 	
 	@Test
 	public void testGetId() {
-		assertEquals(1, customer.getCustomer_id()); 
-		assertNotEquals(0, customer.getCustomer_id()); 
+		assertEquals(1, customer.getUserId()); 
+		assertNotEquals(0, customer.getUserId()); 
 	}
 
 }

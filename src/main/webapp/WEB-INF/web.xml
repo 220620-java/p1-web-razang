@@ -1,9 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
-  <display-name>p1-web-razang</display-name>
+  <display-name>razang-web</display-name>
+  <!-- Front controller servlet -->
+	<servlet>
+		<!-- telling the web container a servlet that it needs to create -->
+		<servlet-name>Front</servlet-name>
+		<servlet-class>com.revature.razang.servlets.FrontControllerServlet
+		</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<!-- telling the web container which path should go to this servlet -->
+		<servlet-name>Front</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+
   <servlet>
     <servlet-name>Greet</servlet-name>
-    <servlet-class>com.revature.raza.servlets.HelloServlet</servlet-class>
+    <servlet-class>com.revature.razang.servlets.HelloServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>Greet</servlet-name>
