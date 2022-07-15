@@ -12,7 +12,6 @@ Project 1 is part of a Revature curriculum to learn basic web application struct
 * [Razang ORM](https://github.com/220620-java/p1-orm-razang)
 * Maven
 * JUnit 5
-* PostgreSQL
 * Mockito
 * Jackson
 * Apache Tomcat v10.0
@@ -20,12 +19,6 @@ Project 1 is part of a Revature curriculum to learn basic web application struct
 ### Installing
 
 * Compile and deploy the .war in Apache Tomcat
-* Database credentials must be put in src/main/resources/ as database.properties with the following fields inside:
-```
-url=jdbc:postgresql://????:5432/postgres?currentSchema=myBank
-usr=????
-pwd=????
-```
 
 ### Usage
 
