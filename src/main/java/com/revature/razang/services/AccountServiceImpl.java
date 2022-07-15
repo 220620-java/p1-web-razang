@@ -10,26 +10,6 @@ public class AccountServiceImpl implements AccountService {
 	private UserDAOImpl userDAO = new UserDAOImpl(); 
 	private AccountDAOImpl accountDAO = new AccountDAOImpl(); 
 	
-	boolean isCustomer = false; 
-
-	@Override
-	public User signUp(User customer) {
-		// TODO Auto-generated method stub
-		return userDAO.createUser(customer); 
-		
-	}
-
-	@Override
-	public User signIn(String username, String passwd) {
-		// TODO Auto-generated method stub
-		User customer = userDAO.findByUsername(username); 
-		if (customer != null && passwd.equals(customer.getPassword())) {
-			isCustomer = true; 
-			return customer; 
-		}
-		return null;
-	}
-
 	@Override
 	public Account createAccount(User customer) {
 		// TODO Auto-generated method stub

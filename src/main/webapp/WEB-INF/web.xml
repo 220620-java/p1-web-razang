@@ -14,13 +14,4 @@
 		<servlet-name>Front</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
-
-  <servlet>
-    <servlet-name>Greet</servlet-name>
-    <servlet-class>com.revature.razang.servlets.HelloServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>Greet</servlet-name>
-    <url-pattern>/Greet</url-pattern>
-  </servlet-mapping>
 </web-app>

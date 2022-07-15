@@ -12,6 +12,8 @@ import java.util.List;
 import com.revature.razang.models.User;
 import com.revature.razang.utility.BankUtils;
 import com.revature.razang.utility.ConnectionObject;
+import com.revature.razangorm.orm.ObjectRelationalMapper;
+import com.revature.razangorm.orm.ObjectRelationalMapperImpl;
 
 public class UserDAOImpl implements UserDAO {
 
@@ -19,13 +21,16 @@ public class UserDAOImpl implements UserDAO {
 	List<User> customers = new ArrayList<>();
 
 	@Override
-	public User createUser(User t) {
-		// TODO Auto-generated method stub
+	public User createUser(User user) {
+		ObjectRelationalMapper orm = new ObjectRelationalMapperImpl();
+		User createdUser = (User) orm.create(user);
+		return createdUser;
+		/*
 		try (Connection conn = connObj.getConnection()) {
 			
 			conn.setAutoCommit(false);
 			String sql = "insert into Customer "
-						+ "(customer_id, username, birthdate, email, phone, passwd)"
+						+ "(customer_id, username, birthdate, email, phone, passwd, salt)"
 						+ "values"
 						+ "	(default, ?, ?, ?, ?, ?)";
 			
@@ -56,6 +61,7 @@ public class UserDAOImpl implements UserDAO {
 		}
 		
 		return t;
+		*/
 	}
 
 	@Override

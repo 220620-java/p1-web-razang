@@ -38,26 +38,41 @@ public class AuthDelegate implements FrontControllerDelegate {
 	 * @throws ServletException
 	 * @throws IOException
 	 */
+	@SuppressWarnings("unchecked")
 	private void post(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		try {
-			Map<String, String> credentials = objMapper.readValue(req.getInputStream(), Map.class);
-			if (credentials == null) throw new RuntimeException();
-			if (credentials.containsKey("username") && credentials.containsKey("password")) {
-				User user = userServ.loginUser(credentials.get("username"), credentials.get("password"));
-				if (user!=null) {
-					resp.getWriter().write(objMapper.writeValueAsString(user));
-				} else {
-					resp.sendError(401, "Incorrect credentials.");
+		String path = (String) req.getAttribute("path");
+		if (path==null || "".equals(path)) {
+			resp.getWriter().write("Authentication! :)");
+		}
+		else {
+			if (path=="login") {
+				try {
+					Map<String, String> credentials = objMapper.readValue(req.getInputStream(), Map.class);
+					if (credentials == null) throw new RuntimeException();
+					if (credentials.containsKey("username") && credentials.containsKey("password")) {
+						User user = userServ.loginUser(credentials.get("username"), credentials.get("password"));
+						if (user!=null) {
+							resp.getWriter().write(objMapper.writeValueAsString(user));
+						} else {
+							resp.sendError(401, "Incorrect credentials.");
+						}
+					} else {
+						resp.sendError(400, "The request body must contain username and password, like so: \n"
+								+ "{\n"
+								+ "\t \"username\":\"value\"\n"
+								+ "\t \"password\":\"value\"\n"
+								+ "}");
+					}
+				} catch (MismatchedInputException | RuntimeException e) {
+					resp.sendError(400, "The request body was empty.");
 				}
-			} else {
-				resp.sendError(400, "The request body must contain username and password, like so: \n"
-						+ "{\n"
-						+ "\t \"username\":\"value\"\n"
-						+ "\t \"password\":\"value\"\n"
-						+ "}");
 			}
-		} catch (MismatchedInputException | RuntimeException e) {
-			resp.sendError(400, "The request body was empty.");
+			else if (path=="register") {
+				resp.getWriter().write("Register! :)");
+			}
+			else {
+				resp.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+			}
 		}
 	}
 }
