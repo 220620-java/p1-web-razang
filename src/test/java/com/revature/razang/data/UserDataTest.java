@@ -29,6 +29,7 @@ class UserDataTest {
 	
 	@Test
 	public void testCreateCustomer() {
+		System.out.println("Create Customer");
 		User customer = new User(9, "Mubasher", new Date(2021-01-01),
 				"mmm@gmail.com", "19021100110", "3322222"); 
 		assertEquals(customer, userDAO.createUser(customer)); 

@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.revature</groupId>
 	<artifactId>razang</artifactId>
-	<version>0.1.0</version>
+	<version>0.2.0</version>
 	<packaging>war</packaging>
 	<properties>
 		<maven.compiler.target>1.8</maven.compiler.target>
@@ -12,10 +12,10 @@
 		<!-- Razang ORM -->
 		<dependency>
 			<groupId>com.revature</groupId>
-			<artifactId>exercise</artifactId>
+			<artifactId>razangorm</artifactId>
 			<version>1.0</version>
 			<scope>system</scope>
-			<systemPath>${project.basedir}/src/main/resources/razangorm.jar</systemPath>
+			<systemPath>${project.basedir}/lib/razangorm.jar</systemPath>
 		</dependency>
 		<!-- Junit -->
 		<dependency>
