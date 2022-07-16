@@ -11,7 +11,7 @@ import java.util.List;
 
 import com.revature.razang.models.Account;
 import com.revature.razang.models.User;
-import com.revature.razang.utility.ConnectionObject;
+import com.revature.razang.utilities.ConnectionObject;
 import com.revature.razang.utility.BankUtils;
 
 public class AccountDAOImpl implements AccountDAO {

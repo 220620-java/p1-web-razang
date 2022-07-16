@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.revature.razang.models.User;
+import com.revature.razang.utilities.ConnectionObject;
 import com.revature.razang.utility.BankUtils;
-import com.revature.razang.utility.ConnectionObject;
 import com.revature.razangorm.orm.ObjectRelationalMapper;
 import com.revature.razangorm.orm.ObjectRelationalMapperImpl;
 
@@ -23,7 +23,7 @@ public class UserDAOImpl implements UserDAO {
 	@Override
 	public User createUser(User user) {
 		ObjectRelationalMapper orm = new ObjectRelationalMapperImpl();
-		User createdUser = (User) orm.create(user);
+		User createdUser = (User) orm.create(user, "users");
 		return createdUser;
 		/*
 		try (Connection conn = connObj.getConnection()) {
