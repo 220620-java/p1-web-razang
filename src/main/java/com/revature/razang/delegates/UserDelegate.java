@@ -12,7 +12,7 @@ import com.revature.razang.services.UserService;
 import com.revature.razang.services.UserServiceImpl;
 
 public class UserDelegate implements FrontControllerDelegate {
-	private UserService userService = new UserServiceImpl();
+	// private UserService userService = new UserServiceImpl();
 	private ObjectMapper objMapper = new ObjectMapper();
 
 	@Override
@@ -41,10 +41,10 @@ public class UserDelegate implements FrontControllerDelegate {
 		if (path==null || "".equals(path)) {
 			// resp.sendError(403, "Access to all users is forbidden.");
 			// get available account holders
-			List<User> customers = userService.getAllusers();
+			// List<User> customers = userService.getAllusers();
 
 			// // the object mapper writes the list as a JSON string to the response body
-			resp.getWriter().write(objMapper.writeValueAsString(customers));
+			// resp.getWriter().write(objMapper.writeValueAsString(customers));
 		} else {
 			resp.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
 			// try {

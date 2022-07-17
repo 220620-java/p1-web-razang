@@ -2,6 +2,8 @@ package com.revature.razang.models.dtos;
 
 import java.sql.Date;
 
+import com.revature.razang.models.User;
+
 /** A Data Transfer version of User to
  * @author Raza Ghulam
  * @author Colby Tang
@@ -19,6 +21,14 @@ public class UserDTO {
 		this.birthDate = birthDate;
 		this.email = email;
 		this.phone = phone;
+	}
+	 
+	public UserDTO (User user) {
+		this.userId = user.getUserId();
+		this.username = user.getUsername();
+		this.birthDate = user.getBirthDate();
+		this.email = user.getEmail();
+		this.phone = user.getPhone();
 	}
 
 	/** 

@@ -1,5 +1,6 @@
 package com.revature.razang.services;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import com.revature.razang.data.UserDAO;
@@ -22,13 +23,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User registerUser(User user) {
-        // TODO Auto-generated method stub
+        try {
+            return userDAO.create(user);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
     @Override
     public User findUserById(int id) {
-        // TODO Auto-generated method stub
+        try {
+            return userDAO.findById(id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
@@ -52,7 +61,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getAllusers() {
-        return userDAO.getAllUsers();
+        return userDAO.findAll();
     }
     
 }

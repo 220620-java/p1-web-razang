@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 public class AuthDelegate implements FrontControllerDelegate {
-	private UserService userServ = new UserServiceImpl();
+	// private UserService userServ = new UserServiceImpl();
 	private ObjectMapper objMapper = new ObjectMapper();
 
 	@Override
@@ -50,12 +50,12 @@ public class AuthDelegate implements FrontControllerDelegate {
 					Map<String, String> credentials = objMapper.readValue(req.getInputStream(), Map.class);
 					if (credentials == null) throw new RuntimeException();
 					if (credentials.containsKey("username") && credentials.containsKey("password")) {
-						User user = userServ.loginUser(credentials.get("username"), credentials.get("password"));
-						if (user!=null) {
-							resp.getWriter().write(objMapper.writeValueAsString(user));
-						} else {
-							resp.sendError(401, "Incorrect credentials.");
-						}
+						// User user = userServ.loginUser(credentials.get("username"), credentials.get("password"));
+						// if (user!=null) {
+							// resp.getWriter().write(objMapper.writeValueAsString(user));
+						// } else {
+							// resp.sendError(401, "Incorrect credentials.");
+						// }
 					} else {
 						resp.sendError(400, "The request body must contain username and password, like so: \n"
 								+ "{\n"

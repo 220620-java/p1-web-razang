@@ -28,7 +28,7 @@ public interface DataAccessObject<T> {
 	 * @param id the identifier of the object to be retrieved
 	 * @return the retrieved object or null if no matching object was found
 	 */
-	public T findById(int id);
+	public T findById(int id) throws SQLException;
 	
 	/**
 	 * Retrieves all of the objects from the data source.

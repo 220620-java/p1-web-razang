@@ -12,7 +12,7 @@ public interface UserDAO extends DataAccessObject<User> {
 	 * @param t the object supplied by the caller
 	 * @return
 	 */
-	public User createUser(User user); 
+	// public User createUser(User user); 
 	
 	/**
 	 * Reads object
@@ -27,20 +27,20 @@ public interface UserDAO extends DataAccessObject<User> {
 	 * Update the object in the data source if id matches. 
 	 * @param t object of type T that needs update
 	 */
-	public User updateUser(User user); 
+	// public User updateUser(User user); 
 	
 	/**
 	 * Deletes the given record in the data source 
 	 * @param t object that needs to be removed. 
 	 * @return deleted object if existed else null. 
 	 */
-	public User deleteUser (User user); 
+	// public User deleteUser (User user); 
 	
 	/**
 	 * Gets all the users
 	 * @return A list of all the users.
 	 */
-	public List<User> getAllUsers(); 
+	// public List<User> getAllUsers(); 
 	
     public boolean validatePassword(String username, String password);
 

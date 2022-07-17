@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import com.revature.razang.models.User;
 import com.revature.razang.utilities.ConnectionObject;
@@ -19,12 +20,11 @@ public class UserDAOImpl implements UserDAO {
 
 	private ConnectionObject connObj = ConnectionObject.getConnectionUtil();
 	List<User> customers = new ArrayList<>();
+	ObjectRelationalMapper orm = new ObjectRelationalMapperImpl();
 
-	@Override
-	public User createUser(User user) {
-		ObjectRelationalMapper orm = new ObjectRelationalMapperImpl();
-		User createdUser = (User) orm.create(user, "users");
-		return createdUser;
+	// @Override
+	// public User createUser(User user) {
+
 		/*
 		try (Connection conn = connObj.getConnection()) {
 			
@@ -62,7 +62,7 @@ public class UserDAOImpl implements UserDAO {
 		
 		return t;
 		*/
-	}
+	// }
 
 	@Override
 	public User findByUsername(String s) {
@@ -95,118 +95,140 @@ public class UserDAOImpl implements UserDAO {
 		return customer;
 	}
 	
-	@Override
-	public User updateUser(User user) {
-		boolean isUpdated = false; 
-		try (Connection conn = connObj.getConnection()){
+	// @Override
+	// public User updateUser(User user) {
+	// 	boolean isUpdated = false; 
+	// 	try (Connection conn = connObj.getConnection()){
 			
-			conn.setAutoCommit(false);
+	// 		conn.setAutoCommit(false);
 			
-			String sql = "update Customer "
-					+ "set email=? " 
-					+ "where customer_id=?";
+	// 		String sql = "update Customer "
+	// 				+ "set email=? " 
+	// 				+ "where customer_id=?";
 			
-			PreparedStatement st = conn.prepareStatement(sql); 
-			st.setString(1, user.getEmail());
-			st.setInt(2, user.getUserId());
+	// 		PreparedStatement st = conn.prepareStatement(sql); 
+	// 		st.setString(1, user.getEmail());
+	// 		st.setInt(2, user.getUserId());
 			
-			int rowUpdated = st.executeUpdate(); 
+	// 		int rowUpdated = st.executeUpdate(); 
 			
-			if (rowUpdated == 1) {
-				isUpdated = true; 
-				conn.commit();
-			}else {
-				conn.rollback();
-			}
+	// 		if (rowUpdated == 1) {
+	// 			isUpdated = true; 
+	// 			conn.commit();
+	// 		}else {
+	// 			conn.rollback();
+	// 		}
 			
-		}catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return user;
-	}
+	// 	}catch (SQLException e) {
+	// 		e.printStackTrace();
+	// 	}
+	// 	return user;
+	// }
 
-	@Override
-	public User deleteUser(User user) {
-		try (Connection conn = connObj.getConnection()) {
+	// @Override
+	// public User deleteUser(User user) {
+	// 	try (Connection conn = connObj.getConnection()) {
 			
-			conn.setAutoCommit(false);
-			String sql = "delete from Customer where "
-					+ " customer_id = ?";
+	// 		conn.setAutoCommit(false);
+	// 		String sql = "delete from Customer where "
+	// 				+ " customer_id = ?";
 		
-			PreparedStatement st = conn.prepareStatement(sql); 
-			st.setInt(1, user.getUserId());
+	// 		PreparedStatement st = conn.prepareStatement(sql); 
+	// 		st.setInt(1, user.getUserId());
 			
-			int rowDeleted = st.executeUpdate(); 
-			if (rowDeleted == 1) {
-				conn.commit();
-			}else {
-				conn.rollback();
-			}
+	// 		int rowDeleted = st.executeUpdate(); 
+	// 		if (rowDeleted == 1) {
+	// 			conn.commit();
+	// 		}else {
+	// 			conn.rollback();
+	// 		}
 			
-		}catch (SQLException e) {
-			e.getStackTrace(); 
-		}
-		return user;
-	}
+	// 	}catch (SQLException e) {
+	// 		e.getStackTrace(); 
+	// 	}
+	// 	return user;
+	// }
 
-	@Override
-	public List<User> getAllUsers() {
-		List<User> allUsers = new ArrayList<>();
-		try (Connection conn = connObj.getConnection()) {
+	// @Override
+	// public List<User> getAllUsers() {
+	// 	List<User> allUsers = new ArrayList<>();
+	// 	try (Connection conn = connObj.getConnection()) {
 			
-			String sql = "Select * from mybank.customer"; 
-			Statement st = conn.createStatement(); 
-			ResultSet result = st.executeQuery(sql); 
+	// 		String sql = "Select * from mybank.customer"; 
+	// 		Statement st = conn.createStatement(); 
+	// 		ResultSet result = st.executeQuery(sql); 
 			
-			while(result.next()) {
-				int customer_id = result.getInt("customer_id"); 
-				String username = result.getString("username"); 
-				Date birthDate = result.getDate("birthDate"); 
-				String email = result.getString("email"); 
-				String phone = result.getString("phone");
-				String passwd = result.getString("passwd");
+	// 		while(result.next()) {
+	// 			int customer_id = result.getInt("customer_id"); 
+	// 			String username = result.getString("username"); 
+	// 			Date birthDate = result.getDate("birthDate"); 
+	// 			String email = result.getString("email"); 
+	// 			String phone = result.getString("phone");
+	// 			String passwd = result.getString("passwd");
 				
-				User customer = new User(customer_id, username, birthDate, email, phone, passwd); 
-				allUsers.add(customer); 
-			}
+	// 			User customer = new User(customer_id, username, birthDate, email, phone, passwd); 
+	// 			allUsers.add(customer); 
+	// 		}
 			
-		}catch(SQLException e) {
-			e.getMessage(); 
-			return null; 
+	// 	}catch(SQLException e) {
+	// 		e.getMessage(); 
+	// 		return null; 
 			
-		}
+	// 	}
 		
-		return allUsers;
-	}
+	// 	return allUsers;
+	// }
 
 	@Override
 	public User create(User t) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		User createdUser = (User) orm.create(t, "users");
+		return createdUser;
 	}
 
 	@Override
 	public User findById(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		User customer = null;
+		try (Connection conn = connObj.getConnection()) {
+			String sql = "select * from Customer  "
+					+ "where "
+					+ "userid = ?"; 
+			
+			PreparedStatement st = conn.prepareStatement(sql); 
+			st.setInt(1, id);
+			
+			ResultSet result = st.executeQuery(); 
+			
+			if (result.next()) {
+				int customer_id = result.getInt("userid"); 
+				String username = result.getString("username"); 
+				Date birthDate = result.getDate("birthdate"); 
+				String email = result.getString("email"); 
+				String phone = result.getString("phone"); 
+				String passwd = result.getString("password"); 
+				
+				customer = new User(customer_id, username, birthDate, email, phone, passwd); 
+			}
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return customer;
 	}
 
 	@Override
 	public List<User> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Object> retrievedObjects = orm.findAll(User.class, "users");
+		List<User> createdUsers = retrievedObjects.stream().map(user -> (User)user).toList();
+		return createdUsers;
 	}
 
 	@Override
 	public void update(User t) {
-		// TODO Auto-generated method stub
-		
+		User createdUser = (User) orm.update(t);
 	}
 
 	@Override
 	public void delete(User t) {
-		// TODO Auto-generated method stub
-		
+		orm.delete(t);
 	}
 
 	@Override
