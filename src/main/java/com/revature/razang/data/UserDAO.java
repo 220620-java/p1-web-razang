@@ -20,7 +20,9 @@ public interface UserDAO extends DataAccessObject<User> {
 	 * @param s string passed by the caller and the source of search
 	 * @return object of type T if found else, null. 
 	 */
-	public User findByUsername(String s); 
+	// public User findByUsername(String s); 
+	
+	public User findByUsername(User user);
 	
 	/**
 	 * updates object

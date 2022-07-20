@@ -12,7 +12,7 @@ import com.revature.razang.services.UserService;
 import com.revature.razang.services.UserServiceImpl;
 
 public class UserDelegate implements FrontControllerDelegate {
-	// private UserService userService = new UserServiceImpl();
+	private UserService userService = new UserServiceImpl();
 	private ObjectMapper objMapper = new ObjectMapper();
 
 	@Override
@@ -30,7 +30,7 @@ public class UserDelegate implements FrontControllerDelegate {
 			put(req, resp);
 			break;
 		case "DELETE":
-			resp.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+			delete(req, resp);
 			break;
 		default:
 		}
@@ -39,12 +39,12 @@ public class UserDelegate implements FrontControllerDelegate {
 	private void get(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String path = (String) req.getAttribute("path");
 		if (path==null || "".equals(path)) {
-			// resp.sendError(403, "Access to all users is forbidden.");
+			resp.sendError(403, "Access to all users is forbidden.");
 			// get available account holders
-			// List<User> customers = userService.getAllusers();
+			List<User> customers = userService.getAllusers();
 
 			// // the object mapper writes the list as a JSON string to the response body
-			// resp.getWriter().write(objMapper.writeValueAsString(customers));
+			resp.getWriter().write(objMapper.writeValueAsString(customers));
 		} else {
 			resp.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
 			// try {
@@ -65,6 +65,7 @@ public class UserDelegate implements FrontControllerDelegate {
 	}
 
 	private void post(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		resp.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
 		// String path = (String) req.getAttribute("path");
 		// if (path==null || "".equals(path)) {
 		// 	try {
@@ -89,7 +90,10 @@ public class UserDelegate implements FrontControllerDelegate {
 	}
 
 	private void put(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// TODO allow update user
+		resp.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
+	}
+
+	private void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		resp.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
 	}
 }

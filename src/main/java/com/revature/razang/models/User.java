@@ -20,6 +20,8 @@ public class User {
 	private String password;
 	private byte[] salt;
 
+	public User () { }
+
     public User(int userId, String username, Date birthDate, String email, String phone, String password) {
 		this.userId = userId;
 		this.username = username;
@@ -47,9 +49,8 @@ public class User {
 	 */
 	@Override
 	public String toString() {
-		String retString = "UserId={0}, Username={1}, BirthDate={2}, Email={3}, Phone={4}, Password={5}, Salt={6}";
-		retString = String.format(retString, getUserId(), getUsername(), getBirthDate(), getEmail(), getPhone(), getPassword(), getSalt());
-		return retString;
+		String retString = "UserId=%d, Username=%s, BirthDate=%s, Email=%s, Phone=%s, Password=%s, Salt=%s";
+		return String.format(retString, getUserId(), getUsername(), getBirthDate(), getEmail(), getPhone(), getPassword(), getSalt());
 	}
 
 	/** 

@@ -1,5 +1,5 @@
 CREATE TABLE bank.users (
-	userid serial4 NOT NULL,
+	userId serial4 NOT NULL,
 	username varchar NOT NULL,
 	birthdate date NULL,
 	email varchar(50) NOT NULL,

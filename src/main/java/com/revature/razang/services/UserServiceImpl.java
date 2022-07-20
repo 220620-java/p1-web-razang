@@ -15,7 +15,9 @@ public class UserServiceImpl implements UserService {
         // Check user from the database
         boolean isPasswordValid = userDAO.validatePassword(username, password);
         if (isPasswordValid) {
-            return userDAO.findByUsername(username);
+            User user = new User();
+            user.setUsername(username);
+            return userDAO.findByUsername(user);
         }
         System.out.println("Password is not correct!");
         return null;

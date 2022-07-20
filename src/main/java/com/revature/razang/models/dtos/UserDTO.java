@@ -13,7 +13,9 @@ public class UserDTO {
 	private String username;
 	private Date birthDate; 
 	private String email; 
-	private String phone; 
+	private String phone;
+
+	public UserDTO () {}
 
     public UserDTO(int userId, String username, Date birthDate, String email, String phone) {
 		this.userId = userId;
@@ -36,7 +38,7 @@ public class UserDTO {
 	 */
 	@Override
 	public String toString() {
-		String retString = "UserId={0}, Username={1}, BirthDate={2}, Email={3}, Phone={4}";
+		String retString = "UserId=%d, Username=%s, BirthDate=%s, Email=%s, Phone=%s";
 		retString = String.format(retString, getUserId(), getUsername(), getBirthDate(), getEmail(), getPhone());
 		return retString;
 	}

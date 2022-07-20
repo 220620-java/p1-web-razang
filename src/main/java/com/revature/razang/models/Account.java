@@ -1,6 +1,7 @@
 package com.revature.razang.models;
 
 import com.revature.razang.utility.BankUtils;
+import com.revature.razangorm.annotations.Id;
 
 /**
  * @author Raza Ghulam
@@ -13,7 +14,8 @@ public class Account {
 		SAVINGS
 	}
 
-	private long accountNumber; 
+	@Id
+	private long accountNumber;
 	private AccountType accountType; 
 	private double balance;
 	
@@ -87,7 +89,7 @@ public class Account {
 	 */
 	@Override
 	public String toString() {
-		String retString = String.format("Account {0}: TYPE={1}, BALANCE=${2}", accountNumber, accountType.toString(), balance);
+		String retString = String.format("Account %d: TYPE=%s, BALANCE=$%f", accountNumber, accountType.toString(), balance);
 		return retString;
 	} 
 	

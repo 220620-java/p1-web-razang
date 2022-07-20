@@ -22,8 +22,7 @@
 	<!-- Hello servlet -->
 	<servlet>
 		<servlet-name>Hello</servlet-name>
-		<servlet-class>com.revature.razang.servlets.HelloServlet
-		</servlet-class>
+		<servlet-class>com.revature.razang.servlets.HelloServlet</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
@@ -31,15 +30,14 @@
 		<url-pattern>/hello/*</url-pattern>
 	</servlet-mapping>
 
-	<!-- Hello servlet -->
-	<servlet>
+	<!-- User servlet -->
+	<!-- <servlet>
 		<servlet-name>Users</servlet-name>
-		<servlet-class>com.revature.razang.servlets.UserServlet
-		</servlet-class>
+		<servlet-class>com.revature.razang.servlets.UserServlet</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
 		<servlet-name>Users</servlet-name>
 		<url-pattern>/users/*</url-pattern>
-	</servlet-mapping>
+	</servlet-mapping> -->
 </web-app>

@@ -14,13 +14,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 public class AccountDelegate implements FrontControllerDelegate {
-	private AccountService bankService = new AccountServiceImpl();
+	// private AccountService bankService = new AccountServiceImpl();
 	private ObjectMapper objMapper = new ObjectMapper();
 
 	@Override
 	public void handle(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String method = req.getMethod();
-		
+
 		switch (method) {
 		case "GET":
 			get(req, resp);
@@ -32,9 +32,10 @@ public class AccountDelegate implements FrontControllerDelegate {
 			put(req, resp);
 			break;
 		case "DELETE":
-			resp.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+			delete(req, resp);
 			break;
 		default:
+			resp.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
 		}
 	}
 
@@ -43,16 +44,17 @@ public class AccountDelegate implements FrontControllerDelegate {
 		if (path==null || "".equals(path)) {
 			// resp.sendError(403, "Access to all users is forbidden.");
 			// get available account holders
-			List<User> customers = bankService.viewAccountHolders();
+			// List<User> customers = bankService.viewAccountHolders();
 
 			// // the object mapper writes the pets list as a JSON string to the response body
-			resp.getWriter().write(objMapper.writeValueAsString(customers));
+			// resp.getWriter().write(objMapper.writeValueAsString(customers));
 		} else {
 			resp.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
 		}
 	}
 
 	public void post(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		resp.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
 		// String path = (String) req.getAttribute("path");
 		// if (path==null || "".equals(path)) {
 		// 	Pet pet = objMapper.readValue(req.getInputStream(), Pet.class);
@@ -68,6 +70,7 @@ public class AccountDelegate implements FrontControllerDelegate {
 	}
 	
 	public void put(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		resp.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
 		// String path = (String) req.getAttribute("path");
 		// if (path==null || "".equals(path)) {
 		// 	resp.sendError(400, "Cannot PUT to this URI. Try sending the request to /pets/{id}.");
@@ -96,5 +99,9 @@ public class AccountDelegate implements FrontControllerDelegate {
 		// 		resp.sendError(400, e.getMessage());
 		// 	}
 		// }
+	};
+
+	public void delete (HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		resp.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
 	}
 }
