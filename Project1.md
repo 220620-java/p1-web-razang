@@ -37,11 +37,6 @@ Additionally, you will need to build a simple CRUD web application (what objects
 - [ ] Continuous integration pipelines that builds some main branch each project (the ORM and the web app, separately)
 - [ ] Custom ORM source code included within the web application as a Maven dependency
 
-## Init Instructions
-- Create two new repositories using the provided GitHub classroom links:
-    - for your ORM: https://classroom.github.com/a/gKuzTfJ9
-    - for your web app: https://classroom.github.com/a/FhfT-Tp1
-
 ## Presentation
 - Finalized version of custom ORM and web application must be pushed to personal repository within this organization by the presentation date (July 22, 2022)
 - 10-15 minute live demonstration of the web application (that leverages your custom ORM); demonstration will be performed using PostMan to query your API's endpoints
