@@ -42,7 +42,7 @@ public class AccountDelegate implements FrontControllerDelegate {
 	public void get(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String path = (String) req.getAttribute("path");
 		if (path==null || "".equals(path)) {
-			// resp.sendError(403, "Access to all users is forbidden.");
+			resp.sendError(403, "Access to all users is forbidden.");
 			// get available account holders
 			// List<User> customers = bankService.viewAccountHolders();
 
@@ -54,7 +54,7 @@ public class AccountDelegate implements FrontControllerDelegate {
 	}
 
 	public void post(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		resp.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
+		resp.setStatus(HttpServletResponse.SC_OK);
 		// String path = (String) req.getAttribute("path");
 		// if (path==null || "".equals(path)) {
 		// 	Pet pet = objMapper.readValue(req.getInputStream(), Pet.class);

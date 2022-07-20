@@ -15,7 +15,7 @@
 			<artifactId>razangorm</artifactId>
 			<version>1.0</version>
 			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/razangorm.jar</systemPath>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/razangorm.jar</systemPath>
 		</dependency>
 		<!-- Junit -->
 		<dependency>
