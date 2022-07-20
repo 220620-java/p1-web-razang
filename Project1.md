@@ -16,7 +16,7 @@ Additionally, you will need to build a simple CRUD web application (what objects
 - [x] PostgreSQL deployed on AWS RDS
 - [ ] AWS CodeBuild
 - [ ] AWS CodePipeline
-- [ ] Git SCM (on GitHub)
+- [x] Git SCM (on GitHub)
 
 ## Functional Requirements
 - [x] CRUD operations are supported for one or more domain objects via the web application's exposed endpoints
