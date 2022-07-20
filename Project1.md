@@ -7,35 +7,35 @@ The first part of this project will be to create a custom object relational mapp
 Additionally, you will need to build a simple CRUD web application (what objects you CRUD is up to you and your partner). You should leverage the Java EE Servlet API to expose endpoints that allow for interaction with the application.
 
 ## Tech Stack
-- [ ] Java 8
-- [ ] JUnit
-- [ ] Mockito
-- [ ] Apache Maven
-- [ ] Jackson library (for JSON marshalling/unmarshalling)
-- [ ] Java EE Servlet API (v4.0+)
-- [ ] PostgreSQL deployed on AWS RDS
+- [x] Java 8
+- [x] JUnit
+- [x] Mockito
+- [x] Apache Maven
+- [x] Jackson library (for JSON marshalling/unmarshalling)
+- [x] Java EE Servlet API (v4.0+)
+- [x] PostgreSQL deployed on AWS RDS
 - [ ] AWS CodeBuild
 - [ ] AWS CodePipeline
 - [ ] Git SCM (on GitHub)
 
 ## Functional Requirements
-- [ ] CRUD operations are supported for one or more domain objects via the web application's exposed endpoints
-- [ ] JDBC logic is abstracted away by the custom ORM 
+- [x] CRUD operations are supported for one or more domain objects via the web application's exposed endpoints
+- [x] JDBC logic is abstracted away by the custom ORM 
 - [ ] Programmatic persistence of entities (basic CRUD support) using custom ORM
 - [ ] File-based or programmatic configuration of entities
 
 ## Non-Functional Requirements
 - [ ] 80% line coverage of all service layer classes
 - [ ] Generated Jacoco reports that display coverage metrics
-- [ ] Usage of the java.util.Stream API within your project
+- [x] Usage of the java.util.Stream API within your project
 
 ## Bonus Features
 - [ ] Custom ORM supports basic transaction management (begin, commit, savepoint, rollback) 
 - [ ] Custom ORM supports connection pooling
 - [ ] Session-based caching to minimize calls to the database for already retrieved data
-- [ ] Deployment of web application to AWS EC2 (use of AWS Elastic Beanstalk is permitted) 
+- [x] Deployment of web application to AWS EC2 (use of AWS Elastic Beanstalk is permitted) 
 - [ ] Continuous integration pipelines that builds some main branch each project (the ORM and the web app, separately)
-- [ ] Custom ORM source code included within the web application as a Maven dependency
+- [x] Custom ORM source code included within the web application as a Maven dependency
 
 ## Presentation
 - Finalized version of custom ORM and web application must be pushed to personal repository within this organization by the presentation date (July 22, 2022)
