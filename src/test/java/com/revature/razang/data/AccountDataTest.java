@@ -2,6 +2,8 @@ package com.revature.razang.data;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.sql.SQLException;
+
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,20 +43,30 @@ class AccountDataTest {
 		//setup
 		int mockId = 2; 
 		long mockAccountNumber = 2030401050111L;
-		Mockito.when(customer.getUserId()).thenReturn(mockId); 
-		Mockito.when(WebUtils.generateRandomAccountNumber()).thenReturn(mockAccountNumber);
-		
-		Account myAccount = account.create(customer); 
-		
-		assertNotNull(myAccount); 
+		// Mockito.when(customer.getUserId()).thenReturn(mockId); 
+		// Mockito.when(WebUtils.generateRandomAccountNumber()).thenReturn(mockAccountNumber);
+		Account testAccount = new Account(2030401050111L, Account.AccountType.CHECKING, 0.00); 
+		Account myAccount;
+		try {
+			myAccount = account.create(testAccount);
+			assertNotNull(myAccount);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} 
 	}
 //
 	@Test
 	public void testDelete() {
 		int mockId = 2; 
 		Mockito.when(customer.getUserId()).thenReturn(mockId); 
-		Account myAccount = account.delete(customer);  
-		assertNotNull(myAccount); 
+		Account testAccount = new Account(2030401050111L, Account.AccountType.CHECKING, 0.00); 
+		Account myAccount;
+		try {
+			account.delete(testAccount);
+			// assertNotNull(myAccount);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} 
 		
 	}
 	
@@ -97,6 +109,11 @@ class AccountDataTest {
 		assertEquals(100.0, balance);
 	}
 	
+	@Test
+	public void testNegativeWithdraw () {
+		Account testAccount = new Account(2030401050111L, Account.AccountType.CHECKING, 0.00); 
+		accountDAO
+	}
 	
 	
 	

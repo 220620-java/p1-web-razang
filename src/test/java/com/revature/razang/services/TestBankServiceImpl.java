@@ -99,7 +99,7 @@ class TestBankServiceImpl {
 	public void testViewBalance() {
 		
 		Mockito.when(account.balance(customer)).thenReturn(100.0); 
-		double returnedBalance = bankService.viewBalance(customer); 
+		double returnedBalance = bankService.getBalance(customer); 
 		assertTrue(returnedBalance > 0); 
 	}
 	

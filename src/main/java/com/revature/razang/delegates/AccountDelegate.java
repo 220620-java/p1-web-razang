@@ -42,7 +42,7 @@ public class AccountDelegate implements FrontControllerDelegate {
 	public void get(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String path = (String) req.getAttribute("path");
 		if (path==null || "".equals(path)) {
-			resp.getWriter().write("token: " + req.getHeader("token:"));
+			resp.getWriter().print("token: " + req.getHeader("token:"));
 			resp.sendError(403, "Access to all accounts is forbidden.");
 			// get available account holders
 			// List<User> customers = bankService.viewAccountHolders();

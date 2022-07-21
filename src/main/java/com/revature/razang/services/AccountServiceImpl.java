@@ -1,13 +1,19 @@
 package com.revature.razang.services;
 import java.sql.SQLException;
+import java.util.List;
 
 import com.revature.razang.data.AccountDAOImpl;
+import com.revature.razang.exceptions.NegativeBalanceException;
 import com.revature.razang.models.Account;
-import com.revature.razang.models.User;
 
 public class AccountServiceImpl implements AccountService {
 	private AccountDAOImpl accountDAO = new AccountDAOImpl(); 
 	
+	
+	/** 
+	 * @param account
+	 * @return Account
+	 */
 	@Override
 	public Account createAccount(Account account) {
 		try {
@@ -18,40 +24,80 @@ public class AccountServiceImpl implements AccountService {
 		return null;
 	}
 
+	
+	/** 
+	 * @param id
+	 * @return Account
+	 */
 	@Override
-	public User getAccountHolderById(int id) {
-		// TODO Auto-generated method stub
+	public Account getAccountById(int id) {
+		try {
+			return accountDAO.findById(id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 
+	
+	/** 
+	 * @return List<Account>
+	 */
 	@Override
-	public User updateAccount(User customer) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Account> getAllAccounts() {
+		return accountDAO.findAll();
+	}
+
+	
+	/** 
+	 * @param account
+	 */
+	@Override
+	public void updateAccount(Account account) {
+		accountDAO.update(account);
 	}
 	
+	
+	/** 
+	 * @param account
+	 */
 	@Override
 	public void deleteAccount(Account account) {
 		accountDAO.delete(account); 
 	}
 
+	
+	/** 
+	 * @param account
+	 * @param amount
+	 */
 	@Override
-	public Account depositIntoAccount(User customer, double amount) {
-		// TODO Auto-generated method stub
-		return accountDAO.depositIntoAccount(customer, amount); 
-		
+	public void depositIntoAccount(Account account, double amount) {
+		accountDAO.depositIntoAccount(account, amount);
 	}
 
+	
+	/** 
+	 * @param account
+	 * @param amount
+	 */
 	@Override
-	public Account withdrawFromAccount(User customer, double amount) {
-		// TODO Auto-generated method stub
-		return accountDAO.withdraw(customer, amount); 
+	public void withdrawFromAccount(Account account, double amount) {
+		try {
+			accountDAO.withdrawAccount(account, amount);
+		} catch (NegativeBalanceException e) {
+			e.printStackTrace();
+		}
 	}
 
+	
+	/** 
+	 * @param account
+	 * @return double
+	 */
 	@Override
-	public double viewBalance(User customer) {
-		// TODO Auto-generated method stub
-		
-		return accountDAO.balance(customer);
+	public double getBalance(Account account) {
+		return accountDAO.getBalance(account);
 	}
+
 }
