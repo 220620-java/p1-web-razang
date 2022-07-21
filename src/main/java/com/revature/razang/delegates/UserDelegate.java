@@ -80,6 +80,7 @@ public class UserDelegate implements FrontControllerDelegate {
 		//resp.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
 		 String path = (String) req.getAttribute("path");
 		 if (path==null || "".equals(path)) {
+			 
 		 	try {
 		 	User user = objMapper.readValue(req.getInputStream(), User.class);
 		 		if (user==null) throw new RuntimeException();
@@ -104,24 +105,29 @@ public class UserDelegate implements FrontControllerDelegate {
 
 	// /users/{userId} - Updates user by userid
 	private void put(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		resp.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
+		//resp.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
+		User user = objMapper.readValue(req.getInputStream(), User.class); 
+		if (user == null) throw new RuntimeException(); 
+		
 		String path = req.getAttribute("path").toString(); 
 		if (path == null) {
-			try {
-				User user = objMapper.readValue(req.getInputStream(), User.class); 
-				if (user == null) throw new RuntimeException(); 
-				try {
-					user = userService.updateUser(user); 
-				} catch(Exception e) {
-					resp.sendError(400, "User can't not be updated");
-				}
-				
-			}catch(MismatchedInputException | RuntimeException e) {
-				resp.sendError(400, "Can't update the user");
-			}
-		}else {
-			resp.sendError(400, "Cannot PUT to this URI. Try sending the request to /users.");
+			resp.sendError(403, "No user to update");
 		}
+		
+		if (user.getUserId() != Integer.parseInt(path)) {
+			resp.sendError(403, "Wrong user id is passed. Can't update the user");
+		}
+		
+		try {
+			user = userService.updateUser(user); 
+			UserDTO userResp = new UserDTO(user); 
+			resp.getWriter().write(objMapper.writeValueAsString(userResp));
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		
 	}
 
 	// /users/{userId} - Deletes user by userid
