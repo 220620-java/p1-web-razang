@@ -12,10 +12,16 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+/**
+ * @author Colby Tang
+ */
 public class AccountDelegate implements FrontControllerDelegate {
 	private AccountService accountService = new AccountServiceImpl();
 	private ObjectMapper objMapper = new ObjectMapper();
 
+	/** Handle the request through its verbs
+	 * 
+	 */
 	@Override
 	public void handle(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String method = req.getMethod();
@@ -38,8 +44,15 @@ public class AccountDelegate implements FrontControllerDelegate {
 		}
 	}
 
-	// Get all accounts /accounts
-	// Get a specific account /accounts/{id}
+	/**
+	 * Get all accounts /accounts
+	 * Get a specific account /accounts/{id}
+	 * @param req
+	 * @param resp
+	 * @throws ServletException
+	 * @throws IOException
+	 * @author Colby Tang
+	 */
 	public void get(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String path = (String) req.getAttribute("path");
 		if (path==null || "".equals(path)) {
@@ -50,7 +63,9 @@ public class AccountDelegate implements FrontControllerDelegate {
 		} else {
 			try {
 				int id = Integer.valueOf(path);
-				Account account = accountService.getAccountById(id);
+				Account account = new Account();
+				account.setAccountNumber(id);
+				account = accountService.getAccountById(account);
 				if (account != null) {
 					resp.setStatus(200);
 					resp.setContentType("application/json");

@@ -7,7 +7,7 @@ import com.revature.razang.models.User;
 
 public interface AccountService {
 	public Account createAccount(Account account);
-	public Account getAccountById (int id);
+	public Account getAccountById (Account account);
 	public List<Account> getAllAccounts ();
 	public void updateAccount (Account account);
 	public void deleteAccount(Account account); 

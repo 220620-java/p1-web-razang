@@ -21,17 +21,31 @@ public class AccountDAOImpl implements AccountDAO {
 	
 	final double DEFAULT_VALUE = 0.00; 
 
+	
+	/** 
+	 * @param t
+	 * @return Account
+	 * @throws SQLException
+	 */
 	@Override
 	public Account create(Account t) throws SQLException {
 		return (Account) orm.create(t, "bank.accounts");
 	}
 
+	
+	/** 
+	 * @param account
+	 * @return Account
+	 */
 	@Override
 	public Account findById(Account account) {
 		Account foundAccount = (Account) orm.findById((int)account.getAccountNumber(), "bank.accounts");
 		return foundAccount;
 	}
-
+	
+	/** 
+	 * @return List<Account>
+	 */
 	@Override
 	public List<Account> findAll() {
 		List<Object> retrievedObjects = orm.findAll(Account.class, "bank.accounts");
@@ -39,16 +53,31 @@ public class AccountDAOImpl implements AccountDAO {
 		return createdAccounts;
 	}
 
+	
+	/** 
+	 * @param t
+	 * @return Account
+	 */
 	@Override
 	public Account update(Account t) {
 		return (Account) orm.update (t, "bank.accounts");
 	}
 
+	
+	/** 
+	 * @param t
+	 * @return Account
+	 */
 	@Override
 	public Account delete(Account t) {
 		return (Account) orm.delete(t, "bank.accounts");
 	}
 
+	
+	/** 
+	 * @param account
+	 * @param amount
+	 */
 	@Override
 	public void depositIntoAccount(Account account, double amount) {
 		Map<String, Object> fields = new HashMap<String,Object>();
@@ -56,6 +85,12 @@ public class AccountDAOImpl implements AccountDAO {
 		orm.updateField("accountnumber", (int)account.getAccountNumber(), fields, "accounts");
 	}
 
+	
+	/** 
+	 * @param account
+	 * @param amount
+	 * @throws NegativeBalanceException
+	 */
 	@Override
 	public void withdrawAccount(Account account, double amount) throws NegativeBalanceException {
 		Map<String, Object> fields = new HashMap<String,Object>();
@@ -67,6 +102,11 @@ public class AccountDAOImpl implements AccountDAO {
 		orm.updateField("accountnumber", (int)account.getAccountNumber(), fields, "accounts");
 	}
 
+	
+	/** 
+	 * @param account
+	 * @return double
+	 */
 	public double getBalance(Account account) {
 		userAccount = findById(account);
 		if (userAccount != null) {
@@ -75,6 +115,11 @@ public class AccountDAOImpl implements AccountDAO {
 		return 0;
 	}
 
+	
+	/** 
+	 * @param account
+	 * @return User
+	 */
 	public User getAccountUser(Account account) {
 		int userid = (int) orm.getValueById("accountnumber", (int)account.getAccountNumber(), "userid", "accounts");
 		User user = (User) orm.findById(userid, "bank.users");
@@ -84,6 +129,11 @@ public class AccountDAOImpl implements AccountDAO {
 		return null;
 	}
 
+	
+	/** 
+	 * @param account
+	 * @param user
+	 */
 	@Override
 	public void setAccountUser(Account account, User user) {
 		Map<String, Object> fields = new HashMap<String,Object>();

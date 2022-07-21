@@ -26,19 +26,13 @@ public class AccountServiceImpl implements AccountService {
 
 	
 	/** 
-	 * @param id
+	 * @param account
 	 * @return Account
 	 */
 	@Override
-	public Account getAccountById(int id) {
-		try {
-			return accountDAO.findById(id);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
+	public Account getAccountById(Account account) {
+		return accountDAO.findById(account);
 	}
-
 	
 	/** 
 	 * @return List<Account>
@@ -109,7 +103,7 @@ public class AccountServiceImpl implements AccountService {
 
 
 	@Override
-	public void setAccountUser(User user) {
+	public void setAccountUser(Account account, User user) {
 		// TODO Auto-generated method stub
 		
 	}
