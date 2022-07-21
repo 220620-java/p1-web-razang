@@ -52,13 +52,15 @@ public class UserDAOImpl implements UserDAO {
 	public boolean validatePassword(User user, String password) {
 		String dbPass = user.getPassword();
 		byte[] dbSalt = user.getSalt();
-		String ePass = WebUtils.generateEncryptedPassword(password, dbSalt);
-
-		if (!ePass.equals(dbPass)) {
-			System.out.println("Passwords do not match! ");
+		if (dbPass == null) {
+			System.out.println("Password or salt is empty!");
 			return false;
 		}
-		return ePass.equals(dbPass);
+		else if (dbSalt != null) {
+			password = WebUtils.generateEncryptedPassword(password, dbSalt);
+		}
+
+		return password.equals(dbPass);
 	}
 
 }
