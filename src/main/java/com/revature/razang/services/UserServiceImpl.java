@@ -39,9 +39,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findUserById(int id) {
+    public User findUserById(User user) {
         try {
-            return userDAO.findById(id);
+            return userDAO.findById(user);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User deleteUser(User user) {
         // TODO Auto-generated method stub
-        return null;
+        return userDAO.delete(user);
     }
 
     @Override

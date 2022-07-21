@@ -27,8 +27,8 @@ public class AccountDAOImpl implements AccountDAO {
 	}
 
 	@Override
-	public Account findById(int id) throws SQLException {
-		Account foundAccount = (Account) orm.findById(id, "bank.accounts");
+	public Account findById(Account account) {
+		Account foundAccount = (Account) orm.findById((int)account.getAccountNumber(), "bank.accounts");
 		return foundAccount;
 	}
 
@@ -45,8 +45,8 @@ public class AccountDAOImpl implements AccountDAO {
 	}
 
 	@Override
-	public void delete(Account t) {
-		orm.delete(t, "bank.accounts");
+	public Account delete(Account t) {
+		return (Account) orm.delete(t, "bank.accounts");
 	}
 
 	@Override
@@ -67,20 +67,14 @@ public class AccountDAOImpl implements AccountDAO {
 		orm.updateField("accountnumber", (int)account.getAccountNumber(), fields, "accounts");
 	}
 
-	@Override
 	public double getBalance(Account account) {
-		try {
-			userAccount = findById((int)account.getAccountNumber());
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} 
+		userAccount = findById(account);
 		if (userAccount != null) {
 			return userAccount.getBalance() ;
 		}
 		return 0;
 	}
 
-	@Override
 	public User getAccountUser(Account account) {
 		int userid = (int) orm.getValueById("accountnumber", (int)account.getAccountNumber(), "userid", "accounts");
 		User user = (User) orm.findById(userid, "bank.users");
@@ -96,5 +90,4 @@ public class AccountDAOImpl implements AccountDAO {
 		fields.put("userid", user.getUserId());
 		orm.updateField("accountnumber", (int)account.getAccountNumber(), fields, "accounts");
 	}
-
 }
