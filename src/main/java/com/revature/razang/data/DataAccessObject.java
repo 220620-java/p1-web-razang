@@ -3,8 +3,6 @@ package com.revature.razang.data;
 import java.sql.SQLException;
 import java.util.List;
 
-import com.revature.razang.models.User;
-
 // data access object or "DAO"
 // this interface lays out the behaviors
 // that a DAO should have (CRUD methods - 

@@ -1,7 +1,5 @@
 package com.revature.razang.data;
 
-import java.util.List;
-
 import com.revature.razang.models.User;
 
 public interface UserDAO extends DataAccessObject<User> {

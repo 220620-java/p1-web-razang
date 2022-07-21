@@ -9,7 +9,6 @@ import com.revature.razang.models.Account;
 public class AccountServiceImpl implements AccountService {
 	private AccountDAOImpl accountDAO = new AccountDAOImpl(); 
 	
-	
 	/** 
 	 * @param account
 	 * @return Account

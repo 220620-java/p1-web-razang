@@ -75,6 +75,7 @@ public class AuthDelegate implements FrontControllerDelegate {
 					resp.setContentType("application/json");
 					resp.setCharacterEncoding("UTF-8");
 
+					// CREATE JWT token
 					String token = WebUtils.CreateJWT();
 					UserDTO userDTO = new UserDTO(user);
 					userDTO.setToken (token);

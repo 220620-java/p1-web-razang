@@ -4,8 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
-import com.revature.razang.models.User;
+import com.revature.razang.models.Account;
 import com.revature.razang.services.AccountService;
 import com.revature.razang.services.AccountServiceImpl;
 
@@ -14,7 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 public class AccountDelegate implements FrontControllerDelegate {
-	// private AccountService bankService = new AccountServiceImpl();
+	private AccountService accountService = new AccountServiceImpl();
 	private ObjectMapper objMapper = new ObjectMapper();
 
 	@Override
@@ -42,13 +41,10 @@ public class AccountDelegate implements FrontControllerDelegate {
 	public void get(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String path = (String) req.getAttribute("path");
 		if (path==null || "".equals(path)) {
-			resp.getWriter().print("token: " + req.getHeader("token:"));
-			resp.sendError(403, "Access to all accounts is forbidden.");
-			// get available account holders
-			// List<User> customers = bankService.viewAccountHolders();
+			List<Account> accounts = accountService.getAllAccounts();
 
-			// // the object mapper writes the pets list as a JSON string to the response body
-			// resp.getWriter().write(objMapper.writeValueAsString(customers));
+			// the object mapper writes the pets list as a JSON string to the response body
+			resp.getWriter().write(objMapper.writeValueAsString(accounts));
 		} else {
 			resp.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
 		}

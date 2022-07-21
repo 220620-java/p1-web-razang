@@ -1,7 +1,5 @@
 package com.revature.razang.data;
 
-import java.sql.SQLException;
-
 import com.revature.razang.exceptions.NegativeBalanceException;
 import com.revature.razang.models.Account;
 

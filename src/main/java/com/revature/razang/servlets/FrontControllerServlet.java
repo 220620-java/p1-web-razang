@@ -4,8 +4,11 @@ import java.io.IOException;
 
 import org.apache.catalina.servlets.DefaultServlet;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.revature.razang.delegates.AuthDelegate;
 import com.revature.razang.delegates.FrontControllerDelegate;
 import com.revature.razang.delegates.RequestMapper;
+import com.revature.razang.utilities.WebUtils;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,6 +23,30 @@ public class FrontControllerServlet extends DefaultServlet {
 		
 		// if the URI has an appropriate delegate
 		if (delegate != null) {
+
+			// JWT AUTHENTICATION, 
+			// if delegate is not AuthDelegate REQUIRE AUTHENTICATION!
+			if (!(delegate instanceof AuthDelegate)) {
+				String token = req.getHeader("token");
+
+				// check if user has JWT
+				if (token != null) {
+					try {
+						// VERIFY JWT, IF IT'S NOT ISSUED BY RAZANG, 403
+						WebUtils.VerifyJWT(token);
+					} catch (JWTVerificationException e){
+						resp.sendError(403, "User has invalid token! Please login at /revature-web/auth!\n" + e.toString());
+						resp.getWriter().flush();
+						return;
+					}
+				}
+				else {
+					resp.sendError(403, "User is not authenticated. Please login at /revature-web/auth!");
+					return;
+				}
+			}
+
+			// Handle the request
 			delegate.handle(req, resp);
 		} else {
 			resp.sendError(404);
