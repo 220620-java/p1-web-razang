@@ -25,10 +25,10 @@ public interface DataAccessObject<T> {
 	 * Retrieves the object from the data source that matches 
 	 * the specified identifier (i.e. ID, primary key, etc.).
 	 * 
-	 * @param user the identifier of the object to be retrieved
+	 * @param the identifier of the object to be retrieved
 	 * @return the retrieved object or null if no matching object was found
 	 */
-	public T findById(User user) throws SQLException;
+	public T findById(T t) throws SQLException;
 	
 	/**
 	 * Retrieves all of the objects from the data source.
@@ -54,5 +54,5 @@ public interface DataAccessObject<T> {
 	 * @param t the object to be deleted from the data source
 	 * @return 
 	 */
-	public User delete(T t);
+	public T delete(T t);
 }
