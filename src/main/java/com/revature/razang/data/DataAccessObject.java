@@ -3,6 +3,8 @@ package com.revature.razang.data;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.revature.razang.models.User;
+
 // data access object or "DAO"
 // this interface lays out the behaviors
 // that a DAO should have (CRUD methods - 
@@ -44,8 +46,9 @@ public interface DataAccessObject<T> {
 	 * will be updated to match the values of the object passed in.
 	 * 
 	 * @param t the updated object to be saved in the data source
+	 * @return 
 	 */
-	public void update(T t);
+	public User update(T t);
 	
 	/**
 	 * Deletes the object in the data source with the matching identifier.

@@ -3,6 +3,7 @@ package com.revature.razang.data;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.revature.razang.models.User;
 import com.revature.razang.utility.BankUtils;
@@ -27,20 +28,21 @@ public class UserDAOImpl implements UserDAO {
 
 	@Override
 	public User findById(int id) {
-		User foundUser = (User) orm.findByName(id, "bank.users");
+		User foundUser = (User) orm.findById(id, "bank.users");
 		return foundUser;
 	}
 
 	@Override
 	public List<User> findAll() {
 		List<Object> retrievedObjects = orm.findAll(User.class, "users");
-		List<User> createdUsers = retrievedObjects.stream().map(user -> (User)user).toList();
+		List<User> createdUsers = retrievedObjects.stream().map(user -> (User)user).collect(Collectors.toList());
 		return createdUsers;
 	}
 
 	@Override
-	public void update(User t) {
+	public User update(User t) {
 		User createdUser = (User) orm.update(t, "users");
+		return createdUser;
 	}
 
 	@Override
