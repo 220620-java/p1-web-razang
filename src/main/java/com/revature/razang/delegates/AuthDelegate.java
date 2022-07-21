@@ -17,6 +17,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+/** Authorizes the user with a Java Web Token.
+ * @author Colby Tang
+ */
 public class AuthDelegate implements FrontControllerDelegate {
 	private UserService userServ = new UserServiceImpl();
 	private ObjectMapper objMapper = new ObjectMapper();
