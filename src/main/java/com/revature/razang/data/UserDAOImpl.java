@@ -27,27 +27,28 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public User findById(int id) {
-		User foundUser = (User) orm.findById(id, "bank.users");
+	public User findById(User user) {
+		User foundUser = (User) orm.findById(user, "bank.users");
 		return foundUser;
 	}
 
 	@Override
 	public List<User> findAll() {
-		List<Object> retrievedObjects = orm.findAll(User.class, "users");
+		List<Object> retrievedObjects = orm.findAll(User.class, "bank.users");
 		List<User> createdUsers = retrievedObjects.stream().map(user -> (User)user).collect(Collectors.toList());
 		return createdUsers;
 	}
 
 	@Override
 	public User update(User t) {
-		User createdUser = (User) orm.update(t, "users");
+		User createdUser = (User) orm.update(t, "bank.users");
 		return createdUser;
 	}
 
 	@Override
-	public void delete(User t) {
-		orm.delete(t, "users");
+	public User delete(User t) {
+		return (User) orm.delete(t, "bank.users");
+		
 	}
 
 	@Override
