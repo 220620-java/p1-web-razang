@@ -126,7 +126,6 @@ public class AccountDAOImpl implements AccountDAO {
 
 	@Override
 	public User update(Account t) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
