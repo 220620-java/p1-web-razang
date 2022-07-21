@@ -44,6 +44,6 @@ public interface UserDAO extends DataAccessObject<User> {
 	 */
 	// public List<User> getAllUsers(); 
 	
-    public boolean validatePassword(String username, String password);
+    public boolean validatePassword(User user, String password);
 
 }

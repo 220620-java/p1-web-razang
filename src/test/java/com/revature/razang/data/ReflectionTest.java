@@ -9,12 +9,14 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.revature.razang.models.User;
 import com.revature.razangorm.annotations.ORMIgnore;
 import com.revature.razangorm.annotations.Subclass;
 
+@Disabled("Disabled until I need to mess with reflections again")
 public class ReflectionTest {
     
     @Test

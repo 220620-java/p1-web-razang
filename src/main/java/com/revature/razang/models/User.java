@@ -150,4 +150,19 @@ public class User {
 	public void setSalt(byte[] salt) {
         this.salt = salt;
     }
+
+	public void setEncryptedPassword () {
+		this.salt = BankUtils.generateSalt();
+		this.password = BankUtils.generateEncryptedPassword(this.password, this.salt);
+	}
+
+	public void setEncryptedPassword (String password) {
+		this.salt = BankUtils.generateSalt();
+		this.password = BankUtils.generateEncryptedPassword(password, this.salt);
+	}
+
+	public void setEncryptedPassword (String password, byte[] salt) {
+		this.salt = salt;
+		this.password = BankUtils.generateEncryptedPassword(password, this.salt);
+	}
 }

@@ -5,6 +5,10 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTCreationException;
+
 public class BankUtils {
 
 	/**
@@ -65,6 +69,20 @@ public class BankUtils {
             e.printStackTrace();
         }
         return salt;
+    }
+
+    public String CreateJWT () {
+        try {
+            Algorithm algorithm = Algorithm.HMAC256("secret");
+            String token = JWT.create()
+                .withIssuer("razang")
+                .sign(algorithm);
+            return token;
+        } catch (JWTCreationException e){
+            //Invalid Signing configuration / Couldn't convert Claims.
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

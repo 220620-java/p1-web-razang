@@ -1,6 +1,7 @@
 package com.revature.razang.delegates;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,7 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 public class AuthDelegate implements FrontControllerDelegate {
-	// private UserService userServ = new UserServiceImpl();
+	private UserService userServ = new UserServiceImpl();
 	private ObjectMapper objMapper = new ObjectMapper();
 
 	@Override
@@ -40,39 +41,34 @@ public class AuthDelegate implements FrontControllerDelegate {
 	 */
 	@SuppressWarnings("unchecked")
 	private void post(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String path = (String) req.getAttribute("path");
-		if (path==null || "".equals(path)) {
-			resp.getWriter().write("Authentication! :)");
-		}
-		else {
-			if (path=="login") {
-				try {
-					Map<String, String> credentials = objMapper.readValue(req.getInputStream(), Map.class);
-					if (credentials == null) throw new RuntimeException();
-					if (credentials.containsKey("username") && credentials.containsKey("password")) {
-						// User user = userServ.loginUser(credentials.get("username"), credentials.get("password"));
-						// if (user!=null) {
-							// resp.getWriter().write(objMapper.writeValueAsString(user));
-						// } else {
-							// resp.sendError(401, "Incorrect credentials.");
-						// }
-					} else {
-						resp.sendError(400, "The request body must contain username and password, like so: \n"
-								+ "{\n"
-								+ "\t \"username\":\"value\"\n"
-								+ "\t \"password\":\"value\"\n"
-								+ "}");
-					}
-				} catch (MismatchedInputException | RuntimeException e) {
-					resp.sendError(400, "The request body was empty.");
+		try {
+			Map<String, String> credentials = objMapper.readValue(req.getInputStream(), Map.class);
+			if (credentials == null) throw new RuntimeException();
+			if (credentials.containsKey("username") && credentials.containsKey("password")) {
+				User user = userServ.loginUser(credentials.get("username"), credentials.get("password"));
+				if (user != null) {
+					resp.setStatus(200);
+					resp.setContentType("application/json");
+					resp.setCharacterEncoding("UTF-8");
+					String jsonString = objMapper.writeValueAsString(user);
+					PrintWriter writerOut = resp.getWriter();
+					writerOut.print(jsonString);
+					writerOut.flush();
+				} else {
+					resp.sendError(401, "Incorrect credentials.");
 				}
+			} else {
+				resp.sendError(400, "The request body must contain username and password, like so: \n"
+						+ "{\n"
+						+ "\t \"username\":\"value\"\n"
+						+ "\t \"password\":\"value\"\n"
+						+ "}");
 			}
-			else if (path=="register") {
-				resp.getWriter().write("Register! :)");
-			}
-			else {
-				resp.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
-			}
+		} catch (MismatchedInputException e) {
+			resp.sendError(400, e.toString() + " " + e.getStackTrace());
+		}
+		catch (RuntimeException e) {
+			resp.sendError(400, e.toString() + " " + e.getStackTrace());
 		}
 	}
 }

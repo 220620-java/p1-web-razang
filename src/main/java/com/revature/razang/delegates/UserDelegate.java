@@ -3,11 +3,15 @@ package com.revature.razang.delegates;
 import java.io.IOException;
 import java.util.List;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import com.revature.razang.exceptions.UsernameAlreadyExistsException;
 import com.revature.razang.models.User;
+import com.revature.razang.models.dtos.UserDTO;
 import com.revature.razang.services.UserService;
 import com.revature.razang.services.UserServiceImpl;
 
@@ -70,28 +74,27 @@ public class UserDelegate implements FrontControllerDelegate {
 	// /users/ - Registers a new user
 
 	private void post(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		resp.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
-		// String path = (String) req.getAttribute("path");
-		// if (path==null || "".equals(path)) {
-		// 	try {
-		// 	User user = objMapper.readValue(req.getInputStream(), User.class);
-		// 		if (user==null) throw new RuntimeException();
-		// 		try {
-		// 			user = userServ.registerUser(user);
+		String path = (String) req.getAttribute("path");
+		if (path==null || "".equals(path)) {
+			try {
+			User user = objMapper.readValue(req.getInputStream(), User.class);
+				if (user==null) throw new RuntimeException();
+				try {
+					user = userService.registerUser(user);
 					
-		// 			// this DTO (data transfer object) prepares the user to be sent in
-		// 			// the response by removing the password
-		// 			UserDTO userResp = new UserDTO(user);
-		// 			resp.getWriter().write(objMapper.writeValueAsString(userResp));
-		// 		} catch (UsernameAlreadyExistsException e) {
-		// 			resp.sendError(409, "A user with that username already exists.");
-		// 		}
-		// 	} catch (MismatchedInputException | RuntimeException e) {
-		// 		resp.sendError(400, "The request body was empty.");
-		// 	}
-		// } else {
-		// 	resp.sendError(400, "Cannot POST to this URI. Try sending the request to /users.");
-		// }
+					// this DTO (data transfer object) prepares the user to be sent in
+					// the response by removing the password
+					UserDTO userResp = new UserDTO(user);
+					resp.getWriter().write(objMapper.writeValueAsString(userResp));
+				} catch (UsernameAlreadyExistsException e) {
+					resp.sendError(409, "A user with that username already exists.");
+				}
+			} catch (MismatchedInputException | RuntimeException e) {
+				resp.sendError(400, "The request body was empty.");
+			}
+		} else {
+			resp.sendError(400, "Cannot POST to this URI. Try sending the request to /users.");
+		}
 	}
 
 	// /users/{userId} - Updates user by userid
