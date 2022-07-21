@@ -1,7 +1,7 @@
 package com.revature.razang.models;
 import java.sql.Date;
 
-import com.revature.razang.utility.BankUtils;
+import com.revature.razang.utilities.WebUtils;
 import com.revature.razangorm.annotations.Id;
 import com.revature.razangorm.annotations.Username;
 
@@ -30,8 +30,8 @@ public class User {
 		this.phone = phone;
 		
 		// Encrypt password
-		this.salt = BankUtils.generateSalt();
-		this.password = BankUtils.generateEncryptedPassword(password, this.salt);
+		this.salt = WebUtils.generateSalt();
+		this.password = WebUtils.generateEncryptedPassword(password, this.salt);
 	}
 	
 	public User(int userId, String username, Date birthDate, String email, String phone, String password, byte[] salt) {
@@ -152,17 +152,17 @@ public class User {
     }
 
 	public void setEncryptedPassword () {
-		this.salt = BankUtils.generateSalt();
-		this.password = BankUtils.generateEncryptedPassword(this.password, this.salt);
+		this.salt = WebUtils.generateSalt();
+		this.password = WebUtils.generateEncryptedPassword(this.password, this.salt);
 	}
 
 	public void setEncryptedPassword (String password) {
-		this.salt = BankUtils.generateSalt();
-		this.password = BankUtils.generateEncryptedPassword(password, this.salt);
+		this.salt = WebUtils.generateSalt();
+		this.password = WebUtils.generateEncryptedPassword(password, this.salt);
 	}
 
 	public void setEncryptedPassword (String password, byte[] salt) {
 		this.salt = salt;
-		this.password = BankUtils.generateEncryptedPassword(password, this.salt);
+		this.password = WebUtils.generateEncryptedPassword(password, this.salt);
 	}
 }

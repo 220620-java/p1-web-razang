@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.revature.razang.models.User;
-import com.revature.razang.utility.BankUtils;
+import com.revature.razang.utilities.WebUtils;
 import com.revature.razangorm.orm.ObjectRelationalMapper;
 import com.revature.razangorm.orm.ObjectRelationalMapperImpl;
 
@@ -52,7 +52,7 @@ public class UserDAOImpl implements UserDAO {
 	public boolean validatePassword(User user, String password) {
 		String dbPass = user.getPassword();
 		byte[] dbSalt = user.getSalt();
-		String ePass = BankUtils.generateEncryptedPassword(password, dbSalt);
+		String ePass = WebUtils.generateEncryptedPassword(password, dbSalt);
 
 		if (!ePass.equals(dbPass)) {
 			System.out.println("Passwords do not match! ");

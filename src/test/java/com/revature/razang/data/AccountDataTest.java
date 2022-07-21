@@ -13,7 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.revature.razang.data.AccountDAOImpl;
 import com.revature.razang.models.Account;
 import com.revature.razang.models.User;
-import com.revature.razang.utility.BankUtils;
+import com.revature.razang.utilities.WebUtils;
 
 @Disabled("Disabled until I mock everything")
 @ExtendWith(MockitoExtension.class)
@@ -27,7 +27,7 @@ class AccountDataTest {
 	private User customer; 
 	
 	@Mock
-	private BankUtils generateNum; 
+	private WebUtils generateNum; 
 	
 	@Mock
 	private AccountDAOImpl ac; 
@@ -42,7 +42,7 @@ class AccountDataTest {
 		int mockId = 2; 
 		long mockAccountNumber = 2030401050111L;
 		Mockito.when(customer.getUserId()).thenReturn(mockId); 
-		Mockito.when(BankUtils.generateRandomAccountNumber()).thenReturn(mockAccountNumber);
+		Mockito.when(WebUtils.generateRandomAccountNumber()).thenReturn(mockAccountNumber);
 		
 		Account myAccount = account.create(customer); 
 		

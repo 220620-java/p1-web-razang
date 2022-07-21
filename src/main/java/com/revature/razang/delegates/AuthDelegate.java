@@ -7,8 +7,10 @@ import java.util.Map;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.revature.razang.models.User;
+import com.revature.razang.models.dtos.UserDTO;
 import com.revature.razang.services.UserService;
 import com.revature.razang.services.UserServiceImpl;
+import com.revature.razang.utilities.WebUtils;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -47,12 +49,15 @@ public class AuthDelegate implements FrontControllerDelegate {
 			if (credentials.containsKey("username") && credentials.containsKey("password")) {
 				User user = userServ.loginUser(credentials.get("username"), credentials.get("password"));
 				if (user != null) {
+					PrintWriter writerOut = resp.getWriter();
 					resp.setStatus(200);
 					resp.setContentType("application/json");
 					resp.setCharacterEncoding("UTF-8");
-					String jsonString = objMapper.writeValueAsString(user);
-					PrintWriter writerOut = resp.getWriter();
+					String jsonString = objMapper.writeValueAsString(new UserDTO(user));
 					writerOut.print(jsonString);
+
+					String token = WebUtils.CreateJWT();
+					writerOut.print(token);
 					writerOut.flush();
 				} else {
 					resp.sendError(401, "Incorrect credentials.");
