@@ -1,4 +1,4 @@
-package com.revature.razang.utility;
+package com.revature.razang.utilities;
 
 import java.util.regex.*;
 

@@ -13,11 +13,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public User loginUser(String username, String password) {
         // Check user from the database
-        boolean isPasswordValid = userDAO.validatePassword(username, password);
-        if (isPasswordValid) {
-            User user = new User();
-            user.setUsername(username);
-            return userDAO.findByUsername(user);
+        User user = new User();
+        user.setUsername(username);
+        user = userDAO.findByUsername(user);
+        System.out.println("User found! " + user.getUsername());
+        if (user != null) {
+            boolean isPasswordValid = userDAO.validatePassword(user, password);
+            if (isPasswordValid) {
+                return user;
+            }
         }
         System.out.println("Password is not correct!");
         return null;
@@ -26,6 +30,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User registerUser(User user) {
         try {
+            user.setEncryptedPassword();
             return userDAO.create(user);
         } catch (SQLException e) {
             e.printStackTrace();

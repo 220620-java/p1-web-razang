@@ -11,7 +11,6 @@ class TestAccount {
 
 	Account account = new Account(102030405060L, AccountType.CHECKING, 0.00); 
 	
-	
 	@Test
 	public void testGetAccount() {
 		assertEquals(102030405060L, account.getAccountNumber()); 

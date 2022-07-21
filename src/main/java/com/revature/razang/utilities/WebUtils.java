@@ -1,11 +1,17 @@
-package com.revature.razang.utility;
+package com.revature.razang.utilities;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
-public class BankUtils {
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTCreationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
+
+public class WebUtils {
 
 	/**
 	 * Generates a random account number.
@@ -65,6 +71,29 @@ public class BankUtils {
             e.printStackTrace();
         }
         return salt;
+    }
+
+    public static String CreateJWT () {
+        try {
+            Algorithm algorithm = Algorithm.HMAC256("secret");
+            String token = JWT.create()
+                .withIssuer("razang")
+                .sign(algorithm);
+            return token;
+        } catch (JWTCreationException e){
+            //Invalid Signing configuration / Couldn't convert Claims.
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static DecodedJWT VerifyJWT (String token) {
+        Algorithm algorithm = Algorithm.HMAC256("secret"); //use more secure key
+            JWTVerifier verifier = JWT.require(algorithm)
+                .withIssuer("razang")
+                .build(); //Reusable verifier instance
+            DecodedJWT jwt = verifier.verify(token);
+            return jwt;
     }
 
 }

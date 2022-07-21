@@ -1,6 +1,6 @@
 package com.revature.razang.models;
 
-import com.revature.razang.utility.BankUtils;
+import com.revature.razang.utilities.WebUtils;
 import com.revature.razangorm.annotations.Id;
 
 /**
@@ -23,7 +23,7 @@ public class Account {
 	 * Generates a random account number, defaults to CHECKING, and sets the balance to 0.
 	 */
 	public Account() {
-		this.accountNumber = BankUtils.generateRandomAccountNumber();
+		this.accountNumber = WebUtils.generateRandomAccountNumber();
 		this.accountType = AccountType.CHECKING;
 		this.balance = 0.0f;
 	}

@@ -11,21 +11,21 @@ import java.util.List;
 
 import com.revature.razang.models.Account;
 import com.revature.razang.models.User;
-import com.revature.razang.utilities.ConnectionObject;
-import com.revature.razang.utility.BankUtils;
+import com.revature.razang.utilities.WebUtils;
+import com.revature.razangorm.utilities.ConnectionObject;
 
 public class AccountDAOImpl implements AccountDAO {
 
 	private ConnectionObject connObj = ConnectionObject.getConnectionUtil();
 	Account userAccount = null;
-	BankUtils gen = new BankUtils();
+	WebUtils gen = new WebUtils();
 	
 	final double DEFAULT_VALUE = 0.00; 
 
 	@Override
 	public Account create(User account) {
 		int customer_id = account.getUserId();
-		long account_no = BankUtils.generateRandomAccountNumber();
+		long account_no = WebUtils.generateRandomAccountNumber();
 		
 		try (Connection conn =  connObj.getConnection()) {
 			

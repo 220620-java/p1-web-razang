@@ -40,6 +40,9 @@ public class UserDelegate implements FrontControllerDelegate {
 		}
 	}
 
+	// /users/ - grab all users
+	// /users/{userid} - find user by id
+
 	private void get(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String path = (String) req.getAttribute("path");
 		System.out.println(path.toString());
@@ -71,6 +74,8 @@ public class UserDelegate implements FrontControllerDelegate {
 		}
 	}
 
+	// /users/ - Registers a new user
+
 	private void post(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		//resp.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
 		 String path = (String) req.getAttribute("path");
@@ -94,8 +99,10 @@ public class UserDelegate implements FrontControllerDelegate {
 		 } else {
 		 	resp.sendError(400, "Cannot POST to this URI. Try sending the request to /users.");
 		 }
+
 	}
 
+	// /users/{userId} - Updates user by userid
 	private void put(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		resp.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
 		String path = req.getAttribute("path").toString(); 
@@ -117,6 +124,7 @@ public class UserDelegate implements FrontControllerDelegate {
 		}
 	}
 
+	// /users/{userId} - Deletes user by userid
 	private void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		resp.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
 	}
