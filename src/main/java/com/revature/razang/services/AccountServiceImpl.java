@@ -1,4 +1,5 @@
 package com.revature.razang.services;
+import java.sql.SQLException;
 import java.util.List;
 
 import com.revature.razang.data.UserDAOImpl;
@@ -7,13 +8,16 @@ import com.revature.razang.models.Account;
 import com.revature.razang.models.User;
 
 public class AccountServiceImpl implements AccountService {
-	private UserDAOImpl userDAO = new UserDAOImpl(); 
 	private AccountDAOImpl accountDAO = new AccountDAOImpl(); 
 	
 	@Override
-	public Account createAccount(User customer) {
-		// TODO Auto-generated method stub
-		return  accountDAO.create(customer); 
+	public Account createAccount(Account account) {
+		try {
+			return accountDAO.create(account);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override
@@ -29,9 +33,8 @@ public class AccountServiceImpl implements AccountService {
 	}
 	
 	@Override
-	public Account deleteAccount(User customer) {
-		// TODO Auto-generated method stub
-		return accountDAO.delete(customer); 
+	public void deleteAccount(Account account) {
+		accountDAO.delete(account); 
 	}
 
 	@Override
