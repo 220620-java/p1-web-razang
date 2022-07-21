@@ -38,6 +38,8 @@ public class AccountDelegate implements FrontControllerDelegate {
 		}
 	}
 
+	// Get all accounts /accounts
+	// Get a specific account /accounts/{id}
 	public void get(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String path = (String) req.getAttribute("path");
 		if (path==null || "".equals(path)) {
@@ -46,24 +48,38 @@ public class AccountDelegate implements FrontControllerDelegate {
 			// the object mapper writes the pets list as a JSON string to the response body
 			resp.getWriter().write(objMapper.writeValueAsString(accounts));
 		} else {
-			resp.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
+			try {
+				int id = Integer.valueOf(path);
+				Account account = accountService.getAccountById(id);
+				if (account != null) {
+					resp.setStatus(200);
+					resp.setContentType("application/json");
+					resp.getWriter().write(objMapper.writeValueAsString(account));
+				} else {
+					resp.sendError(404, "Account with that ID not found.");
+				}
+			} catch (NumberFormatException e) {
+				resp.sendError(400, e.getMessage());
+			}
 		}
 	}
 
+	// Create an account with the request body
 	public void post(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		resp.setStatus(HttpServletResponse.SC_OK);
-		// String path = (String) req.getAttribute("path");
-		// if (path==null || "".equals(path)) {
-		// 	Pet pet = objMapper.readValue(req.getInputStream(), Pet.class);
-		// 	if (pet!=null) {
-		// 		pet = adminServ.addPet(pet);
-		// 		resp.getWriter().write(objMapper.writeValueAsString(pet));
-		// 	} else {
-		// 		resp.sendError(400, "The request body was empty.");
-		// 	}
-		// } else {
-		// 	resp.sendError(400, "Cannot POST to this URI. Try sending the request to /pets.");
-		// }
+		String path = (String) req.getAttribute("path");
+		if (path==null || "".equals(path)) {
+			Account account = objMapper.readValue(req.getInputStream(), Account.class);
+			if (account!=null) {
+				account = accountService.createAccount(account);
+				resp.setStatus(200);
+				resp.setContentType("application/json");
+				resp.getWriter().write(objMapper.writeValueAsString(account));
+			} else {
+				resp.sendError(400, "The request body was empty.");
+			}
+		} else {
+			resp.sendError(400, "Cannot POST to this URI. Try sending the request to /accounts");
+		}
 	}
 	
 	public void put(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

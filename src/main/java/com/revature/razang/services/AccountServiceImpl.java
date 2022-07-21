@@ -5,6 +5,7 @@ import java.util.List;
 import com.revature.razang.data.AccountDAOImpl;
 import com.revature.razang.exceptions.NegativeBalanceException;
 import com.revature.razang.models.Account;
+import com.revature.razang.models.User;
 
 public class AccountServiceImpl implements AccountService {
 	private AccountDAOImpl accountDAO = new AccountDAOImpl(); 
@@ -97,6 +98,20 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	public double getBalance(Account account) {
 		return accountDAO.getBalance(account);
+	}
+
+
+	@Override
+	public User getAccountUser(Account account) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public void setAccountUser(User user) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

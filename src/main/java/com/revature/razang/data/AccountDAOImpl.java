@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import com.revature.razang.exceptions.NegativeBalanceException;
 import com.revature.razang.models.Account;
+import com.revature.razang.models.User;
 import com.revature.razang.utilities.WebUtils;
 import com.revature.razangorm.orm.ObjectRelationalMapper;
 import com.revature.razangorm.orm.ObjectRelationalMapperImpl;
@@ -77,6 +78,23 @@ public class AccountDAOImpl implements AccountDAO {
 			return userAccount.getBalance() ;
 		}
 		return 0;
+	}
+
+	@Override
+	public User getAccountUser(Account account) {
+		int userid = (int) orm.getValueById("accountnumber", (int)account.getAccountNumber(), "userid", "accounts");
+		User user = (User) orm.findById(userid, "bank.users");
+		if (user != null) {
+			return user;
+		}
+		return null;
+	}
+
+	@Override
+	public void setAccountUser(Account account, User user) {
+		Map<String, Object> fields = new HashMap<String,Object>();
+		fields.put("userid", user.getUserId());
+		orm.updateField("accountnumber", (int)account.getAccountNumber(), fields, "accounts");
 	}
 
 }

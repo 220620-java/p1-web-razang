@@ -18,7 +18,7 @@ public class Account {
 	private long accountNumber;
 	private AccountType accountType; 
 	private double balance;
-	
+
 	/**
 	 * Generates a random account number, defaults to CHECKING, and sets the balance to 0.
 	 */
@@ -33,15 +33,13 @@ public class Account {
 		this.accountType = accountType;
 		this.balance = balance;
 	}
-	
-	
+
 	/** Gets the account number which can be randomly generated if instantiated with no parameters.
 	 * @return long
 	 */
 	public long getAccountNumber() {
 		return accountNumber;
 	}
-	
 	
 	/** Sets the account number.
 	 * @param account_no
@@ -50,15 +48,12 @@ public class Account {
 		this.accountNumber = account_no;
 	}
 	
-	
-	
 	/** Gets the account type: CHECKING or SAVINGS.
-	 * @return AccountType
+	 * @return String
 	 */
-	public AccountType getAccountType() {
-		return accountType;
+	public String getAccountType() {
+		return accountType.toString();
 	}
-	
 	
 	/** 
 	 * @param account_type
@@ -67,14 +62,12 @@ public class Account {
 		this.accountType = account_type;
 	}
 	
-	
 	/** 
 	 * @return double
 	 */
 	public double getBalance() {
 		return balance;
 	}
-	
 	
 	/** 
 	 * @param balance
@@ -83,7 +76,6 @@ public class Account {
 		this.balance = balance;
 	}
 
-	
 	/** 
 	 * @return String
 	 */
@@ -92,10 +84,4 @@ public class Account {
 		String retString = String.format("Account %d: TYPE=%s, BALANCE=$%f", accountNumber, accountType.toString(), balance);
 		return retString;
 	} 
-	
-	
-	
-	
-
-	
 }
