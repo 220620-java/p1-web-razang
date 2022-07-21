@@ -1,8 +1,6 @@
 package com.revature.razang.services;
 import java.sql.SQLException;
-import java.util.List;
 
-import com.revature.razang.data.UserDAOImpl;
 import com.revature.razang.data.AccountDAOImpl;
 import com.revature.razang.models.Account;
 import com.revature.razang.models.User;
@@ -56,15 +54,4 @@ public class AccountServiceImpl implements AccountService {
 		
 		return accountDAO.balance(customer);
 	}
-
-	@Override
-	public List<User> viewAccountHolders() {
-		// TODO Auto-generated method stub
-		return accountDAO.displayAccountHolders(); 
-	}
-
-
-
-
-
 }
