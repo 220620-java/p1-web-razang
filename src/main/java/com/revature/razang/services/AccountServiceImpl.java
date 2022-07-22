@@ -121,7 +121,11 @@ public class AccountServiceImpl implements AccountService {
 	 */
 	@Override
 	public void setAccountUser(Account account, User user) {
-		accountDAO.setAccountUser(account, user);
+		try {
+			accountDAO.setAccountUser(account, user);
+		} catch (RecordNotFound e) {
+			e.printStackTrace();
+		}
 	}
 
 }
