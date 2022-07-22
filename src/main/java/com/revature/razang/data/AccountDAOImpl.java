@@ -9,6 +9,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+
+import com.revature.razang.exceptions.AccountAlreadyExistsException;
+import com.revature.razang.exceptions.NegativeBalanceException;
+import com.revature.razang.exceptions.RecordNotFound;
+
 import com.revature.razang.models.Account;
 import com.revature.razang.models.User;
 import com.revature.razang.utilities.WebUtils;
@@ -22,6 +27,22 @@ public class AccountDAOImpl implements AccountDAO {
 	
 	final double DEFAULT_VALUE = 0.00; 
 
+
+	
+	/** 
+	 * @param t
+	 * @return Account
+	 * @throws SQLException
+	 * @throws RecordNotFound
+	 */
+	@Override
+	public Account create(Account account) throws SQLException, AccountAlreadyExistsException {
+		if (findById(account) != null) {
+			throw new AccountAlreadyExistsException();
+		}
+		return (Account) orm.create(account, "bank.accounts");
+	}
+
 	@Override
 	public Account create(User account) {
 		int customer_id = account.getUserId();
@@ -30,6 +51,7 @@ public class AccountDAOImpl implements AccountDAO {
 		try (Connection conn =  connObj.getConnection()) {
 			
 			conn.setAutoCommit(false);
+
 
 			String sql = "insert into BankAccount "
 					+ "(account_no, balance, customer_id) "
@@ -84,6 +106,13 @@ public class AccountDAOImpl implements AccountDAO {
 	}
 
 	@Override
+	public Account update(Account account) throws RecordNotFound {
+		Account findAccount = account;
+		if (findById(findAccount) == null) {
+			throw new RecordNotFound(account);
+		}
+		return (Account) orm.update (account, "bank.accounts");
+
 	public Account findById(int id) {
 		userAccount = null; 
 		try (Connection conn = connObj.getConnection()){
@@ -109,6 +138,7 @@ public class AccountDAOImpl implements AccountDAO {
 		}
 		
 		return userAccount;
+
 	}
 
 	@Override

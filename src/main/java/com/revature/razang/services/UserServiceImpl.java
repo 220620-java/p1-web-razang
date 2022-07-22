@@ -5,11 +5,21 @@ import java.util.List;
 
 import com.revature.razang.data.UserDAO;
 import com.revature.razang.data.UserDAOImpl;
+
+import com.revature.razang.exceptions.ObjectAlreadyExistsException;
+import com.revature.razang.exceptions.RecordNotFound;
+
+
 import com.revature.razang.models.User;
 
 public class UserServiceImpl implements UserService {
     private UserDAO userDAO = new UserDAOImpl();
 
+    /** 
+     * @param username
+     * @param password
+     * @return User
+     */
     @Override
     public User loginUser(String username, String password) {
         // Check user from the database
@@ -27,17 +37,29 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    
+    /** 
+     * @param user
+     * @return User
+     * @throws SQLException
+     * @throws ObjectAlreadyExistsException
+     */
     @Override
-    public User registerUser(User user) {
+    public User registerUser(User user) throws SQLException, ObjectAlreadyExistsException {
         try {
             user.setEncryptedPassword();
             return userDAO.create(user);
-        } catch (SQLException e) {
+        } catch (SQLException | ObjectAlreadyExistsException e) {
             e.printStackTrace();
+            throw e;
         }
-        return null;
     }
 
+    
+    /** 
+     * @param user
+     * @return User
+     */
     @Override
     public User findUserById(int id) {
         try {
@@ -48,23 +70,63 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    
+    /** 
+     * @param user
+     * @return User
+     */
     @Override
-    public User findUserByUsername(String username) {
-        // TODO Auto-generated method stub
-        return null;
+    public User findUserByUsername(User user) {
+        return userDAO.findByUsername(user);
     }
 
+    
+    /** 
+     * @param user
+     * @return User
+     * @throws RecordNotFound
+     */
     @Override
+
+    public User updateUser(User user) throws RecordNotFound {
+        try {
+            return userDAO.update(user);
+        } catch (RecordNotFound e) {
+            e.printStackTrace();
+            throw e;
+        }
+
     public User updateUser(User user) {
         return userDAO.update(user);
+
     }
 
+    
+    /** 
+     * @param user
+     * @return User
+     * @throws RecordNotFound
+     */
     @Override
+
+    public User deleteUser(User user) throws RecordNotFound {
+        try {
+            return userDAO.delete(user);
+        } catch (RecordNotFound e) {
+            e.printStackTrace();
+            throw e;
+        }
+
     public User deleteUser(User user) {
         // TODO Auto-generated method stub
         return null;
+
     }
 
+    
+    /** 
+     * @return List<User>
+     */
     @Override
     public List<User> getAllusers() {
         return userDAO.findAll();

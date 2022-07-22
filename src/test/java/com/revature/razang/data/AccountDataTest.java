@@ -11,6 +11,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.revature.razang.data.AccountDAOImpl;
+import com.revature.razang.exceptions.AccountAlreadyExistsException;
 import com.revature.razang.models.Account;
 import com.revature.razang.models.User;
 import com.revature.razang.utilities.WebUtils;
@@ -41,12 +42,25 @@ class AccountDataTest {
 		//setup
 		int mockId = 2; 
 		long mockAccountNumber = 2030401050111L;
+
+		// Mockito.when(customer.getUserId()).thenReturn(mockId); 
+		// Mockito.when(WebUtils.generateRandomAccountNumber()).thenReturn(mockAccountNumber);
+		Account testAccount = new Account(2030401050111L, "CHECKING", 0.00); 
+		Account myAccount;
+		try {
+			myAccount = account.create(testAccount);
+			assertNotNull(myAccount);
+		} catch (SQLException | AccountAlreadyExistsException e) {
+			e.printStackTrace();
+		} 
+
 		Mockito.when(customer.getUserId()).thenReturn(mockId); 
 		Mockito.when(WebUtils.generateRandomAccountNumber()).thenReturn(mockAccountNumber);
 		
 		Account myAccount = account.create(customer); 
 		
 		assertNotNull(myAccount); 
+
 	}
 //
 	@Test

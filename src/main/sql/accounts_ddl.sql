@@ -5,5 +5,6 @@ CREATE TABLE bank.accounts (
 	"timestamp" timestamptz NULL DEFAULT CURRENT_TIMESTAMP,
 	userid int4 NULL,
 	CONSTRAINT accounts_pk PRIMARY KEY (accountnumber),
+	CONSTRAINT accounts_un UNIQUE (accountnumber),
 	CONSTRAINT accounts_fk FOREIGN KEY (userid) REFERENCES bank.users(userid) ON DELETE SET NULL ON UPDATE CASCADE
 );

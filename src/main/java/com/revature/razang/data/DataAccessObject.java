@@ -3,7 +3,11 @@ package com.revature.razang.data;
 import java.sql.SQLException;
 import java.util.List;
 
+
+import com.revature.razang.exceptions.ObjectAlreadyExistsException;
+import com.revature.razang.exceptions.RecordNotFound;
 import com.revature.razang.models.User;
+
 
 // data access object or "DAO"
 // this interface lays out the behaviors
@@ -20,8 +24,9 @@ public interface DataAccessObject<T> {
 	 * @param t the object to be added to the data source
 	 * @return the object that was added or null if the object was unable to be added
 	 * @throws SQLException if the unique constraint for username was violated
+	 * @throws ObjectAlreadyExistsException
 	 */
-	public T create(T t) throws SQLException;
+	public T create(T t) throws SQLException, ObjectAlreadyExistsException;
 	
 	/**
 	 * Retrieves the object from the data source that matches 
@@ -29,6 +34,7 @@ public interface DataAccessObject<T> {
 	 * 
 	 * @param id the identifier of the object to be retrieved
 	 * @return the retrieved object or null if no matching object was found
+	 * @throws SQLException;
 	 */
 	public T findById(int id) throws SQLException;
 	
