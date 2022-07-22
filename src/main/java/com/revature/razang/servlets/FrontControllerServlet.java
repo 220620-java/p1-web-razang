@@ -55,6 +55,7 @@ public class FrontControllerServlet extends DefaultServlet {
 				try {
 					// VERIFY JWT, IF IT'S NOT ISSUED BY RAZANG, 403
 					WebUtils.VerifyJWT(token);
+					delegate.handle(req, resp);
 				} catch (JWTVerificationException e){
 					resp.sendError(403, "User has invalid token! Please login at /revature-web/auth!\n" + e.toString());
 					resp.getWriter().flush();
