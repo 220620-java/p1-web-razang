@@ -112,21 +112,17 @@ public class AccountDelegate implements FrontControllerDelegate {
 						acc.setAccountNumber(Long.valueOf(credentials.get("accountNumber")));
 						User user = new User();
 						user.setUserId(Integer.parseInt(credentials.get("userid")));
-						try {
-							accountService.setAccountUser(acc, user);
-						} catch (RecordNotFound | SQLException e) {
-							resp.sendError(400, e.toString());
-							return;
-						}
+						accountService.setAccountUser(acc, user);
 						resp.setStatus(200);
 						resp.setContentType("application/json");
-						// resp.getWriter().write(objMapper.writeValueAsString(acc));
 					}
 					else {
 						resp.sendError(400, "No userid or accountNumber in the body. Try sending a JSON object with a userid/accountNumber field.");
 					}
 				} catch (IOException e) {
 					resp.sendError(400, "Error reading the body. " + e.toString());
+				} catch (RecordNotFound | SQLException e) {
+					resp.sendError(400, e.toString());
 				}
 			}
 			else {
@@ -136,38 +132,34 @@ public class AccountDelegate implements FrontControllerDelegate {
 	}
 	
 	public void put(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		resp.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
-		// String path = (String) req.getAttribute("path");
-		// if (path==null || "".equals(path)) {
-		// 	resp.sendError(400, "Cannot PUT to this URI. Try sending the request to /pets/{id}.");
-		// } else {
-		// 	try {
-		// 		int id = Integer.valueOf(path);
-		// 		Pet pet = userServ.getPet(id);
-		// 		if (pet!=null) {
-		// 			pet = objMapper.readValue(req.getInputStream(), Pet.class);
-					
-		// 			try {
-		// 				if (pet==null) throw new RuntimeException();
-		// 				if (pet.getId()==id) {
-		// 					pet = adminServ.editPet(pet);
-		// 					resp.getWriter().write(objMapper.writeValueAsString(pet));
-		// 				} else {
-		// 					resp.sendError(409, "The ID in the URI did not match the ID in the body.");
-		// 				}
-		// 			} catch (MismatchedInputException | RuntimeException e) {
-		// 				resp.sendError(400, "The request body was empty.");
-		// 			}
-		// 		} else {
-		// 			resp.sendError(404, "Pet with that ID not found.");
-		// 		}
-		// 	} catch (NumberFormatException e) {
-		// 		resp.sendError(400, e.getMessage());
-		// 	}
-		// }
+		try {
+			Account account = objMapper.readValue(req.getInputStream(), Account.class);
+			accountService.updateAccount(account);
+			if (account != null) {
+				resp.setStatus(200);
+				resp.setContentType("application/json");
+				resp.getWriter().write(objMapper.writeValueAsString(account));
+			} else {
+				resp.sendError(404, "Account with that ID not found.");
+			}
+		} catch (RecordNotFound e) {
+			resp.sendError(400, e.getMessage());
+		}
 	};
 
 	public void delete (HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		resp.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
+		try {
+			Account account = objMapper.readValue(req.getInputStream(), Account.class);
+			accountService.deleteAccount(account);
+			if (account != null) {
+				resp.setStatus(200);
+				resp.setContentType("application/json");
+				resp.getWriter().write(objMapper.writeValueAsString(account));
+			} else {
+				resp.sendError(404, "Account with that ID not found.");
+			}
+		} catch (RecordNotFound e) {
+			resp.sendError(400, e.getMessage());
+		}
 	}
 }
