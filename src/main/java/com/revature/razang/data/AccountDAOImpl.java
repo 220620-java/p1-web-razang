@@ -60,11 +60,12 @@ public class AccountDAOImpl implements AccountDAO {
 	 * @return Account
 	 */
 	@Override
-	public Account update(Account t) throws RecordNotFound {
-		if (findById(t) == null) {
-			throw new RecordNotFound(t);
+	public Account update(Account account) throws RecordNotFound {
+		Account findAccount = account;
+		if (findById(findAccount) == null) {
+			throw new RecordNotFound(account);
 		}
-		return (Account) orm.update (t, "bank.accounts");
+		return (Account) orm.update (account, "bank.accounts");
 	}
 
 	

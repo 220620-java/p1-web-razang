@@ -17,14 +17,16 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
+ * Handles creating, retrieving, updating, deleting accounts.
  * @author Colby Tang
  */
 public class AccountDelegate implements FrontControllerDelegate {
 	private AccountService accountService = new AccountServiceImpl();
 	private ObjectMapper objMapper = new ObjectMapper();
 
-	/** Handle the request through its verbs
-	 * 
+	/** 
+	 * Handle the request through its verbs
+	 * @author Colby Tang
 	 */
 	@Override
 	public void handle(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -86,7 +88,14 @@ public class AccountDelegate implements FrontControllerDelegate {
 		}
 	}
 
-	// Create an account with the request body
+	
+	/** 
+	 * Create an account with the request body
+	 * @param req
+	 * @param resp
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	public void post(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String path = (String) req.getAttribute("path");
 		if (path==null || "".equals(path)) {
@@ -131,6 +140,14 @@ public class AccountDelegate implements FrontControllerDelegate {
 		}
 	}
 	
+	
+	/** 
+	 * Update the account with an account json
+	 * @param req
+	 * @param resp
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	public void put(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		try {
 			Account account = objMapper.readValue(req.getInputStream(), Account.class);
@@ -140,13 +157,21 @@ public class AccountDelegate implements FrontControllerDelegate {
 				resp.setContentType("application/json");
 				resp.getWriter().write(objMapper.writeValueAsString(account));
 			} else {
-				resp.sendError(404, "Account with that ID not found.");
+				resp.sendError(404, "Account ID not found.");
 			}
 		} catch (RecordNotFound e) {
 			resp.sendError(400, e.getMessage());
 		}
 	};
 
+	
+	/** 
+	 * Delete the account associated with the id
+	 * @param req
+	 * @param resp
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	public void delete (HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		try {
 			Account account = objMapper.readValue(req.getInputStream(), Account.class);
@@ -156,7 +181,7 @@ public class AccountDelegate implements FrontControllerDelegate {
 				resp.setContentType("application/json");
 				resp.getWriter().write(objMapper.writeValueAsString(account));
 			} else {
-				resp.sendError(404, "Account with that ID not found.");
+				resp.sendError(404, "Account ID not found.");
 			}
 		} catch (RecordNotFound e) {
 			resp.sendError(400, e.getMessage());
