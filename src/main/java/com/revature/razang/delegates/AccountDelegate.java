@@ -1,10 +1,12 @@
 package com.revature.razang.delegates;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.razang.exceptions.RecordNotFound;
 import com.revature.razang.models.Account;
 import com.revature.razang.models.User;
 import com.revature.razang.services.AccountService;
@@ -110,10 +112,15 @@ public class AccountDelegate implements FrontControllerDelegate {
 						acc.setAccountNumber(Long.valueOf(credentials.get("accountNumber")));
 						User user = new User();
 						user.setUserId(Integer.parseInt(credentials.get("userid")));
-						accountService.setAccountUser(acc, user);
+						try {
+							accountService.setAccountUser(acc, user);
+						} catch (RecordNotFound | SQLException e) {
+							resp.sendError(400, e.toString());
+							return;
+						}
 						resp.setStatus(200);
 						resp.setContentType("application/json");
-						resp.getWriter().write(objMapper.writeValueAsString(acc));
+						// resp.getWriter().write(objMapper.writeValueAsString(acc));
 					}
 					else {
 						resp.sendError(400, "No userid or accountNumber in the body. Try sending a JSON object with a userid/accountNumber field.");

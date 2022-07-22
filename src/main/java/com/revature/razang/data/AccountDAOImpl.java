@@ -32,8 +32,8 @@ public class AccountDAOImpl implements AccountDAO {
 	 * @throws SQLException
 	 */
 	@Override
-	public Account create(Account t) throws SQLException {
-		return (Account) orm.create(t, "bank.accounts");
+	public Account create(Account account) throws SQLException {
+		return (Account) orm.create(account, "bank.accounts");
 	}
 
 	
@@ -43,7 +43,7 @@ public class AccountDAOImpl implements AccountDAO {
 	 */
 	@Override
 	public Account findById(Account account) {
-		Account foundAccount = (Account) orm.findById((int)account.getAccountNumber(), "bank.accounts");
+		Account foundAccount = (Account) orm.findById(account, "bank.accounts");
 		return foundAccount;
 	}
 	
@@ -154,9 +154,18 @@ public class AccountDAOImpl implements AccountDAO {
 	 * @param user
 	 */
 	@Override
-	public void setAccountUser(Account account, User user) throws RecordNotFound {
+	public void setAccountUser(Account account, User user) throws RecordNotFound, SQLException {
 		if (findById(account) == null) {
 			throw new RecordNotFound(account);
+		}
+		UserDAO userDAO = new UserDAOImpl();
+		try {
+			if (userDAO.findById(user) == null) {
+				throw new RecordNotFound(user);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
 		}
 		Map<String, Object> fields = new HashMap<String,Object>();
 		fields.put("userid", user.getUserId());
