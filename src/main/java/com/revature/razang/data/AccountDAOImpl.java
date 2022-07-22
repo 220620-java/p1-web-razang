@@ -6,14 +6,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+
+import com.revature.razang.exceptions.NegativeBalanceException;
 import com.revature.razang.models.Account;
-
 import com.revature.razang.models.User;
-import com.revature.razang.utilities.WebUtils;
-import com.revature.razangorm.utilities.ConnectionObject;
-
-
-
 import com.revature.razang.utilities.WebUtils;
 import com.revature.razangorm.orm.ObjectRelationalMapper;
 import com.revature.razangorm.orm.ObjectRelationalMapperImpl;
@@ -50,8 +46,8 @@ public class AccountDAOImpl implements AccountDAO {
 	}
 
 	@Override
-	public void delete(Account t) {
-		orm.delete(t, "bank.accounts");
+	public Account delete(Account t) {
+		return (Account) orm.delete(t, "bank.accounts");
 	}
 
 	@Override
@@ -70,21 +66,7 @@ public class AccountDAOImpl implements AccountDAO {
 		}
 		fields.put("balance", account.getBalance() - amount);
 		orm.updateField("accountnumber", (int)account.getAccountNumber(), fields, "accounts");
-	}
-
-	@Override
-	public User delete(Account t) {
-		return null;
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public Account findById(User user) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
+	}	
 	
 
 	public double getBalance(Account account) {
@@ -97,6 +79,12 @@ public class AccountDAOImpl implements AccountDAO {
 			return userAccount.getBalance() ;
 		}
 		return 0;
+	}
+
+	@Override
+	public User findById(User user) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

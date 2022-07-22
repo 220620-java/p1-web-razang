@@ -24,6 +24,7 @@ public class AuthDelegate implements FrontControllerDelegate {
 	private UserService userServ = new UserServiceImpl();
 	private ObjectMapper objMapper = new ObjectMapper();
 
+	
 	@Override
 	public void handle(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String method = req.getMethod();

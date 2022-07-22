@@ -3,6 +3,8 @@ package com.revature.razang.data;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.revature.razang.models.User;
+
 // data access object or "DAO"
 // this interface lays out the behaviors
 // that a DAO should have (CRUD methods - 
@@ -28,7 +30,7 @@ public interface DataAccessObject<T> {
 	 * @param user the identifier of the object to be retrieved
 	 * @return the retrieved object or null if no matching object was found
 	 */
-	public T findById(User user) throws SQLException;
+	public T findById(int i) throws SQLException;
 	
 	/**
 	 * Retrieves all of the objects from the data source.
@@ -54,5 +56,7 @@ public interface DataAccessObject<T> {
 	 * @param t the object to be deleted from the data source
 	 * @return 
 	 */
-	public User delete(T t);
+	public T delete(T t);
+
+	public User findById(User user);
 }

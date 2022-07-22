@@ -10,6 +10,8 @@ import com.revature.razang.utilities.WebUtils;
 import com.revature.razangorm.orm.ObjectRelationalMapper;
 import com.revature.razangorm.orm.ObjectRelationalMapperImpl;
 
+
+
 public class UserDAOImpl implements UserDAO {
 	List<User> customers = new ArrayList<>();
 	ObjectRelationalMapper orm = new ObjectRelationalMapperImpl();
@@ -64,6 +66,12 @@ public class UserDAOImpl implements UserDAO {
 		}
 
 		return password.equals(dbPass);
+	}
+
+	@Override
+	public User findById(int i) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
