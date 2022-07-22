@@ -4,7 +4,9 @@ import java.util.List;
 
 import com.revature.razang.data.AccountDAOImpl;
 import com.revature.razang.exceptions.NegativeBalanceException;
+import com.revature.razang.exceptions.RecordNotFound;
 import com.revature.razang.models.Account;
+import com.revature.razang.models.User;
 
 public class AccountServiceImpl implements AccountService {
 	private AccountDAOImpl accountDAO = new AccountDAOImpl(); 
@@ -22,22 +24,15 @@ public class AccountServiceImpl implements AccountService {
 		}
 		return null;
 	}
-
 	
 	/** 
-	 * @param id
+	 * @param account
 	 * @return Account
 	 */
 	@Override
-	public Account getAccountById(int id) {
-		try {
-			return accountDAO.findById(id);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
+	public Account getAccountById(Account account) {
+		return accountDAO.findById(account);
 	}
-
 	
 	/** 
 	 * @return List<Account>
@@ -46,25 +41,30 @@ public class AccountServiceImpl implements AccountService {
 	public List<Account> getAllAccounts() {
 		return accountDAO.findAll();
 	}
-
 	
 	/** 
 	 * @param account
 	 */
 	@Override
 	public void updateAccount(Account account) {
-		accountDAO.update(account);
+		try {
+			accountDAO.update(account);
+		} catch (RecordNotFound e) {
+			e.printStackTrace();
+		}
 	}
-	
 	
 	/** 
 	 * @param account
 	 */
 	@Override
 	public void deleteAccount(Account account) {
-		accountDAO.delete(account); 
+		try {
+			accountDAO.delete(account);
+		} catch (RecordNotFound e) {
+			e.printStackTrace();
+		} 
 	}
-
 	
 	/** 
 	 * @param account
@@ -72,10 +72,13 @@ public class AccountServiceImpl implements AccountService {
 	 */
 	@Override
 	public void depositIntoAccount(Account account, double amount) {
-		accountDAO.depositIntoAccount(account, amount);
+		try {
+			accountDAO.depositIntoAccount(account, amount);
+		} catch (RecordNotFound e) {
+			e.printStackTrace();
+		}
 	}
 
-	
 	/** 
 	 * @param account
 	 * @param amount
@@ -84,11 +87,10 @@ public class AccountServiceImpl implements AccountService {
 	public void withdrawFromAccount(Account account, double amount) {
 		try {
 			accountDAO.withdrawAccount(account, amount);
-		} catch (NegativeBalanceException e) {
+		} catch (NegativeBalanceException | RecordNotFound e) {
 			e.printStackTrace();
 		}
 	}
-
 	
 	/** 
 	 * @param account
@@ -96,7 +98,34 @@ public class AccountServiceImpl implements AccountService {
 	 */
 	@Override
 	public double getBalance(Account account) {
-		return accountDAO.getBalance(account);
+		try {
+			return accountDAO.getBalance(account);
+		} catch (RecordNotFound e) {
+			e.printStackTrace();
+		}
+		return 0.0;
+	}
+
+	/** 
+	 * @param account
+	 * @return User
+	 */
+	@Override
+	public User getAccountUser(Account account) {
+		return accountDAO.getAccountUser(account);
+	}
+	
+	/** 
+	 * @param account
+	 * @param user
+	 */
+	@Override
+	public void setAccountUser(Account account, User user) {
+		try {
+			accountDAO.setAccountUser(account, user);
+		} catch (RecordNotFound e) {
+			e.printStackTrace();
+		}
 	}
 
 }

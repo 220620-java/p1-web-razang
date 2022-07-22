@@ -2,9 +2,11 @@ package com.revature.razang.delegates;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.razang.models.Account;
+import com.revature.razang.models.User;
 import com.revature.razang.services.AccountService;
 import com.revature.razang.services.AccountServiceImpl;
 
@@ -12,10 +14,16 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+/**
+ * @author Colby Tang
+ */
 public class AccountDelegate implements FrontControllerDelegate {
 	private AccountService accountService = new AccountServiceImpl();
 	private ObjectMapper objMapper = new ObjectMapper();
 
+	/** Handle the request through its verbs
+	 * 
+	 */
 	@Override
 	public void handle(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String method = req.getMethod();
@@ -38,32 +46,86 @@ public class AccountDelegate implements FrontControllerDelegate {
 		}
 	}
 
+	/**
+	 * Get all accounts /accounts
+	 * Get a specific account /accounts/{id}
+	 * @param req
+	 * @param resp
+	 * @throws ServletException
+	 * @throws IOException
+	 * @author Colby Tang
+	 */
 	public void get(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String path = (String) req.getAttribute("path");
 		if (path==null || "".equals(path)) {
 			List<Account> accounts = accountService.getAllAccounts();
+			resp.setStatus(200);
+			resp.setContentType("application/json");
 
 			// the object mapper writes the pets list as a JSON string to the response body
 			resp.getWriter().write(objMapper.writeValueAsString(accounts));
 		} else {
-			resp.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
+			try {
+				int id = Integer.valueOf(path);
+				Account account = new Account();
+				account.setAccountNumber(id);
+
+				account = accountService.getAccountById(account);
+				if (account != null) {
+					resp.setStatus(200);
+					resp.setContentType("application/json");
+					resp.getWriter().write(objMapper.writeValueAsString(account));
+				} else {
+					resp.sendError(404, "Account with that ID not found.");
+				}
+			} catch (NumberFormatException e) {
+				resp.sendError(400, e.getMessage());
+			}
 		}
 	}
 
+	// Create an account with the request body
 	public void post(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		resp.setStatus(HttpServletResponse.SC_OK);
-		// String path = (String) req.getAttribute("path");
-		// if (path==null || "".equals(path)) {
-		// 	Pet pet = objMapper.readValue(req.getInputStream(), Pet.class);
-		// 	if (pet!=null) {
-		// 		pet = adminServ.addPet(pet);
-		// 		resp.getWriter().write(objMapper.writeValueAsString(pet));
-		// 	} else {
-		// 		resp.sendError(400, "The request body was empty.");
-		// 	}
-		// } else {
-		// 	resp.sendError(400, "Cannot POST to this URI. Try sending the request to /pets.");
-		// }
+		String path = (String) req.getAttribute("path");
+		if (path==null || "".equals(path)) {
+			try {
+				Account account = objMapper.readValue(req.getInputStream(), Account.class);
+				if (account!=null) {
+					account = accountService.createAccount(account);
+					resp.setStatus(200);
+					resp.setContentType("application/json");
+					resp.getWriter().write(objMapper.writeValueAsString(account));
+				} else {
+					resp.sendError(400, "The request body was empty.");
+				}
+			} catch (IOException e) {
+				resp.sendError(400, "Error reading the body. " + e.toString());
+			}
+		} else {
+			if (path.equals("user")) {
+				try {
+					Map<String, String> credentials = objMapper.readValue(req.getInputStream(), Map.class);
+					if (credentials.containsKey("userid") && credentials.containsKey("accountNumber")) {
+						Account acc = new Account();
+						acc.setAccountNumber(Long.valueOf(credentials.get("accountNumber")));
+						User user = new User();
+						user.setUserId(Integer.parseInt(credentials.get("userid")));
+						accountService.setAccountUser(acc, user);
+						resp.setStatus(200);
+						resp.setContentType("application/json");
+						resp.getWriter().write(objMapper.writeValueAsString(acc));
+					}
+					else {
+						resp.sendError(400, "No userid or accountNumber in the body. Try sending a JSON object with a userid/accountNumber field.");
+					}
+				} catch (IOException e) {
+					resp.sendError(400, "Error reading the body. " + e.toString());
+				}
+			}
+			else {
+				resp.sendError(400, "Cannot POST to this URI. Try sending the request to /accounts");
+			}
+		}
 	}
 	
 	public void put(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

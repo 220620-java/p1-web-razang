@@ -18,6 +18,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.revature.razang.exceptions.RecordNotFound;
 import com.revature.razang.models.User;
 import com.revature.razang.utilities.WebUtils;
 
@@ -79,7 +80,11 @@ class UserDataTest {
 	public void testUpdateSuccessfully() {
 		User user = new User(3, "ctangUPDATE", new Date(Date.valueOf("1994-03-31").getTime()),
 				"ctang@gmail.com", "5121231234", "pass");
-		userDAO.update(user);
+		try {
+			userDAO.update(user);
+		} catch (RecordNotFound e) {
+			e.printStackTrace();
+		}
 	}
 	@Test 
 	public void testUpdateFailed() {
@@ -91,6 +96,7 @@ class UserDataTest {
 	public void testDeleteCustomerSuccessfully() {
 		User user = new User(3, "ctangUPDATE", new Date(Date.valueOf("1994-03-31").getTime()),
 				"ctang@gmail.com", "5121231234", "pass");
+<<<<<<< HEAD
 		assertEquals(user, userDAO.delete(user));
 	}
 	@Test 
@@ -99,6 +105,13 @@ class UserDataTest {
 		User user = new User(100, "ctangUPDATE", new Date(Date.valueOf("1994-03-31").getTime()),
 				"ctang@gmail.com", "5121231234", "pass");
 		assertNull(userDAO.delete(user)); 
+=======
+		try {
+			userDAO.delete(user);
+		} catch (RecordNotFound e) {
+			e.printStackTrace();
+		}
+>>>>>>> cccd2def13a57b8e25430fff3763858b1e7b7694
 	}
 
 	@Test

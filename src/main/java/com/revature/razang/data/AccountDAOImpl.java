@@ -6,8 +6,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+<<<<<<< HEAD
 
 import com.revature.razang.exceptions.NegativeBalanceException;
+=======
+import com.revature.razang.exceptions.NegativeBalanceException;
+import com.revature.razang.exceptions.RecordNotFound;
+>>>>>>> cccd2def13a57b8e25430fff3763858b1e7b7694
 import com.revature.razang.models.Account;
 import com.revature.razang.models.User;
 import com.revature.razang.utilities.WebUtils;
@@ -22,17 +27,31 @@ public class AccountDAOImpl implements AccountDAO {
 	
 	final double DEFAULT_VALUE = 0.00; 
 
+	
+	/** 
+	 * @param t
+	 * @return Account
+	 * @throws SQLException
+	 */
 	@Override
 	public Account create(Account t) throws SQLException {
 		return (Account) orm.create(t, "bank.accounts");
 	}
 
+	
+	/** 
+	 * @param account
+	 * @return Account
+	 */
 	@Override
-	public Account findById(int id) throws SQLException {
-		Account foundAccount = (Account) orm.findById(id, "bank.accounts");
+	public Account findById(Account account) {
+		Account foundAccount = (Account) orm.findById((int)account.getAccountNumber(), "bank.accounts");
 		return foundAccount;
 	}
-
+	
+	/** 
+	 * @return List<Account>
+	 */
 	@Override
 	public List<Account> findAll() {
 		List<Object> retrievedObjects = orm.findAll(Account.class, "bank.accounts");
@@ -40,25 +59,62 @@ public class AccountDAOImpl implements AccountDAO {
 		return createdAccounts;
 	}
 
+	
+	/** 
+	 * @param t
+	 * @return Account
+	 */
 	@Override
-	public Account update(Account t) {
+	public Account update(Account t) throws RecordNotFound {
+		if (findById(t) == null) {
+			throw new RecordNotFound(t);
+		}
 		return (Account) orm.update (t, "bank.accounts");
 	}
 
+	
+	/** 
+	 * @param t
+	 * @return Account
+	 */
 	@Override
+<<<<<<< HEAD
 	public Account delete(Account t) {
+=======
+	public Account delete(Account t) throws RecordNotFound {
+		if (findById(t) == null) {
+			throw new RecordNotFound(t);
+		}
+>>>>>>> cccd2def13a57b8e25430fff3763858b1e7b7694
 		return (Account) orm.delete(t, "bank.accounts");
 	}
 
+	
+	/** 
+	 * @param account
+	 * @param amount
+	 */
 	@Override
-	public void depositIntoAccount(Account account, double amount) {
+	public void depositIntoAccount(Account account, double amount) throws RecordNotFound {
+		if (findById(account) == null) {
+			throw new RecordNotFound(account);
+		}
 		Map<String, Object> fields = new HashMap<String,Object>();
 		fields.put("balance", account.getBalance() + amount);
 		orm.updateField("accountnumber", (int)account.getAccountNumber(), fields, "accounts");
 	}
 
+	
+	/** 
+	 * @param account
+	 * @param amount
+	 * @throws NegativeBalanceException
+	 */
 	@Override
-	public void withdrawAccount(Account account, double amount) throws NegativeBalanceException {
+	public void withdrawAccount(Account account, double amount) throws NegativeBalanceException, RecordNotFound {
+		if (findById(account) == null) {
+			throw new RecordNotFound(account);
+		}
 		Map<String, Object> fields = new HashMap<String,Object>();
 		if (account.getBalance() - amount < 0) {
 			String message = "CANNOT WITHDRAW " + amount + "! (" + (account.getBalance() - amount) + ")";
@@ -66,20 +122,54 @@ public class AccountDAOImpl implements AccountDAO {
 		}
 		fields.put("balance", account.getBalance() - amount);
 		orm.updateField("accountnumber", (int)account.getAccountNumber(), fields, "accounts");
+<<<<<<< HEAD
 	}	
 	
-
-	public double getBalance(Account account) {
-		try {
-			userAccount = findById((int)account.getAccountNumber());
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} 
-		if (userAccount != null) {
-			return userAccount.getBalance() ;
-		}
-		return 0;
+=======
 	}
+
+	
+	/** 
+	 * @param account
+	 * @return double
+	 */
+	public double getBalance(Account account) throws RecordNotFound {
+		if (findById(account) == null) {
+			throw new RecordNotFound(account);
+		}
+		return userAccount.getBalance();
+	}
+
+	
+	/** 
+	 * @param account
+	 * @return User
+	 */
+	public User getAccountUser(Account account) {
+		int userid = (int) orm.getValueById("accountnumber", (int)account.getAccountNumber(), "userid", "accounts");
+		User user = (User) orm.findById(userid, "bank.users");
+		if (user != null) {
+			return user;
+		}
+		return null;
+	}
+>>>>>>> cccd2def13a57b8e25430fff3763858b1e7b7694
+
+	
+	/** 
+	 * @param account
+	 * @param user
+	 */
+	@Override
+	public void setAccountUser(Account account, User user) throws RecordNotFound {
+		if (findById(account) == null) {
+			throw new RecordNotFound(account);
+		}
+		Map<String, Object> fields = new HashMap<String,Object>();
+		fields.put("userid", user.getUserId());
+		orm.updateField("accountnumber", (int)account.getAccountNumber(), fields, "accounts");
+	}
+<<<<<<< HEAD
 
 	@Override
 	public User findById(User user) {
@@ -88,4 +178,6 @@ public class AccountDAOImpl implements AccountDAO {
 	}
 
 
+=======
+>>>>>>> cccd2def13a57b8e25430fff3763858b1e7b7694
 }
