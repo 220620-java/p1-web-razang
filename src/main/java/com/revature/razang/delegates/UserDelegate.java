@@ -92,6 +92,8 @@ public class UserDelegate implements FrontControllerDelegate {
 		 			// this DTO (data transfer object) prepares the user to be sent in
 		 			// the response by removing the password
 		 			UserDTO userResp = new UserDTO(user);
+					resp.setStatus(200);
+					resp.setContentType("application/json");
 		 			resp.getWriter().write(objMapper.writeValueAsString(userResp));
 		 		} catch (ObjectAlreadyExistsException | SQLException e) {
 		 			resp.sendError(409, e.getMessage());
