@@ -70,24 +70,26 @@ public class AccountDelegate implements FrontControllerDelegate {
 			// the object mapper writes the pets list as a JSON string to the response body
 			resp.getWriter().write(objMapper.writeValueAsString(accounts));
 		} else {
-			if (path.equals("user")) {
+			if (path.contains("user")) {
 				resp.getWriter().write(objMapper.writeValueAsString(path));
 			}
-			try {
-				int id = Integer.valueOf(path);
-				Account account = new Account();
-				account.setAccountNumber(id);
-
-				account = accountService.getAccountById(account);
-				if (account != null) {
-					resp.setStatus(200);
-					resp.setContentType("application/json");
-					resp.getWriter().write(objMapper.writeValueAsString(account));
-				} else {
-					resp.sendError(404, "Account with that ID not found.");
+			else {
+				try {
+					int id = Integer.valueOf(path);
+					Account account = new Account();
+					account.setAccountNumber(id);
+	
+					account = accountService.getAccountById(account);
+					if (account != null) {
+						resp.setStatus(200);
+						resp.setContentType("application/json");
+						resp.getWriter().write(objMapper.writeValueAsString(account));
+					} else {
+						resp.sendError(404, "Account with that ID not found.");
+					}
+				} catch (NumberFormatException e) {
+					resp.sendError(400, e.getMessage());
 				}
-			} catch (NumberFormatException e) {
-				resp.sendError(400, e.getMessage());
 			}
 		}
 	}
@@ -153,18 +155,29 @@ public class AccountDelegate implements FrontControllerDelegate {
 	 * @throws IOException
 	 */
 	public void put(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		try {
-			Account account = objMapper.readValue(req.getInputStream(), Account.class);
-			accountService.updateAccount(account);
-			if (account != null) {
-				resp.setStatus(200);
-				resp.setContentType("application/json");
-				resp.getWriter().write(objMapper.writeValueAsString(account));
-			} else {
-				resp.sendError(404, "Account ID not found.");
+		String path = req.getAttribute("path").toString();
+		if (path == null) {
+			try {
+				Account account = objMapper.readValue(req.getInputStream(), Account.class);
+				accountService.updateAccount(account);
+				if (account != null) {
+					resp.setStatus(200);
+					resp.setContentType("application/json");
+					resp.getWriter().write(objMapper.writeValueAsString(account));
+				} else {
+					resp.sendError(404, "Account ID not found.");
+				}
+			} catch (RecordNotFound e) {
+				resp.sendError(400, e.getMessage());
 			}
-		} catch (RecordNotFound e) {
-			resp.sendError(400, e.getMessage());
+		}
+		else {
+			if (path.equals("withdraw")) {
+				Map<String, String> withdrawMap = objMapper.readValue(req.getInputStream(), Map.class);
+			}
+			else if (path.equals("deposit") {
+				Map<String, String> depositMap = objMapper.readValue(req.getInputStream(), Map.class);
+			}
 		}
 	};
 
