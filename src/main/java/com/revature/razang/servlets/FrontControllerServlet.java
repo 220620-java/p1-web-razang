@@ -7,6 +7,7 @@ import org.apache.catalina.servlets.DefaultServlet;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.revature.razang.delegates.AuthDelegate;
 import com.revature.razang.delegates.FrontControllerDelegate;
+import com.revature.razang.delegates.HelloDelegate;
 import com.revature.razang.delegates.RequestMapper;
 import com.revature.razang.delegates.UserDelegate;
 import com.revature.razang.utilities.WebUtils;
@@ -28,8 +29,8 @@ public class FrontControllerServlet extends DefaultServlet {
 			// JWT AUTHENTICATION, 
 			// Allow users to register/login without authentication
 
-			// if delegate is AuthDelegate then it doesn't need authentication for logging in
-			if (delegate instanceof AuthDelegate) {
+			// if delegate is HelloDelegate/AuthDelegate then it doesn't need authentication for logging in
+			if (delegate instanceof AuthDelegate || delegate instanceof HelloDelegate) {
 				// Handle the request without authentication
 				delegate.handle(req, resp);
 				return;
