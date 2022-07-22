@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.razang.exceptions.AccountAlreadyExistsException;
 import com.revature.razang.exceptions.RecordNotFound;
 import com.revature.razang.models.Account;
 import com.revature.razang.models.User;
@@ -69,6 +70,9 @@ public class AccountDelegate implements FrontControllerDelegate {
 			// the object mapper writes the pets list as a JSON string to the response body
 			resp.getWriter().write(objMapper.writeValueAsString(accounts));
 		} else {
+			if (path.equals("user")) {
+				resp.getWriter().write(objMapper.writeValueAsString(path));
+			}
 			try {
 				int id = Integer.valueOf(path);
 				Account account = new Account();
@@ -88,14 +92,15 @@ public class AccountDelegate implements FrontControllerDelegate {
 		}
 	}
 
+
 	
-	/** 
-	 * Create an account with the request body
+	/** Create an account with the request body
 	 * @param req
 	 * @param resp
 	 * @throws ServletException
 	 * @throws IOException
 	 */
+	@SuppressWarnings("unchecked")
 	public void post(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String path = (String) req.getAttribute("path");
 		if (path==null || "".equals(path)) {
@@ -109,7 +114,7 @@ public class AccountDelegate implements FrontControllerDelegate {
 				} else {
 					resp.sendError(400, "The request body was empty.");
 				}
-			} catch (IOException e) {
+			} catch (IOException | AccountAlreadyExistsException | SQLException e) {
 				resp.sendError(400, "Error reading the body. " + e.toString());
 			}
 		} else {
@@ -139,7 +144,6 @@ public class AccountDelegate implements FrontControllerDelegate {
 			}
 		}
 	}
-	
 	
 	/** 
 	 * Update the account with an account json

@@ -13,6 +13,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.revature.razang.data.AccountDAOImpl;
+import com.revature.razang.exceptions.AccountAlreadyExistsException;
 import com.revature.razang.models.Account;
 import com.revature.razang.models.User;
 import com.revature.razang.utilities.WebUtils;
@@ -50,7 +51,7 @@ class AccountDataTest {
 		try {
 			myAccount = account.create(testAccount);
 			assertNotNull(myAccount);
-		} catch (SQLException e) {
+		} catch (SQLException | AccountAlreadyExistsException e) {
 			e.printStackTrace();
 		} 
 	}

@@ -3,6 +3,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.revature.razang.data.AccountDAOImpl;
+import com.revature.razang.exceptions.AccountAlreadyExistsException;
 import com.revature.razang.exceptions.NegativeBalanceException;
 import com.revature.razang.exceptions.RecordNotFound;
 import com.revature.razang.models.Account;
@@ -14,15 +15,17 @@ public class AccountServiceImpl implements AccountService {
 	/** 
 	 * @param account
 	 * @return Account
+	 * @throws AccountAlreadyExistsException
+	 * @throws SQLException
 	 */
 	@Override
-	public Account createAccount(Account account) {
+	public Account createAccount(Account account) throws AccountAlreadyExistsException, SQLException {
 		try {
 			return accountDAO.create(account);
-		} catch (SQLException e) {
+		} catch (AccountAlreadyExistsException | SQLException e) {
 			e.printStackTrace();
+			throw e;
 		}
-		return null;
 	}
 	
 	/** 
@@ -44,6 +47,7 @@ public class AccountServiceImpl implements AccountService {
 	
 	/** 
 	 * @param account
+	 * @throws RecordNotFound
 	 */
 	@Override
 	public void updateAccount(Account account) throws RecordNotFound {
@@ -57,6 +61,7 @@ public class AccountServiceImpl implements AccountService {
 	
 	/** 
 	 * @param account
+	 * @throws RecordNotFound
 	 */
 	@Override
 	public void deleteAccount(Account account) throws RecordNotFound {
@@ -71,6 +76,7 @@ public class AccountServiceImpl implements AccountService {
 	/** 
 	 * @param account
 	 * @param amount
+	 * @throws RecordNotFound
 	 */
 	@Override
 	public void depositIntoAccount(Account account, double amount) throws RecordNotFound {
@@ -85,6 +91,7 @@ public class AccountServiceImpl implements AccountService {
 	/** 
 	 * @param account
 	 * @param amount
+	 * @throws RecordNotFound
 	 */
 	@Override
 	public void withdrawFromAccount(Account account, double amount) throws RecordNotFound, NegativeBalanceException {
@@ -99,6 +106,7 @@ public class AccountServiceImpl implements AccountService {
 	/** 
 	 * @param account
 	 * @return double
+	 * @throws RecordNotFound
 	 */
 	@Override
 	public double getBalance(Account account) throws RecordNotFound {
@@ -122,6 +130,8 @@ public class AccountServiceImpl implements AccountService {
 	/** 
 	 * @param account
 	 * @param user
+	 * @throws RecordNotFound
+	 * @throws SQLException
 	 */
 	@Override
 	public void setAccountUser(Account account, User user) throws RecordNotFound, SQLException {

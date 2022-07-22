@@ -3,13 +3,14 @@ package com.revature.razang.services;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.revature.razang.exceptions.AccountAlreadyExistsException;
 import com.revature.razang.exceptions.NegativeBalanceException;
 import com.revature.razang.exceptions.RecordNotFound;
 import com.revature.razang.models.Account;
 import com.revature.razang.models.User;
 
 public interface AccountService {
-	public Account createAccount(Account account);
+	public Account createAccount(Account account) throws SQLException, AccountAlreadyExistsException;
 	public Account getAccountById (Account account);
 	public List<Account> getAllAccounts ();
 	public void updateAccount (Account account) throws RecordNotFound;

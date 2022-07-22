@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.revature.razang.exceptions.AccountAlreadyExistsException;
 import com.revature.razang.exceptions.NegativeBalanceException;
 import com.revature.razang.exceptions.RecordNotFound;
 import com.revature.razang.models.Account;
@@ -27,9 +28,13 @@ public class AccountDAOImpl implements AccountDAO {
 	 * @param t
 	 * @return Account
 	 * @throws SQLException
+	 * @throws RecordNotFound
 	 */
 	@Override
-	public Account create(Account account) throws SQLException {
+	public Account create(Account account) throws SQLException, AccountAlreadyExistsException {
+		if (findById(account) != null) {
+			throw new AccountAlreadyExistsException();
+		}
 		return (Account) orm.create(account, "bank.accounts");
 	}
 

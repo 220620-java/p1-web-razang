@@ -15,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.revature.razang.exceptions.ObjectAlreadyExistsException;
 import com.revature.razang.exceptions.RecordNotFound;
 import com.revature.razang.models.User;
 
@@ -37,7 +38,7 @@ class UserDataTest {
 		try {
 			createdCustomer = userDAO.create(user);
 			assertEquals(user, createdCustomer);
-		} catch (SQLException e) {
+		} catch (SQLException | ObjectAlreadyExistsException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

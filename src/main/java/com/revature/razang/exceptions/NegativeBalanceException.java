@@ -1,8 +1,9 @@
 package com.revature.razang.exceptions;
 
-// because this extends Exception (rather than RuntimeException),
-// it is a checked exception, meaning that we have to handle it
-// using a try-catch or throws.
+/**
+ * Exception that throws when balance would go negative.
+ * @author Colby Tang
+ */
 public class NegativeBalanceException extends Exception {
 
     public NegativeBalanceException () {}

@@ -32,6 +32,7 @@ public class FrontControllerServlet extends DefaultServlet {
 			if (delegate instanceof AuthDelegate) {
 				// Handle the request without authentication
 				delegate.handle(req, resp);
+				return;
 			}
 
 			// if delegate is UserDelegate then it might not need authentication
@@ -40,6 +41,7 @@ public class FrontControllerServlet extends DefaultServlet {
 				// if UserDelegate is posting then it doesn't need authentication for registering
 				if (req.getMethod() != "POST") {
 					delegate.handle(req, resp);
+					return;
 				}
 			}
 
