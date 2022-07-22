@@ -35,7 +35,7 @@ public class UserDAOImpl implements UserDAO {
 	 */
 	@Override
 	public User create(User user) throws SQLException, UsernameAlreadyExistsException {
-		if (findById(user) != null) {
+		if (findByUsername(user) != null) {
 			throw new UsernameAlreadyExistsException();
 		}
 		User createdUser = (User) orm.create(user, "bank.users");

@@ -46,13 +46,12 @@ public class UserDelegate implements FrontControllerDelegate {
 
 	private void get(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String path = (String) req.getAttribute("path");
-		System.out.println(path.toString());
-		
-		
 		if (path==null || "".equals(path)) {
-			resp.sendError(403, "Access to all users is forbidden.");
+			// resp.sendError(403, "Access to all users is forbidden.");
 			// get available account holders
 			List<User> customers = userService.getAllusers();
+			resp.setStatus(200);
+			resp.setContentType("application/json");
 
 			// // the object mapper writes the list as a JSON string to the response body
 			resp.getWriter().write(objMapper.writeValueAsString(customers));
@@ -67,6 +66,8 @@ public class UserDelegate implements FrontControllerDelegate {
 			 		// this DTO (data transfer object) prepares the user to be sent in
 			 		// the response by removing the password
 			 		UserDTO userResp = new UserDTO(user);
+					resp.setStatus(200);
+					resp.setContentType("application/json");
 			 		resp.getWriter().write(objMapper.writeValueAsString(userResp));
 			 	} else {
 			 		resp.sendError(404, "User with that ID not found.");
@@ -91,6 +92,8 @@ public class UserDelegate implements FrontControllerDelegate {
 		 			// this DTO (data transfer object) prepares the user to be sent in
 		 			// the response by removing the password
 		 			UserDTO userResp = new UserDTO(user);
+					resp.setStatus(200);
+					resp.setContentType("application/json");
 		 			resp.getWriter().write(objMapper.writeValueAsString(userResp));
 		 		} catch (ObjectAlreadyExistsException | SQLException e) {
 		 			resp.sendError(409, e.getMessage());
@@ -112,7 +115,10 @@ public class UserDelegate implements FrontControllerDelegate {
 				User user = objMapper.readValue(req.getInputStream(), User.class); 
 				if (user == null) throw new RuntimeException(); 
 				try {
-					user = userService.updateUser(user); 
+					user = userService.updateUser(user);
+					resp.setStatus(200);
+					resp.setContentType("application/json");
+					resp.getWriter().write(objMapper.writeValueAsString(user));
 				} catch(Exception e) {
 					resp.sendError(400, "User can't not be updated");
 				}
@@ -142,6 +148,8 @@ public class UserDelegate implements FrontControllerDelegate {
 		try {
 			user = userService.deleteUser(user); 
 			UserDTO userResp = new UserDTO(user); 
+			resp.setStatus(200);
+			resp.setContentType("application/json");
 			resp.getWriter().write(objMapper.writeValueAsString(userResp));
 			
 		}catch(Exception e) {
