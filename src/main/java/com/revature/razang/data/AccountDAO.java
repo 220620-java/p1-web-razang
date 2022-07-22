@@ -10,5 +10,5 @@ public interface AccountDAO extends DataAccessObject<Account> {
 	public void withdrawAccount(Account account, double amount) throws NegativeBalanceException, RecordNotFound; 
 	public double getBalance(Account account) throws RecordNotFound;
 	public User getAccountUser(Account account);
-	public void setAccountUser(Account account, User user);
+	public void setAccountUser(Account account, User user) throws RecordNotFound;
 }

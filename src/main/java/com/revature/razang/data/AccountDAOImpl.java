@@ -147,7 +147,10 @@ public class AccountDAOImpl implements AccountDAO {
 	 * @param user
 	 */
 	@Override
-	public void setAccountUser(Account account, User user) {
+	public void setAccountUser(Account account, User user) throws RecordNotFound {
+		if (findById(account) == null) {
+			throw new RecordNotFound(account);
+		}
 		Map<String, Object> fields = new HashMap<String,Object>();
 		fields.put("userid", user.getUserId());
 		orm.updateField("accountnumber", (int)account.getAccountNumber(), fields, "accounts");
