@@ -2,7 +2,6 @@ package com.revature.razang.data;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.sql.Date;
 import java.sql.SQLException;
@@ -41,7 +40,6 @@ class UserDataTest {
 			createdCustomer = userDAO.create(user);
 			assertEquals(user, createdCustomer);
 		} catch (SQLException | ObjectAlreadyExistsException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -59,7 +57,11 @@ class UserDataTest {
 	public void testUpdate() {
 		User user = new User(3, "ctangUPDATE", new Date(Date.valueOf("1994-03-31").getTime()),
 				"ctang@gmail.com", "5121231234", "pass");
-		userDAO.update(user);
+		try {
+			userDAO.update(user);
+		} catch (RecordNotFound e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Test
@@ -70,7 +72,11 @@ class UserDataTest {
 		// assertEquals(customer, user);
 		User user = new User(3, "ctangUPDATE", new Date(Date.valueOf("1994-03-31").getTime()),
 				"ctang@gmail.com", "5121231234", "pass");
-		userDAO.delete(user);
+		try {
+			userDAO.delete(user);
+		} catch (RecordNotFound e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Test

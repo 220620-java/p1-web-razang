@@ -6,8 +6,6 @@ import java.sql.Date;
 
 import org.junit.jupiter.api.Test;
 
-import com.revature.razang.models.User;
-
 public class TestCustomer {
 	
 	User user = new User(1, "RAZA", new Date(2000-01-01), "raza@gmail.copm", "123456789", "1234"); 
