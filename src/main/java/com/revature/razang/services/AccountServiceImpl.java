@@ -1,7 +1,7 @@
 package com.revature.razang.services;
-import java.sql.SQLException;
 import java.util.List;
 
+import com.revature.razang.data.UserDAOImpl;
 import com.revature.razang.data.AccountDAOImpl;
 import com.revature.razang.exceptions.AccountAlreadyExistsException;
 import com.revature.razang.exceptions.NegativeBalanceException;
@@ -10,6 +10,7 @@ import com.revature.razang.models.Account;
 import com.revature.razang.models.User;
 
 public class AccountServiceImpl implements AccountService {
+	private UserDAOImpl userDAO = new UserDAOImpl(); 
 	private AccountDAOImpl accountDAO = new AccountDAOImpl(); 
 	
 	/** 
@@ -50,27 +51,26 @@ public class AccountServiceImpl implements AccountService {
 	 * @throws RecordNotFound
 	 */
 	@Override
-	public void updateAccount(Account account) throws RecordNotFound {
-		try {
-			accountDAO.update(account);
-		} catch (RecordNotFound e) {
-			e.printStackTrace();
-			throw e;
-		}
+	public Account createAccount(User customer) {
+		// TODO Auto-generated method stub
+		return  accountDAO.create(customer); 
+	}
+
+	@Override
+	public User getAccountHolderById(int id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	/** 
 	 * @param account
 	 * @throws RecordNotFound
 	 */
+
 	@Override
-	public void deleteAccount(Account account) throws RecordNotFound {
-		try {
-			accountDAO.delete(account);
-		} catch (RecordNotFound e) {
-			e.printStackTrace();
-			throw e;
-		} 
+	public User updateAccount(User customer) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	/** 
@@ -78,53 +78,45 @@ public class AccountServiceImpl implements AccountService {
 	 * @param amount
 	 * @throws RecordNotFound
 	 */
+
 	@Override
-	public void depositIntoAccount(Account account, double amount) throws RecordNotFound {
-		try {
-			accountDAO.depositIntoAccount(account, amount);
-		} catch (RecordNotFound e) {
-			e.printStackTrace();
-			throw e;
-		}
+	public Account deleteAccount(User customer) {
+		// TODO Auto-generated method stub
+		return accountDAO.delete(customer); 
 	}
+
 
 	/** 
 	 * @param account
 	 * @param amount
 	 * @throws RecordNotFound
 	 */
+
 	@Override
-	public void withdrawFromAccount(Account account, double amount) throws RecordNotFound, NegativeBalanceException {
-		try {
-			accountDAO.withdrawAccount(account, amount);
-		} catch (NegativeBalanceException | RecordNotFound e) {
-			e.printStackTrace();
-			throw e;
-		}
+	public Account depositIntoAccount(User customer, double amount) {
+		// TODO Auto-generated method stub
+		return accountDAO.depositIntoAccount(customer, amount); 
+		
 	}
+
 	
 	/** 
 	 * @param account
 	 * @return double
 	 * @throws RecordNotFound
 	 */
+
 	@Override
-	public double getBalance(Account account) throws RecordNotFound {
-		try {
-			return accountDAO.getBalance(account);
-		} catch (RecordNotFound e) {
-			e.printStackTrace();
-			throw e;
-		}
+	public Account withdrawFromAccount(User customer, double amount) {
+		// TODO Auto-generated method stub
+		return accountDAO.withdraw(customer, amount); 
 	}
 
-	/** 
-	 * @param account
-	 * @return User
-	 */
 	@Override
-	public User getAccountUser(Account account) {
-		return accountDAO.getAccountUser(account);
+	public double viewBalance(User customer) {
+		// TODO Auto-generated method stub
+		
+		return accountDAO.balance(customer);
 	}
 	
 	/** 
@@ -133,14 +125,15 @@ public class AccountServiceImpl implements AccountService {
 	 * @throws RecordNotFound
 	 * @throws SQLException
 	 */
+
 	@Override
-	public void setAccountUser(Account account, User user) throws RecordNotFound, SQLException {
-		try {
-			accountDAO.setAccountUser(account, user);
-		} catch (RecordNotFound | SQLException e) {
-			e.printStackTrace();
-			throw e;
-		}
+	public List<User> viewAccountHolders() {
+		// TODO Auto-generated method stub
+		return accountDAO.displayAccountHolders(); 
 	}
+
+
+
+
 
 }

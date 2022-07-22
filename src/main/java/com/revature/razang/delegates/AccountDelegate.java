@@ -1,14 +1,15 @@
 package com.revature.razang.delegates;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.revature.razang.exceptions.AccountAlreadyExistsException;
 import com.revature.razang.exceptions.RecordNotFound;
 import com.revature.razang.models.Account;
+
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.revature.razang.models.User;
 import com.revature.razang.services.AccountService;
 import com.revature.razang.services.AccountServiceImpl;
@@ -22,13 +23,14 @@ import jakarta.servlet.http.HttpServletResponse;
  * @author Colby Tang
  */
 public class AccountDelegate implements FrontControllerDelegate {
-	private AccountService accountService = new AccountServiceImpl();
+	// private AccountService bankService = new AccountServiceImpl();
 	private ObjectMapper objMapper = new ObjectMapper();
 
 	/** 
 	 * Handle the request through its verbs
 	 * @author Colby Tang
 	 */
+
 	@Override
 	public void handle(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String method = req.getMethod();
@@ -51,24 +53,15 @@ public class AccountDelegate implements FrontControllerDelegate {
 		}
 	}
 
-	/**
-	 * Get all accounts /accounts
-	 * Get a specific account /accounts/{id}
-	 * @param req
-	 * @param resp
-	 * @throws ServletException
-	 * @throws IOException
-	 * @author Colby Tang
-	 */
 	public void get(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String path = (String) req.getAttribute("path");
 		if (path==null || "".equals(path)) {
-			List<Account> accounts = accountService.getAllAccounts();
-			resp.setStatus(200);
-			resp.setContentType("application/json");
+			resp.sendError(403, "Access to all users is forbidden.");
+			// get available account holders
+			// List<User> customers = bankService.viewAccountHolders();
 
-			// the object mapper writes the pets list as a JSON string to the response body
-			resp.getWriter().write(objMapper.writeValueAsString(accounts));
+			// // the object mapper writes the pets list as a JSON string to the response body
+			// resp.getWriter().write(objMapper.writeValueAsString(customers));
 		} else {
 			if (path.equals("user")) {
 				resp.getWriter().write(objMapper.writeValueAsString(path));
@@ -143,6 +136,24 @@ public class AccountDelegate implements FrontControllerDelegate {
 				resp.sendError(400, "Cannot POST to this URI. Try sending the request to /accounts");
 			}
 		}
+			resp.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
+		}
+	}
+
+	public void post(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		resp.setStatus(HttpServletResponse.SC_OK);
+		// String path = (String) req.getAttribute("path");
+		// if (path==null || "".equals(path)) {
+		// 	Pet pet = objMapper.readValue(req.getInputStream(), Pet.class);
+		// 	if (pet!=null) {
+		// 		pet = adminServ.addPet(pet);
+		// 		resp.getWriter().write(objMapper.writeValueAsString(pet));
+		// 	} else {
+		// 		resp.sendError(400, "The request body was empty.");
+		// 	}
+		// } else {
+		// 	resp.sendError(400, "Cannot POST to this URI. Try sending the request to /pets.");
+		// }
 	}
 	
 	/** 

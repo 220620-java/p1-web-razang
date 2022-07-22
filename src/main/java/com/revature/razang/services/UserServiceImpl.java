@@ -5,8 +5,11 @@ import java.util.List;
 
 import com.revature.razang.data.UserDAO;
 import com.revature.razang.data.UserDAOImpl;
+
 import com.revature.razang.exceptions.ObjectAlreadyExistsException;
 import com.revature.razang.exceptions.RecordNotFound;
+
+
 import com.revature.razang.models.User;
 
 public class UserServiceImpl implements UserService {
@@ -58,9 +61,9 @@ public class UserServiceImpl implements UserService {
      * @return User
      */
     @Override
-    public User findUserById(User user) {
+    public User findUserById(int id) {
         try {
-            return userDAO.findById(user);
+            return userDAO.findById(id);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -84,6 +87,7 @@ public class UserServiceImpl implements UserService {
      * @throws RecordNotFound
      */
     @Override
+
     public User updateUser(User user) throws RecordNotFound {
         try {
             return userDAO.update(user);
@@ -91,6 +95,10 @@ public class UserServiceImpl implements UserService {
             e.printStackTrace();
             throw e;
         }
+
+    public User updateUser(User user) {
+        return userDAO.update(user);
+
     }
 
     
@@ -100,6 +108,7 @@ public class UserServiceImpl implements UserService {
      * @throws RecordNotFound
      */
     @Override
+
     public User deleteUser(User user) throws RecordNotFound {
         try {
             return userDAO.delete(user);
@@ -107,6 +116,11 @@ public class UserServiceImpl implements UserService {
             e.printStackTrace();
             throw e;
         }
+
+    public User deleteUser(User user) {
+        // TODO Auto-generated method stub
+        return null;
+
     }
 
     
