@@ -15,8 +15,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+
 import com.revature.razang.exceptions.ObjectAlreadyExistsException;
 import com.revature.razang.exceptions.RecordNotFound;
+
 import com.revature.razang.models.User;
 
 @Disabled("Disabled until I mock everything")
@@ -57,11 +59,7 @@ class UserDataTest {
 	public void testUpdate() {
 		User user = new User(3, "ctangUPDATE", new Date(Date.valueOf("1994-03-31").getTime()),
 				"ctang@gmail.com", "5121231234", "pass");
-		try {
-			userDAO.update(user);
-		} catch (RecordNotFound e) {
-			e.printStackTrace();
-		}
+		userDAO.update(user);
 	}
 	
 	@Test
@@ -72,11 +70,7 @@ class UserDataTest {
 		// assertEquals(customer, user);
 		User user = new User(3, "ctangUPDATE", new Date(Date.valueOf("1994-03-31").getTime()),
 				"ctang@gmail.com", "5121231234", "pass");
-		try {
-			userDAO.delete(user);
-		} catch (RecordNotFound e) {
-			e.printStackTrace();
-		}
+		userDAO.delete(user);
 	}
 
 	@Test

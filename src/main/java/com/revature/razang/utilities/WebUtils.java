@@ -73,13 +73,9 @@ public class WebUtils {
         return salt;
     }
 
-    
-    /** Creates a JWT
-     * @return String
-     */
     public static String CreateJWT () {
         try {
-            Algorithm algorithm = Algorithm.HMAC256("razang-web-secret");
+            Algorithm algorithm = Algorithm.HMAC256("secret");
             String token = JWT.create()
                 .withIssuer("razang")
                 .sign(algorithm);
@@ -91,13 +87,8 @@ public class WebUtils {
         return null;
     }
 
-    
-    /** Verifies a JWT
-     * @param token
-     * @return DecodedJWT
-     */
     public static DecodedJWT VerifyJWT (String token) {
-        Algorithm algorithm = Algorithm.HMAC256("razang-web-secret"); //use more secure key
+        Algorithm algorithm = Algorithm.HMAC256("secret"); //use more secure key
             JWTVerifier verifier = JWT.require(algorithm)
                 .withIssuer("razang")
                 .build(); //Reusable verifier instance

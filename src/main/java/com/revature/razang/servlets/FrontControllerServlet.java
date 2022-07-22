@@ -4,13 +4,13 @@ import java.io.IOException;
 
 import org.apache.catalina.servlets.DefaultServlet;
 
-import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.revature.razang.delegates.AuthDelegate;
 import com.revature.razang.delegates.FrontControllerDelegate;
 import com.revature.razang.delegates.HelloDelegate;
 import com.revature.razang.delegates.RequestMapper;
+
 import com.revature.razang.delegates.UserDelegate;
 import com.revature.razang.utilities.WebUtils;
+
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,6 +25,7 @@ public class FrontControllerServlet extends DefaultServlet {
 		
 		// if the URI has an appropriate delegate
 		if (delegate != null) {
+
 
 			// JWT AUTHENTICATION, 
 			// Allow users to register/login without authentication
@@ -65,6 +66,9 @@ public class FrontControllerServlet extends DefaultServlet {
 				resp.sendError(403, "User is not authenticated. Please login at /revature-web/auth!");
 				return;
 			}
+
+
+			delegate.handle(req, resp);
 
 		} else {
 			resp.sendError(404);
