@@ -8,6 +8,7 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.revature.razang.delegates.AuthDelegate;
 import com.revature.razang.delegates.FrontControllerDelegate;
 import com.revature.razang.delegates.RequestMapper;
+import com.revature.razang.delegates.UserDelegate;
 import com.revature.razang.utilities.WebUtils;
 
 import jakarta.servlet.ServletException;
@@ -25,29 +26,43 @@ public class FrontControllerServlet extends DefaultServlet {
 		if (delegate != null) {
 
 			// JWT AUTHENTICATION, 
-			// if delegate is not AuthDelegate REQUIRE AUTHENTICATION!
-			if (!(delegate instanceof AuthDelegate)) {
-				String token = req.getHeader("token");
+			// Allow users to register/login without authentication
 
-				// check if user has JWT
-				if (token != null) {
-					try {
-						// VERIFY JWT, IF IT'S NOT ISSUED BY RAZANG, 403
-						WebUtils.VerifyJWT(token);
-					} catch (JWTVerificationException e){
-						resp.sendError(403, "User has invalid token! Please login at /revature-web/auth!\n" + e.toString());
-						resp.getWriter().flush();
-						return;
-					}
-				}
-				else {
-					resp.sendError(403, "User is not authenticated. Please login at /revature-web/auth!");
-					return;
+			// if delegate is AuthDelegate then it doesn't need authentication for logging in
+			if (delegate instanceof AuthDelegate) {
+				// Handle the request without authentication
+				delegate.handle(req, resp);
+			}
+
+			// if delegate is UserDelegate then it might not need authentication
+			if (delegate instanceof UserDelegate) {
+
+				// if UserDelegate is posting then it doesn't need authentication for registering
+				if (req.getMethod() != "POST") {
+					delegate.handle(req, resp);
 				}
 			}
 
-			// Handle the request
-			delegate.handle(req, resp);
+			// REQUEST REQUIRES AUTHENTICATION
+			// Grab token from the header
+			String token = req.getHeader("token");
+
+			// check if user has JWT
+			if (token != null) {
+				try {
+					// VERIFY JWT, IF IT'S NOT ISSUED BY RAZANG, 403
+					WebUtils.VerifyJWT(token);
+				} catch (JWTVerificationException e){
+					resp.sendError(403, "User has invalid token! Please login at /revature-web/auth!\n" + e.toString());
+					resp.getWriter().flush();
+					return;
+				}
+			}
+			else {
+				resp.sendError(403, "User is not authenticated. Please login at /revature-web/auth!");
+				return;
+			}
+
 		} else {
 			resp.sendError(404);
 		}
@@ -76,5 +91,9 @@ public class FrontControllerServlet extends DefaultServlet {
 	@Override
 	protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		process(req, resp);
+	}
+
+	protected void askAuthentication (HttpServletRequest req, HttpServletResponse resp) {
+
 	}
 }
