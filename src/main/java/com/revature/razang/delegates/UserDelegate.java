@@ -44,7 +44,9 @@ public class UserDelegate implements FrontControllerDelegate {
 	// /users/{userid} - find user by id
 
 	private void get(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String path = (String) req.getAttribute("path");		
+		String path = (String) req.getAttribute("path");
+		System.out.println(path.toString());
+		
 		
 		if (path==null || "".equals(path)) {
 			resp.sendError(403, "Access to all users is forbidden.");
@@ -57,9 +59,7 @@ public class UserDelegate implements FrontControllerDelegate {
 			//resp.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
 			 try {
 			 	int id = Integer.valueOf(path);
-			 	User user = new User(); 
-			 	user.setUserId(id);
-			 	user = userService.findUserById(user);
+			 	User user = userService.findUserById(id);
 			 	if (user!=null) {
 			 		// this DTO (data transfer object) prepares the user to be sent in
 			 		// the response by removing the password
@@ -81,9 +81,7 @@ public class UserDelegate implements FrontControllerDelegate {
 		 String path = (String) req.getAttribute("path");
 		 if (path==null || "".equals(path)) {
 		 	try {
-		 		
-		 		System.out.println(req.getInputStream().toString());
-		 		User user = objMapper.readValue(req.getInputStream(), User.class);
+		 	User user = objMapper.readValue(req.getInputStream(), User.class);
 		 		if (user==null) throw new RuntimeException();
 		 		try {
 		 			user = userService.registerUser(user);
@@ -96,8 +94,7 @@ public class UserDelegate implements FrontControllerDelegate {
 		 			resp.sendError(409, "A user with that username already exists.");
 		 		}
 		 	} catch (MismatchedInputException | RuntimeException e) {
-		 		
-		 		resp.sendError(400, "The request body was empty........." + e.getMessage());
+		 		resp.sendError(400, "The request body was empty.");
 		 	}
 		 } else {
 		 	resp.sendError(400, "Cannot POST to this URI. Try sending the request to /users.");

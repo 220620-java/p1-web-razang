@@ -1,181 +1,249 @@
 package com.revature.razang.data;
 
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
-import com.revature.razang.exceptions.NegativeBalanceException;
-import com.revature.razang.exceptions.NegativeBalanceException;
-import com.revature.razang.exceptions.RecordNotFound;
-import com.revature.razang.exceptions.NegativeBalanceException;
-import com.revature.razang.exceptions.RecordNotFound;
 import com.revature.razang.models.Account;
 import com.revature.razang.models.User;
 import com.revature.razang.utilities.WebUtils;
-import com.revature.razangorm.orm.ObjectRelationalMapper;
-import com.revature.razangorm.orm.ObjectRelationalMapperImpl;
+import com.revature.razangorm.utilities.ConnectionObject;
 
 public class AccountDAOImpl implements AccountDAO {
 
-	ObjectRelationalMapper orm = new ObjectRelationalMapperImpl();
+	private ConnectionObject connObj = ConnectionObject.getConnectionUtil();
 	Account userAccount = null;
 	WebUtils gen = new WebUtils();
 	
 	final double DEFAULT_VALUE = 0.00; 
 
+	@Override
+	public Account create(User account) {
+		int customer_id = account.getUserId();
+		long account_no = WebUtils.generateRandomAccountNumber();
+		
+		try (Connection conn =  connObj.getConnection()) {
+			
+			conn.setAutoCommit(false);
+
+			String sql = "insert into BankAccount "
+					+ "(account_no, balance, customer_id) "
+					+ "values (?, ?, ?)"; 
+			
+			PreparedStatement st = conn.prepareStatement(sql); 
+			st.setLong(1, account_no);
+			st.setDouble(2, 0.00);
+			st.setInt(3, customer_id);
+			
+			int rowAdded = st.executeUpdate(); 
+			if (rowAdded == 1) {
+				userAccount = new Account(account_no, Account.AccountType.CHECKING, DEFAULT_VALUE); 
+				conn.commit();
+				
+			} else {
+				conn.rollback();
+				userAccount = null; 
+			}	
+		}catch (SQLException e) {
+			userAccount = null; 
+			System.out.println(e.getMessage()); 
+		}
+		
+		return userAccount;
+	}
+
+	@Override
+	public Account delete(User account) {
+		try (Connection conn = connObj.getConnection()) {
+			
+			conn.setAutoCommit(false);
+			String sql = "delete from bankaccount "
+					+ "where customer_id=? "; 
+			
+			PreparedStatement st = conn.prepareStatement(sql); 
+			st.setInt(1, account.getUserId());
+			
+			userAccount = findById(account.getUserId()); 
+			
+			int rowDeleted = st.executeUpdate(); 
+			if (rowDeleted == 1) {
+				conn.commit();
+			}else {
+				conn.rollback();
+				userAccount = null;
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return userAccount; 
+	}
+
+	@Override
+	public Account findById(int id) {
+		userAccount = null; 
+		try (Connection conn = connObj.getConnection()){
+			
+			String sql = "select * from bankaccount "
+					+ "where customer_id =?"; 
+			
+			PreparedStatement st = conn.prepareStatement(sql); 
+			
+			st.setInt(1, id);
+			
+			ResultSet result = st.executeQuery();
+			
+			if (result.next()) {
+				userAccount =
+						new Account(
+							result.getLong("account_no"),
+								Account.AccountType.CHECKING , result.getDouble("balance")); 
+				
+			}
+		}catch(SQLException e) {
+			e.getMessage(); 
+		}
+		
+		return userAccount;
+	}
+
+	@Override
+	public Account depositIntoAccount(User customer, double amount) {
+		userAccount = findById(customer.getUserId()); 
+		double currentBalance = userAccount.getBalance(); 
+		currentBalance += amount; 
+		userAccount.setBalance(currentBalance);
+		try (Connection conn = connObj.getConnection()){
+			
+			conn.setAutoCommit(false);
+			String sql = "update bankaccount "
+					+ "set balance =? "
+					+ "where customer_id = ?"; 
+			PreparedStatement st = conn.prepareStatement(sql); 
+			st.setDouble(1, currentBalance);
+			st.setInt(2, customer.getUserId());
+			
+			int rowUpdated = st.executeUpdate();
+			
+			if (rowUpdated == 1) {
+				conn.commit();
+			} else {
+				conn.rollback();
+				userAccount = null; 
+			}
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return userAccount; 
+	}
 	
-	/** 
-	 * @param t
-	 * @return Account
-	 * @throws SQLException
-	 */
+	public List<User> displayAccountHolders() {
+		
+		User customer = null; 
+		List<User> allAccountHolders = new ArrayList<>();
+		
+		try (Connection conn = connObj.getConnection()) {
+			
+			String sql = "select c.customer_id, c.username, c.birthDate, c.email, c.phone, c.passwd "
+					+ "from customer c join bankaccount b "
+					+ "using(customer_id)";
+			
+			Statement st = conn.createStatement(); 
+			ResultSet result = st.executeQuery(sql); 
+			
+			while (result.next()) {
+				int customer_id = result.getInt("customer_id"); 
+				String username = result.getString("username"); 
+				Date birthDate = result.getDate("birthDate"); 
+				String email = result.getString("email"); 
+				String phone = result.getString("phone"); 
+				String passwd = result.getString("passwd"); 
+				
+				customer = new User(customer_id, username, birthDate, email, phone, passwd); 
+				allAccountHolders.add(customer);	
+			}
+			
+			
+		}catch (SQLException e) {
+			e.getMessage(); 
+		}
+		return allAccountHolders;
+		
+	}
+
+	@Override
+	public Account withdraw(User customer, double amount) {
+		userAccount = findById(customer.getUserId()); 
+		double currentBalance = userAccount.getBalance(); 
+		if (currentBalance >= amount) {
+			currentBalance = currentBalance - amount; 
+			userAccount.setBalance(currentBalance);
+			return userAccount; 
+		}else {
+			userAccount = null;
+		}
+		
+		try (Connection conn = connObj.getConnection()){
+			
+			conn.setAutoCommit(false);
+			String sql = "update bankaccount "
+					+ "set balance =? "
+					+ "where customer_id = ?"; 
+			PreparedStatement st = conn.prepareStatement(sql); 
+			st.setDouble(1, currentBalance);
+			st.setInt(2, customer.getUserId());
+			
+			int rowUpdated = st.executeUpdate();
+			
+			if (rowUpdated == 1) {
+				conn.commit();
+			} else {
+				conn.rollback();
+				userAccount = null; 
+			}
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return userAccount;
+	}
+
+	@Override
+	public double balance(User customer) {
+		userAccount = findById(customer.getUserId()); 
+		if (userAccount != null) {
+			return userAccount.getBalance() ;
+		}
+		return -1.00; 
+	}
+
 	@Override
 	public Account create(Account t) throws SQLException {
-		return (Account) orm.create(t, "bank.accounts");
+		// TODO Auto-generated method stub
+		return null;
 	}
 
-	
-	/** 
-	 * @param account
-	 * @return Account
-	 */
-	@Override
-	public Account findById(Account account) {
-		Account foundAccount = (Account) orm.findById((int)account.getAccountNumber(), "bank.accounts");
-		return foundAccount;
-	}
-	
-	/** 
-	 * @return List<Account>
-	 */
 	@Override
 	public List<Account> findAll() {
-		List<Object> retrievedObjects = orm.findAll(Account.class, "bank.accounts");
-		List<Account> createdAccounts = retrievedObjects.stream().map(acc -> (Account)acc).collect(Collectors.toList());
-		return createdAccounts;
-	}
-
-	
-	/** 
-	 * @param t
-	 * @return Account
-	 */
-	@Override
-	public Account update(Account t) throws RecordNotFound {
-		if (findById(t) == null) {
-			throw new RecordNotFound(t);
-		}
-		return (Account) orm.update (t, "bank.accounts");
-	}
-
-	
-	/** 
-	 * @param t
-	 * @return Account
-	 */
-	@Override
-
-
-	public Account delete(Account t) throws RecordNotFound {
-		if (findById(t) == null) {
-			throw new RecordNotFound(t);
-		}
-
-		return (Account) orm.delete(t, "bank.accounts");
-	}
-
-	
-	/** 
-	 * @param account
-	 * @param amount
-	 */
-	@Override
-	public void depositIntoAccount(Account account, double amount) throws RecordNotFound {
-		if (findById(account) == null) {
-			throw new RecordNotFound(account);
-		}
-		Map<String, Object> fields = new HashMap<String,Object>();
-		fields.put("balance", account.getBalance() + amount);
-		orm.updateField("accountnumber", (int)account.getAccountNumber(), fields, "accounts");
-	}
-
-	
-	/** 
-	 * @param account
-	 * @param amount
-	 * @throws NegativeBalanceException
-	 */
-	@Override
-	public void withdrawAccount(Account account, double amount) throws NegativeBalanceException, RecordNotFound {
-		if (findById(account) == null) {
-			throw new RecordNotFound(account);
-		}
-		Map<String, Object> fields = new HashMap<String,Object>();
-		if (account.getBalance() - amount < 0) {
-			String message = "CANNOT WITHDRAW " + amount + "! (" + (account.getBalance() - amount) + ")";
-			throw new NegativeBalanceException(message);
-		}
-		fields.put("balance", account.getBalance() - amount);
-		orm.updateField("accountnumber", (int)account.getAccountNumber(), fields, "accounts");
-
-	}
-
-	
-	/** 
-	 * @param account
-	 * @return double
-	 */
-	public double getBalance(Account account) throws RecordNotFound {
-		if (findById(account) == null) {
-			throw new RecordNotFound(account);
-		}
-		return userAccount.getBalance();
-	}
-
-	
-	/** 
-	 * @param account
-	 * @return User
-//	 */
-//	public User getAccountUser(Account account) {
-//		int userid = (int) orm.getValueById("accountnumber", (int)account.getAccountNumber(), "userid", "accounts");
-//		User user = (User) orm.findById(userid, "bank.users");
-//		if (user != null) {
-//			return user;
-//		}
-//		return null;
-//	}
-
-	
-	/** 
-	 * @param account
-	 * @param user
-	 */
-	@Override
-	public void setAccountUser(Account account, User user) throws RecordNotFound {
-		if (findById(account) == null) {
-			throw new RecordNotFound(account);
-		}
-		Map<String, Object> fields = new HashMap<String,Object>();
-		fields.put("userid", user.getUserId());
-		orm.updateField("accountnumber", (int)account.getAccountNumber(), fields, "accounts");
-	}
-
-
-	@Override
-	public Account findById(int i) throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-
 	@Override
-	public User getAccountUser(Account account) {
+	public void update(Account t) {
 		// TODO Auto-generated method stub
-		return null;
+		
 	}
 
+	@Override
+	public void delete(Account t) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
 
 }

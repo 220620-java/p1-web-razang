@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.revature.razang.data.UserDAO;
 import com.revature.razang.data.UserDAOImpl;
-import com.revature.razang.exceptions.RecordNotFound;
 import com.revature.razang.models.User;
 
 public class UserServiceImpl implements UserService {
@@ -40,14 +39,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findUserById(User user) {
+    public User findUserById(int id) {
         try {
-			return userDAO.findById(user);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return user;
+            return userDAO.findById(id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
@@ -58,22 +56,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(User user) {
-        try {
-            return userDAO.update(user);
-        } catch (RecordNotFound e) {
-            e.printStackTrace();
-        }
-        return null;
+        return userDAO.update(user);
     }
 
     @Override
     public User deleteUser(User user) {
-        try {
-            return userDAO.delete(user);
-        } catch (RecordNotFound e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        // TODO Auto-generated method stub
         return null;
     }
 
