@@ -6,13 +6,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-<<<<<<< HEAD
-
 import com.revature.razang.exceptions.NegativeBalanceException;
-=======
 import com.revature.razang.exceptions.NegativeBalanceException;
 import com.revature.razang.exceptions.RecordNotFound;
->>>>>>> cccd2def13a57b8e25430fff3763858b1e7b7694
+import com.revature.razang.exceptions.NegativeBalanceException;
+import com.revature.razang.exceptions.RecordNotFound;
 import com.revature.razang.models.Account;
 import com.revature.razang.models.User;
 import com.revature.razang.utilities.WebUtils;
@@ -78,14 +76,13 @@ public class AccountDAOImpl implements AccountDAO {
 	 * @return Account
 	 */
 	@Override
-<<<<<<< HEAD
-	public Account delete(Account t) {
-=======
+
+
 	public Account delete(Account t) throws RecordNotFound {
 		if (findById(t) == null) {
 			throw new RecordNotFound(t);
 		}
->>>>>>> cccd2def13a57b8e25430fff3763858b1e7b7694
+
 		return (Account) orm.delete(t, "bank.accounts");
 	}
 
@@ -122,10 +119,7 @@ public class AccountDAOImpl implements AccountDAO {
 		}
 		fields.put("balance", account.getBalance() - amount);
 		orm.updateField("accountnumber", (int)account.getAccountNumber(), fields, "accounts");
-<<<<<<< HEAD
-	}	
-	
-=======
+
 	}
 
 	
@@ -144,16 +138,15 @@ public class AccountDAOImpl implements AccountDAO {
 	/** 
 	 * @param account
 	 * @return User
-	 */
-	public User getAccountUser(Account account) {
-		int userid = (int) orm.getValueById("accountnumber", (int)account.getAccountNumber(), "userid", "accounts");
-		User user = (User) orm.findById(userid, "bank.users");
-		if (user != null) {
-			return user;
-		}
-		return null;
-	}
->>>>>>> cccd2def13a57b8e25430fff3763858b1e7b7694
+//	 */
+//	public User getAccountUser(Account account) {
+//		int userid = (int) orm.getValueById("accountnumber", (int)account.getAccountNumber(), "userid", "accounts");
+//		User user = (User) orm.findById(userid, "bank.users");
+//		if (user != null) {
+//			return user;
+//		}
+//		return null;
+//	}
 
 	
 	/** 
@@ -169,15 +162,20 @@ public class AccountDAOImpl implements AccountDAO {
 		fields.put("userid", user.getUserId());
 		orm.updateField("accountnumber", (int)account.getAccountNumber(), fields, "accounts");
 	}
-<<<<<<< HEAD
+
 
 	@Override
-	public User findById(User user) {
+	public Account findById(int i) throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 
-=======
->>>>>>> cccd2def13a57b8e25430fff3763858b1e7b7694
+	@Override
+	public User getAccountUser(Account account) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 }

@@ -10,7 +10,6 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -22,7 +21,7 @@ import com.revature.razang.exceptions.RecordNotFound;
 import com.revature.razang.models.User;
 import com.revature.razang.utilities.WebUtils;
 
-@Disabled("Disabled until I mock everything")
+//@Disabled("Disabled until I mock everything")
 @ExtendWith(MockitoExtension.class)
 class UserDataTest {
 
@@ -83,35 +82,42 @@ class UserDataTest {
 		try {
 			userDAO.update(user);
 		} catch (RecordNotFound e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	@Test 
-	public void testUpdateFailed() {
-		customer = new User(); 
-		assertNull(userDAO.update(customer)); 
-	}
+//	public void testUpdateFailed() {
+//		customer = new User(); 
+//		try {
+//			assertNull(userDAO.update(customer));
+//		} catch (RecordNotFound e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} 
+//	}
 	
 	@Test
 	public void testDeleteCustomerSuccessfully() {
 		User user = new User(3, "ctangUPDATE", new Date(Date.valueOf("1994-03-31").getTime()),
 				"ctang@gmail.com", "5121231234", "pass");
-<<<<<<< HEAD
-		assertEquals(user, userDAO.delete(user));
+		try {
+			assertEquals(user, userDAO.delete(user));
+		} catch (RecordNotFound e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	@Test 
 	public void testDeleteCustomerFailed ()
 	{
 		User user = new User(100, "ctangUPDATE", new Date(Date.valueOf("1994-03-31").getTime()),
 				"ctang@gmail.com", "5121231234", "pass");
-		assertNull(userDAO.delete(user)); 
-=======
 		try {
-			userDAO.delete(user);
+			assertNull(userDAO.delete(user));
 		} catch (RecordNotFound e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
->>>>>>> cccd2def13a57b8e25430fff3763858b1e7b7694
+		} 
 	}
 
 	@Test
@@ -122,30 +128,32 @@ class UserDataTest {
 	}
 	
 	@Test 
-	public void testFindByIdSuccessfully() {
+	public void testFindByIdSuccessfully() throws SQLException {
 		customer = new User(); 
-		customer.setUserId(1);
-		assertNotNull(userDAO.findById(customer));
+		customer.setUserId(2);
+		customer = userDAO.findById(customer);
+		assertNotNull(customer);
 	}
-	
 	@Test
-	public void testFindByIdFfailed() {
+	public void testFindByIdFfailed() throws SQLException {
 		customer = new User(); 
 		customer.setUserId(100);
 		assertNull(userDAO.findById(customer)); 
 	}
+	
 	@Test
 	public void testValidatePasswordSuccessfully() {
 		
 		String passwd = "123456"; 
+		String returnPass = "123456"; 
 		byte[] salt = {'a','b', '2','5'}; 
+		webUtil = new WebUtils(); 
 		Mockito.when(customer.getPassword()).thenReturn(passwd); 
 		Mockito.when(customer.getSalt()).thenReturn(salt);
-		Mockito.when(webUtil.generateEncryptedPassword(passwd, salt)).thenReturn(passwd); 
+		Mockito.when(webUtil.generateEncryptedPassword(passwd, salt)).thenReturn(returnPass); 
 		assertTrue(userDAO.validatePassword(customer, passwd));
 	}
-	
-	
+	@Test	
 	public void testValidatePasswordFailed() {
 		
 		String passwd = "123456"; 

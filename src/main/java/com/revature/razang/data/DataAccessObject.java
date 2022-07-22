@@ -3,11 +3,10 @@ package com.revature.razang.data;
 import java.sql.SQLException;
 import java.util.List;
 
-<<<<<<< HEAD
+
 import com.revature.razang.models.User;
-=======
 import com.revature.razang.exceptions.RecordNotFound;
->>>>>>> cccd2def13a57b8e25430fff3763858b1e7b7694
+import com.revature.razang.exceptions.RecordNotFound;
 
 // data access object or "DAO"
 // this interface lays out the behaviors
@@ -34,11 +33,12 @@ public interface DataAccessObject<T> {
 	 * @param the identifier of the object to be retrieved
 	 * @return the retrieved object or null if no matching object was found
 	 */
-<<<<<<< HEAD
+
 	public T findById(int i) throws SQLException;
-=======
+
 	public T findById(T t) throws SQLException;
->>>>>>> cccd2def13a57b8e25430fff3763858b1e7b7694
+
+
 	
 	/**
 	 * Retrieves all of the objects from the data source.
@@ -66,11 +66,6 @@ public interface DataAccessObject<T> {
 	 * @return 
 	 * @throws RecordNotFound
 	 */
-<<<<<<< HEAD
-	public T delete(T t);
 
-	public User findById(User user);
-=======
 	public T delete(T t) throws RecordNotFound;
->>>>>>> cccd2def13a57b8e25430fff3763858b1e7b7694
 }
