@@ -3,6 +3,8 @@ package com.revature.razang.data;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.revature.razang.exceptions.RecordNotFound;
+
 // data access object or "DAO"
 // this interface lays out the behaviors
 // that a DAO should have (CRUD methods - 
@@ -45,14 +47,16 @@ public interface DataAccessObject<T> {
 	 * 
 	 * @param t the updated object to be saved in the data source
 	 * @return 
+	 * @throws RecordNotFound
 	 */
-	public T update(T t);
+	public T update(T t) throws RecordNotFound;
 	
 	/**
 	 * Deletes the object in the data source with the matching identifier.
 	 * 
 	 * @param t the object to be deleted from the data source
 	 * @return 
+	 * @throws RecordNotFound
 	 */
-	public T delete(T t);
+	public T delete(T t) throws RecordNotFound;
 }

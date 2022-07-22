@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.revature.razang.exceptions.NegativeBalanceException;
+import com.revature.razang.exceptions.RecordNotFound;
 import com.revature.razang.models.Account;
 import com.revature.razang.models.User;
 import com.revature.razang.utilities.WebUtils;
@@ -59,7 +60,10 @@ public class AccountDAOImpl implements AccountDAO {
 	 * @return Account
 	 */
 	@Override
-	public Account update(Account t) {
+	public Account update(Account t) throws RecordNotFound {
+		if (findById(t) == null) {
+			throw new RecordNotFound(t);
+		}
 		return (Account) orm.update (t, "bank.accounts");
 	}
 
@@ -69,7 +73,10 @@ public class AccountDAOImpl implements AccountDAO {
 	 * @return Account
 	 */
 	@Override
-	public Account delete(Account t) {
+	public Account delete(Account t) throws RecordNotFound {
+		if (findById(t) == null) {
+			throw new RecordNotFound(t);
+		}
 		return (Account) orm.delete(t, "bank.accounts");
 	}
 
@@ -79,7 +86,10 @@ public class AccountDAOImpl implements AccountDAO {
 	 * @param amount
 	 */
 	@Override
-	public void depositIntoAccount(Account account, double amount) {
+	public void depositIntoAccount(Account account, double amount) throws RecordNotFound {
+		if (findById(account) == null) {
+			throw new RecordNotFound(account);
+		}
 		Map<String, Object> fields = new HashMap<String,Object>();
 		fields.put("balance", account.getBalance() + amount);
 		orm.updateField("accountnumber", (int)account.getAccountNumber(), fields, "accounts");
@@ -92,7 +102,10 @@ public class AccountDAOImpl implements AccountDAO {
 	 * @throws NegativeBalanceException
 	 */
 	@Override
-	public void withdrawAccount(Account account, double amount) throws NegativeBalanceException {
+	public void withdrawAccount(Account account, double amount) throws NegativeBalanceException, RecordNotFound {
+		if (findById(account) == null) {
+			throw new RecordNotFound(account);
+		}
 		Map<String, Object> fields = new HashMap<String,Object>();
 		if (account.getBalance() - amount < 0) {
 			String message = "CANNOT WITHDRAW " + amount + "! (" + (account.getBalance() - amount) + ")";
@@ -107,12 +120,11 @@ public class AccountDAOImpl implements AccountDAO {
 	 * @param account
 	 * @return double
 	 */
-	public double getBalance(Account account) {
-		userAccount = findById(account);
-		if (userAccount != null) {
-			return userAccount.getBalance() ;
+	public double getBalance(Account account) throws RecordNotFound {
+		if (findById(account) == null) {
+			throw new RecordNotFound(account);
 		}
-		return 0;
+		return userAccount.getBalance();
 	}
 
 	

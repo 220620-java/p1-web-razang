@@ -5,11 +5,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 import com.revature.razang.models.Account;
-import com.revature.razang.models.Account.AccountType;
 
 class TestAccount {
 
-	Account account = new Account(102030405060L, AccountType.CHECKING, 0.00); 
+	Account account = new Account(102030405060L, "CHECKING", 0.00); 
 	
 	@Test
 	public void testGetAccount() {

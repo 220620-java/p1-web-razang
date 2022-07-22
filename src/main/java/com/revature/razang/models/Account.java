@@ -9,14 +9,9 @@ import com.revature.razangorm.annotations.Id;
  */
 public class Account {
 
-	public enum AccountType {
-		CHECKING,
-		SAVINGS
-	}
-
 	@Id
 	private long accountNumber;
-	private AccountType accountType; 
+	private String accountType; 
 	private double balance;
 
 	/**
@@ -24,11 +19,11 @@ public class Account {
 	 */
 	public Account() {
 		this.accountNumber = WebUtils.generateRandomAccountNumber();
-		this.accountType = AccountType.CHECKING;
+		this.accountType = "CHECKING";
 		this.balance = 0.0f;
 	}
 
-	public Account(long accountNumber, AccountType accountType, double balance) {
+	public Account(long accountNumber, String accountType, double balance) {
 		this.accountNumber = accountNumber;
 		this.accountType = accountType;
 		this.balance = balance;
@@ -58,7 +53,7 @@ public class Account {
 	/** 
 	 * @param account_type
 	 */
-	public void SetAccountType(AccountType account_type) {
+	public void SetAccountType(String account_type) {
 		this.accountType = account_type;
 	}
 	
@@ -81,7 +76,7 @@ public class Account {
 	 */
 	@Override
 	public String toString() {
-		String retString = String.format("Account %d: TYPE=%s, BALANCE=$%f", accountNumber, accountType.toString(), balance);
+		String retString = String.format("Account %d: TYPE=%s, BALANCE=$%f", accountNumber, accountType, balance);
 		return retString;
 	} 
 }

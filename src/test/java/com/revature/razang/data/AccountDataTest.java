@@ -45,7 +45,7 @@ class AccountDataTest {
 		long mockAccountNumber = 2030401050111L;
 		// Mockito.when(customer.getUserId()).thenReturn(mockId); 
 		// Mockito.when(WebUtils.generateRandomAccountNumber()).thenReturn(mockAccountNumber);
-		Account testAccount = new Account(2030401050111L, Account.AccountType.CHECKING, 0.00); 
+		Account testAccount = new Account(2030401050111L, "CHECKING", 0.00); 
 		Account myAccount;
 		try {
 			myAccount = account.create(testAccount);
@@ -59,7 +59,7 @@ class AccountDataTest {
 	public void testDelete() {
 		// int mockId = 2; 
 		// Mockito.when(customer.getUserId()).thenReturn(mockId); 
-		// Account testAccount = new Account(2030401050111L, Account.AccountType.CHECKING, 0.00); 
+		// Account testAccount = new Account(2030401050111L, "CHECKING", 0.00); 
 		// Account myAccount;
 		// try {
 		// 	account.delete(testAccount);
