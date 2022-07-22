@@ -127,6 +127,25 @@ public class UserDelegate implements FrontControllerDelegate {
 
 	// /users/{userId} - Deletes user by userid
 	private void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		resp.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
+		User user = objMapper.readValue(req.getInputStream(), User.class); 
+		if (user == null) throw new RuntimeException(); 
+		
+		String path = req.getAttribute("path").toString(); 
+		if (path == null) {
+			resp.sendError(403, "No user id was provided");
+		}
+		
+		if (user.getUserId() != Integer.parseInt(path)) {
+			resp.sendError(403, "Wrong user id is passed. Can't delete the user");
+		}
+		
+		try {
+			user = userService.deleteUser(user); 
+			UserDTO userResp = new UserDTO(user); 
+			resp.getWriter().write(objMapper.writeValueAsString(userResp));
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
