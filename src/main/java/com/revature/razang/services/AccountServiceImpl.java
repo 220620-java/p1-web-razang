@@ -46,12 +46,11 @@ public class AccountServiceImpl implements AccountService {
 	 * @param account
 	 */
 	@Override
-	public void updateAccount(Account account) throws RecordNotFound {
+	public void updateAccount(Account account) {
 		try {
 			accountDAO.update(account);
 		} catch (RecordNotFound e) {
 			e.printStackTrace();
-			throw e;
 		}
 	}
 	
@@ -59,12 +58,11 @@ public class AccountServiceImpl implements AccountService {
 	 * @param account
 	 */
 	@Override
-	public void deleteAccount(Account account) throws RecordNotFound {
+	public void deleteAccount(Account account) {
 		try {
 			accountDAO.delete(account);
 		} catch (RecordNotFound e) {
 			e.printStackTrace();
-			throw e;
 		} 
 	}
 	
@@ -73,12 +71,11 @@ public class AccountServiceImpl implements AccountService {
 	 * @param amount
 	 */
 	@Override
-	public void depositIntoAccount(Account account, double amount) throws RecordNotFound {
+	public void depositIntoAccount(Account account, double amount) {
 		try {
 			accountDAO.depositIntoAccount(account, amount);
 		} catch (RecordNotFound e) {
 			e.printStackTrace();
-			throw e;
 		}
 	}
 
@@ -87,12 +84,11 @@ public class AccountServiceImpl implements AccountService {
 	 * @param amount
 	 */
 	@Override
-	public void withdrawFromAccount(Account account, double amount) throws RecordNotFound, NegativeBalanceException {
+	public void withdrawFromAccount(Account account, double amount) {
 		try {
 			accountDAO.withdrawAccount(account, amount);
 		} catch (NegativeBalanceException | RecordNotFound e) {
 			e.printStackTrace();
-			throw e;
 		}
 	}
 	
@@ -101,13 +97,13 @@ public class AccountServiceImpl implements AccountService {
 	 * @return double
 	 */
 	@Override
-	public double getBalance(Account account) throws RecordNotFound {
+	public double getBalance(Account account) {
 		try {
 			return accountDAO.getBalance(account);
 		} catch (RecordNotFound e) {
 			e.printStackTrace();
-			throw e;
 		}
+		return 0.0;
 	}
 
 	/** 
@@ -124,12 +120,11 @@ public class AccountServiceImpl implements AccountService {
 	 * @param user
 	 */
 	@Override
-	public void setAccountUser(Account account, User user) throws RecordNotFound, SQLException {
+	public void setAccountUser(Account account, User user) {
 		try {
 			accountDAO.setAccountUser(account, user);
-		} catch (RecordNotFound | SQLException e) {
+		} catch (RecordNotFound e) {
 			e.printStackTrace();
-			throw e;
 		}
 	}
 
