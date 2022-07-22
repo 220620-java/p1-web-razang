@@ -111,6 +111,11 @@ class AccountDataTest {
 		assertEquals(100.0, balance);
 	}
 	
+	@Test
+	public void testNegativeWithdraw () {
+		// Account testAccount = new Account(2030401050111L, Account.AccountType.CHECKING, 0.00); 
+		// accountDAO
+	}
 	
 	
 	

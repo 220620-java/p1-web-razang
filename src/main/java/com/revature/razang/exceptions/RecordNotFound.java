@@ -13,7 +13,7 @@ public class RecordNotFound extends Exception {
     }
 
     public RecordNotFound (Object object) {
-        super("Could not find record" + object.toString() + "in the database!");
+        super("Could not find record " + object.getClass().getName() + " in the database!");
     }
 
     public RecordNotFound (String message) {

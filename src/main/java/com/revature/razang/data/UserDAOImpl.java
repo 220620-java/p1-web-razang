@@ -15,13 +15,16 @@ import com.revature.razangorm.orm.ObjectRelationalMapperImpl;
 public class UserDAOImpl implements UserDAO {
 	List<User> customers = new ArrayList<>();
 	ObjectRelationalMapper orm = new ObjectRelationalMapperImpl();
-
+	
+	/** 
+	 * @param user
+	 * @return User
+	 */
 	@Override
 	public User findByUsername(User user) {
 		User foundUser = (User) orm.findByName(user, "bank.users");
 		return foundUser;
 	}
-
 
 	
 	/** 
@@ -30,7 +33,6 @@ public class UserDAOImpl implements UserDAO {
 	 * @throws SQLException
 	 * @throws UsernameAlreadyExistsException
 	 */
-
 	@Override
 	public User create(User user) throws SQLException, UsernameAlreadyExistsException {
 		if (findById(user) != null) {
@@ -40,19 +42,26 @@ public class UserDAOImpl implements UserDAO {
 		return createdUser;
 	}
 
+	
+	/** 
+	 * @param user
+	 * @return User
+	 */
 	@Override
-	public User findById(int id) {
-		User foundUser = (User) orm.findById(id, "bank.users");
+	public User findById(User user) {
+		User foundUser = (User) orm.findById(user, "bank.users");
 		return foundUser;
 	}
 
+	/** 
+	 * @return List<User>
+	 */
 	@Override
 	public List<User> findAll() {
-		List<Object> retrievedObjects = orm.findAll(User.class, "users");
+		List<Object> retrievedObjects = orm.findAll(User.class, "bank.users");
 		List<User> createdUsers = retrievedObjects.stream().map(user -> (User)user).collect(Collectors.toList());
 		return createdUsers;
 	}
-
 
 	
 	/** 
@@ -81,30 +90,26 @@ public class UserDAOImpl implements UserDAO {
 			throw new RecordNotFound(user);
 		}
 		return (User) orm.delete(user, "bank.users");
-
-	@Override
-	public User update(User t) {
-		User createdUser = (User) orm.update(t, "users");
-		return createdUser;
 	}
 
-	@Override
-	public void delete(User t) {
-		orm.delete(t, "users");
-
-	}
-
+	
+	/** 
+	 * @param user
+	 * @param password
+	 * @return boolean
+	 */
 	@Override
 	public boolean validatePassword(User user, String password) {
 		String dbPass = user.getPassword();
 		byte[] dbSalt = user.getSalt();
-		String ePass = WebUtils.generateEncryptedPassword(password, dbSalt);
-
-		if (!ePass.equals(dbPass)) {
-			System.out.println("Passwords do not match! ");
+		if (dbPass == null) {
+			System.out.println("Password or salt is empty!");
 			return false;
 		}
-		return ePass.equals(dbPass);
-	}
+		else if (dbSalt != null) {
+			password = WebUtils.generateEncryptedPassword(password, dbSalt);
+		}
 
+		return password.equals(dbPass);
+	}
 }

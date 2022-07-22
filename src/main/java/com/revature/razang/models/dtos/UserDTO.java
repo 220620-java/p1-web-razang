@@ -14,6 +14,7 @@ public class UserDTO {
 	private Date birthDate; 
 	private String email; 
 	private String phone;
+	private String token = "";
 
 	public UserDTO () {}
 
@@ -111,5 +112,19 @@ public class UserDTO {
 	 */
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+
+	/** 
+	 * @return String
+	 */
+	public String getToken() {
+		return token;
+	}
+
+	/** 
+	 * @param token
+	 */
+	public void setToken(String token) {
+		this.token = token;
 	}
 }

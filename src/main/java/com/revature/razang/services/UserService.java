@@ -17,11 +17,5 @@ public interface UserService {
     public User updateUser (User user) throws RecordNotFound;
     public User deleteUser (User user) throws RecordNotFound;
 
-    public User registerUser (User user) throws UsernameAlreadyExistsException;
-    public User findUserById (int id);
-    public User findUserByUsername (String username);
-    public User updateUser (User user);
-    public User deleteUser (User user);
-
     public List<User> getAllusers ();
 }
