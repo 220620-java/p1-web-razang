@@ -108,12 +108,11 @@ public class UserDelegate implements FrontControllerDelegate {
 
 	// /users/{userId} - Updates user by userid
 	private void put(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		resp.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
 		String path = req.getAttribute("path").toString(); 
 		if (path == null) {
 			try {
 				User user = objMapper.readValue(req.getInputStream(), User.class); 
-				if (user == null) throw new RuntimeException(); 
+				if (user == null) throw new RuntimeException();
 				try {
 					user = userService.updateUser(user);
 					resp.setStatus(200);
@@ -126,7 +125,7 @@ public class UserDelegate implements FrontControllerDelegate {
 			}catch(MismatchedInputException | RuntimeException e) {
 				resp.sendError(400, "Can't update the user");
 			}
-		}else {
+		} else {
 			resp.sendError(400, "Cannot PUT to this URI. Try sending the request to /users.");
 		}
 	}
