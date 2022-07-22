@@ -5,11 +5,8 @@ import java.util.List;
 
 import com.revature.razang.data.UserDAO;
 import com.revature.razang.data.UserDAOImpl;
-
 import com.revature.razang.exceptions.ObjectAlreadyExistsException;
 import com.revature.razang.exceptions.RecordNotFound;
-
-
 import com.revature.razang.models.User;
 
 public class UserServiceImpl implements UserService {
@@ -37,7 +34,6 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
-    
     /** 
      * @param user
      * @return User
@@ -54,22 +50,20 @@ public class UserServiceImpl implements UserService {
             throw e;
         }
     }
-
     
     /** 
      * @param user
      * @return User
      */
     @Override
-    public User findUserById(int id) {
+    public User findUserById(User user) {
         try {
-            return userDAO.findById(id);
+            return userDAO.findById(user);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
-
     
     /** 
      * @param user
@@ -79,7 +73,6 @@ public class UserServiceImpl implements UserService {
     public User findUserByUsername(User user) {
         return userDAO.findByUsername(user);
     }
-
     
     /** 
      * @param user
@@ -87,7 +80,6 @@ public class UserServiceImpl implements UserService {
      * @throws RecordNotFound
      */
     @Override
-
     public User updateUser(User user) throws RecordNotFound {
         try {
             return userDAO.update(user);
@@ -95,20 +87,14 @@ public class UserServiceImpl implements UserService {
             e.printStackTrace();
             throw e;
         }
-
-    public User updateUser(User user) {
-        return userDAO.update(user);
-
     }
 
-    
     /** 
      * @param user
      * @return User
      * @throws RecordNotFound
      */
     @Override
-
     public User deleteUser(User user) throws RecordNotFound {
         try {
             return userDAO.delete(user);
@@ -116,13 +102,7 @@ public class UserServiceImpl implements UserService {
             e.printStackTrace();
             throw e;
         }
-
-    public User deleteUser(User user) {
-        // TODO Auto-generated method stub
-        return null;
-
     }
-
     
     /** 
      * @return List<User>
@@ -131,5 +111,4 @@ public class UserServiceImpl implements UserService {
     public List<User> getAllusers() {
         return userDAO.findAll();
     }
-    
 }

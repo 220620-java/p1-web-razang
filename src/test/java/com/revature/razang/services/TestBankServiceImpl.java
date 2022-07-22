@@ -3,6 +3,7 @@ package com.revature.razang.services;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.sql.Date;
+import java.sql.SQLException;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,9 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.revature.razang.data.UserDAOImpl;
+import com.revature.razang.exceptions.AccountAlreadyExistsException;
+import com.revature.razang.exceptions.NegativeBalanceException;
+import com.revature.razang.exceptions.RecordNotFound;
 import com.revature.razang.data.AccountDAOImpl;
 import com.revature.razang.models.Account;
 import com.revature.razang.models.User;
@@ -61,46 +65,68 @@ class TestBankServiceImpl {
 	
 	@Test
 	public void testCreateAccount() {
-		Account mockAccount = new Account(2030401050111L, Account.AccountType.CHECKING, 100.0); 
-		Mockito.when(account.create(customer)).thenReturn(mockAccount); 
+		Account mockAccount = new Account(2030401050111L, "CHECKING", 100.0); 
+		try {
+			Mockito.when(account.create(mockAccount)).thenReturn(mockAccount);
+		} catch (AccountAlreadyExistsException | SQLException e1) {
+			e1.printStackTrace();
+		} 
 		
-		Account returnAccount = bankService.createAccount(customer);
-		assertNotNull(returnAccount); 
+		try {
+			Account returnAccount;
+			returnAccount = bankService.createAccount(mockAccount);
+			assertNotNull(returnAccount); 
+		} catch (AccountAlreadyExistsException | SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Test 
 	public void testDeleteAccount() {
-		Account mockAccount = new Account(2030401050111L, Account.AccountType.CHECKING, 100.0); 
-		Mockito.when(account.delete(customer)).thenReturn(mockAccount); 
+		Account mockAccount = new Account(2030401050111L, "CHECKING", 100.0); 
 		
-		Account returnAccount = bankService.deleteAccount(customer);
-		assertNotNull(returnAccount); 
+		try {
+			bankService.deleteAccount(mockAccount);
+		} catch (RecordNotFound e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Test 
-	public void testDepositeFund() {
-		Account mockAccount = new Account(2030401050111L, Account.AccountType.CHECKING, 200.0); 
-		Mockito.when(account.depositIntoAccount(customer, 100)).thenReturn(mockAccount); 
+	public void testDepositFund() {
+		Account mockAccount = new Account(2030401050111L, "CHECKING", 200.0); 
 		
-		Account returnAccount = bankService.depositIntoAccount(customer, 100); 
-		assertNotNull(returnAccount); 
+		try {
+			bankService.depositIntoAccount(mockAccount, 100);
+		} catch (RecordNotFound e) {
+			e.printStackTrace();
+		} 
+		assertEquals(mockAccount.getBalance(), 100); 
 	}
 	
 	@Test 
 	public void testWithdrawFund() {
-		Account mockAccount = new Account(2030401050111L, Account.AccountType.CHECKING, 100.0); 
-		Mockito.when(account.withdraw(customer, 100)).thenReturn(mockAccount); 
+		Account mockAccount = new Account(2030401050111L, "CHECKING", 100.0); 
 		
-		Account returnAccount = bankService.withdrawFromAccount(customer, 100); 
-		assertNotNull(returnAccount); 
+		try {
+			bankService.withdrawFromAccount(mockAccount, 100);
+		} catch (RecordNotFound | NegativeBalanceException e) {
+			e.printStackTrace();
+		} 
+		assertNotNull(mockAccount);
 	}
 	
 	@Test
 	public void testViewBalance() {
-		
-		Mockito.when(account.balance(customer)).thenReturn(100.0); 
-		double returnedBalance = bankService.viewBalance(customer); 
-		assertTrue(returnedBalance > 0); 
+		Account mockAccount = new Account(2030401050111L, "CHECKING", 100.0); 
+		Mockito.when(mockAccount.getBalance()).thenReturn(100.0); 
+		double returnedBalance;
+		try {
+			returnedBalance = bankService.getBalance(mockAccount);
+			assertTrue(returnedBalance > 0); 
+		} catch (RecordNotFound e) {
+			e.printStackTrace();
+		} 
 	}
 	
 	

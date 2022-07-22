@@ -60,7 +60,9 @@ public class UserDelegate implements FrontControllerDelegate {
 			//resp.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
 			 try {
 			 	int id = Integer.valueOf(path);
-			 	User user = userService.findUserById(id);
+			 	User user = new User();
+				user.setUserId(id);
+				user = userService.findUserById(user);
 			 	if (user!=null) {
 			 		// this DTO (data transfer object) prepares the user to be sent in
 			 		// the response by removing the password
@@ -95,8 +97,6 @@ public class UserDelegate implements FrontControllerDelegate {
 		 		}
 		 	} catch (IOException | RuntimeException e) {
 		 		resp.sendError(400, "The request body was empty........." + e.getMessage());
-		 	} catch (MismatchedInputException | RuntimeException e) {
-		 		resp.sendError(400, "The request body was empty.");
 		 	}
 		 } else {
 		 	resp.sendError(400, "Cannot POST to this URI. Try sending the request to /users.");

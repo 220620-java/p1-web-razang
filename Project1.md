@@ -21,8 +21,8 @@ Additionally, you will need to build a simple CRUD web application (what objects
 ## Functional Requirements
 - [x] CRUD operations are supported for one or more domain objects via the web application's exposed endpoints
 - [x] JDBC logic is abstracted away by the custom ORM 
-- [ ] Programmatic persistence of entities (basic CRUD support) using custom ORM
-- [ ] File-based or programmatic configuration of entities
+- [x] Programmatic persistence of entities (basic CRUD support) using custom ORM
+- [x] File-based or programmatic configuration of entities
 
 ## Non-Functional Requirements
 - [ ] 80% line coverage of all service layer classes
